@@ -17,6 +17,5 @@ dist/
 nbproject/private/
 nbproject/build-impl.xml
 
-# ROMs
-roms/*.gba
-out.gba
+# Do NOT commit any ROMs
+*.gba
