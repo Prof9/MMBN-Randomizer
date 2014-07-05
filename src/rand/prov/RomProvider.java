@@ -3,7 +3,6 @@ package rand.prov;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
-import rand.Randomizable;
 import rand.Rom;
 import rand.strat.RomStrategy;
 
@@ -11,8 +10,7 @@ import rand.strat.RomStrategy;
  * A provider that reads data from a ROM, randomizes it, then writes it back to
  * a ROM.
  */
-public abstract class RomProvider
-implements Randomizable, RomStrategy {
+public abstract class RomProvider implements RomStrategy {
     /**
      * A wrapper for a byte array with optional type.
      */
@@ -138,7 +136,6 @@ implements Randomizable, RomStrategy {
      * 
      * @param rom The ROM to write to.
      */
-    @Override
     public final void produce(Rom rom) {
         for (Map.Entry<Integer, DataEntry> entry : this.dataMap.entrySet()) {
             rom.setPosition(entry.getKey());
@@ -161,7 +158,6 @@ implements Randomizable, RomStrategy {
      * 
      * @param rng The random number generator to use.
      */
-    @Override
     public void randomize(Random rng) {
         for (Map.Entry<Integer, DataEntry> entry : this.dataMap.entrySet()) {
             DataEntry dataEntry = entry.getValue();

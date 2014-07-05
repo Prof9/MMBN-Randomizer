@@ -53,10 +53,6 @@ public class RewardProvider extends RomProvider {
                 
                 reward |= code << 9;
                 break;
-            default:
-                reward = 0x4000;
-                reward |= rng.nextInt(1000);
-                break;
         }
         
         bytes[0] = (byte)(reward & 0xFF);
