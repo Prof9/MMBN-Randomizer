@@ -79,12 +79,20 @@ public class RandomizerContext {
     }
     
     public void randomizeRewards(Rom rom, ChipLibrary library) {
+        // Randomize enemy drops
         RewardProvider provider = new RewardProvider(library);
-        RepeatStrategy repeatStrat = new RepeatStrategy(provider,
+        RepeatStrategy dropRepeatStrat = new RepeatStrategy(provider,
                 802 * 2 * 5);
         
         rom.setPosition(0x0AAEA8);
-        repeatStrat.execute(rom);
+        dropRepeatStrat.execute(rom);
+        
+        // Randomize battle Mystery Data
+        RepeatStrategy mdRepeatStrat = new RepeatStrategy(provider,
+                8 * 8);
+        
+        rom.setPosition(0x0211A0);
+        mdRepeatStrat.execute(rom);
         
         provider.randomize(new Random());
         provider.produce(rom);
