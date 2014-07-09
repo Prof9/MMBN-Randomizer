@@ -91,7 +91,7 @@ public final class ByteConverter {
     }
     
     public static byte[] writeBits(int value, int shift, int size) {
-        byte[] r = new byte[(size + 7) / 8];
+        byte[] r = new byte[(shift + size + 7) / 8];
         writeBitsTo(value, r, 0, shift, size);
         return r;
     }
@@ -129,11 +129,12 @@ public final class ByteConverter {
             offset += shift / 8;
             shift %= 8;
             
-            int next = 8 - shift;
+            int next = 8 - (shift & 7);
             next = size < next ? size : next;
             
             dest[offset] &= ~(((1 << next) - 1) << shift);
-            dest[offset] |= ((value >> shift) & ((1 << next) - 1)) << shift;
+            dest[offset] |= (value & ((1 << next) - 1)) << shift;
+            value >>= next;
             
             size -= next;
             shift += next;
