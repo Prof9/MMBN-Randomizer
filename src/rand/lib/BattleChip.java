@@ -1,7 +1,8 @@
 package rand.lib;
 
 import java.util.Arrays;
-import rand.Rom;
+import rand.ByteConverter;
+import rand.ByteStream;
 
 /** Represents a battle chip. */
 public class BattleChip {
@@ -26,7 +27,7 @@ public class BattleChip {
         PA
     }
     
-    private final byte[] data;
+    private final byte[] bytes;
     
     private final byte[] codes;
     private final int rarity;
@@ -36,33 +37,27 @@ public class BattleChip {
     private final boolean isInLibrary;
     
     /**
-     * Loads a battle chip from the given ROM.
+     * Loads a battle chip from the given byte stream.
      * 
-     * @param rom The ROM to load from.
+     * @param stream The byte stream to load from.
      */
-    public BattleChip(Rom rom) {
+    public BattleChip(ByteStream stream) {
         // Read the whole chip.
-        this.data = rom.readBytes(44);
-        // Rewind to load some data.
-        rom.advance(-44);
+        this.bytes = stream.readBytes(44);
         
         // Load codes.
-        this.codes = rom.readBytes(4);
-        // Skip attack element.
-        rom.advance(1);
+        this.codes = Arrays.copyOfRange(this.bytes, 0, 4);
         // Load rarity.
-        this.rarity = rom.readUInt8();
+        this.rarity = ByteConverter.readUInt8(this.bytes, 5);
         // Load element.
-        this.element = rom.readUInt8();
+        this.element = ByteConverter.readUInt8(this.bytes, 6);
         // Load library.
-        this.library = rom.readUInt8();
+        this.library = ByteConverter.readUInt8(this.bytes, 7);
         // Load MB.
-        this.mb = rom.readUInt8();
+        this.mb = ByteConverter.readUInt8(this.bytes, 8);
         // Load effect flags.
-        int effectFlags = rom.readUInt8();
+        int effectFlags = ByteConverter.readUInt8(this.bytes, 9);
         this.isInLibrary = (effectFlags & 0x40) != 0;
-        // Skip everything else.
-        rom.advance(34);
     }
     
     /**
@@ -73,21 +68,21 @@ public class BattleChip {
     public byte[] toBytes() {
         // Write current codes to the underlying data.
         int codeCount = getCodeCount();
-        System.arraycopy(this.codes, 0, this.data, 0, codeCount);
+        System.arraycopy(this.codes, 0, this.bytes, 0, codeCount);
         
         // Write rarity.
-        this.data[5] = (byte)this.rarity;
+        this.bytes[5] = (byte)this.rarity;
         
         // Write element.
-        this.data[6] = (byte)this.element;
+        this.bytes[6] = (byte)this.element;
         
         // Write library.
-        this.data[7] = (byte)this.library;
+        this.bytes[7] = (byte)this.library;
         
         // Write MB
-        this.data[8] = (byte)this.mb;
+        this.bytes[8] = (byte)this.mb;
         
-        return this.data;
+        return this.bytes;
     }
     /**
      * Gets the size of this chip in bytes.
@@ -95,7 +90,7 @@ public class BattleChip {
      * @return The amount of bytes.
      */
     public int byteCount() {
-        return this.data.length;
+        return this.bytes.length;
     }
     
     /**

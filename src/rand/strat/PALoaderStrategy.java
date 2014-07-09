@@ -1,10 +1,10 @@
 package rand.strat;
 
-import rand.Rom;
+import rand.ByteStream;
 import rand.lib.Library;
 import rand.lib.ProgramAdvance;
 
-public class PALoaderStrategy implements RomStrategy {
+public class PALoaderStrategy implements StreamStrategy {
     private final Library<ProgramAdvance> library;
     
     public PALoaderStrategy(Library<ProgramAdvance> library) {
@@ -12,7 +12,7 @@ public class PALoaderStrategy implements RomStrategy {
     }
     
     @Override
-    public void execute(Rom rom) {
-        this.library.addElement(rom);
+    public void execute(ByteStream stream) {
+        this.library.addElement(stream);
     }
 }

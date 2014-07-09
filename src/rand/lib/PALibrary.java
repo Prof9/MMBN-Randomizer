@@ -2,13 +2,13 @@ package rand.lib;
 
 import java.util.ArrayList;
 import java.util.List;
-import rand.Rom;
+import rand.ByteStream;
 
 /** A library that keeps track of Program Advances. */
 public class PALibrary extends Library<ProgramAdvance> {
     @Override
-    public ProgramAdvance loadFromRom(Rom rom) {
-        return new ProgramAdvance(rom);
+    public ProgramAdvance loadFromStream(ByteStream stream) {
+        return new ProgramAdvance(stream);
     }
     
     public List<Integer> query(ProgramAdvance.Type type) {

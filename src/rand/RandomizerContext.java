@@ -9,7 +9,7 @@ public class RandomizerContext {
     public RandomizerContext() {
     }
     
-    public ChipLibrary randomizeChips(Rom rom) {
+    public ChipLibrary randomizeChips(ByteStream rom) {
         PALibrary paLibrary = new PALibrary();
         ChipLibrary chipLibrary = new ChipLibrary();
         
@@ -20,12 +20,12 @@ public class RandomizerContext {
                 false);
         // Load pointers until 0x00000000.
         RepeatStrategy paPtrListStrat = new RepeatStrategy(paPtrStrat,
-                new byte[] { 0x00, 0x00, 0x00, 0x00 });
+                ByteConverter.convertInt32(0));
         // Load two pointers.
         PointerListStrategy paPtrListListStrat
                 = new PointerListStrategy(paPtrListStrat, 2);
         
-        rom.setPosition(0x0295B4);
+        rom.setRealPosition(0x0295B4);
         paPtrListListStrat.execute(rom);
         
         // Get chip.
@@ -33,8 +33,8 @@ public class RandomizerContext {
         // Load all chips.
         RepeatStrategy chipRepeatStrat = new RepeatStrategy(chipProvider, 411);
         
-        rom.setPosition(0x021AB0);
-        rom.setPosition(rom.readPtr());
+        rom.setRealPosition(0x021AB0);
+        rom.setPosition(rom.readInt32());
         chipRepeatStrat.execute(rom);
         
         // Randomize chips.
@@ -44,26 +44,26 @@ public class RandomizerContext {
         return chipLibrary;
     }
     
-    public void randomizeFolders(Rom rom, ChipLibrary library) {
+    public void randomizeFolders(ByteStream rom, ChipLibrary library) {
         FolderProvider provider = new FolderProvider(library);
         PointerListStrategy processListStrat
                 = new PointerListStrategy(provider, 2);
         
-        rom.setPosition(0x0050E8);
-        rom.setPosition(rom.readPtr());
+        rom.setRealPosition(0x0050E8);
+        rom.setPosition(rom.readInt32());
         provider.execute(rom);
         
-        rom.setPosition(0x137868);
+        rom.setRealPosition(0x137868);
         processListStrat.execute(rom);
         
         provider.randomize(new Random());
         provider.produce(rom);
     }
     
-    public void randomizeBattles(Rom rom) {
+    public void randomizeBattles(ByteStream rom) {
         BattleProvider provider = new BattleProvider();
         RepeatStrategy repeatStrat = new RepeatStrategy(provider,
-                new byte[] { -1 });
+                ByteConverter.convertUInt8((short)0xFF));
         PointerListStrategy processListStrat
                 = new PointerListStrategy(repeatStrat, 16);
         PointerListStrategy processListListStrat
@@ -71,38 +71,37 @@ public class RandomizerContext {
         PointerListStrategy processListListListStrat
                 = new PointerListStrategy(processListListStrat, 8);
         
-        rom.setPosition(0x020170);
+        rom.setRealPosition(0x020170);
         processListListListStrat.execute(rom);
         
         provider.randomize(new Random());
         provider.produce(rom);
     }
     
-    public void randomizeRewards(Rom rom, ChipLibrary library) {
+    public void randomizeRewards(ByteStream rom, ChipLibrary library) {
         // Randomize enemy drops
         RewardProvider provider = new RewardProvider(library);
         RepeatStrategy dropRepeatStrat = new RepeatStrategy(provider,
                 802 * 2 * 5);
         
-        rom.setPosition(0x0AAEA8);
+        rom.setRealPosition(0x0AAEA8);
         dropRepeatStrat.execute(rom);
         
         // Randomize battle Mystery Data
-        RepeatStrategy mdRepeatStrat = new RepeatStrategy(provider,
-                8 * 8);
+        RepeatStrategy mdRepeatStrat = new RepeatStrategy(provider, 8 * 8);
         
-        rom.setPosition(0x0211A0);
+        rom.setRealPosition(0x0211A0);
         mdRepeatStrat.execute(rom);
         
         provider.randomize(new Random());
         provider.produce(rom);
     }
     
-    public void randomizeTraders(Rom rom, ChipLibrary library) {
+    public void randomizeTraders(ByteStream rom, ChipLibrary library) {
         TraderProvider provider = new TraderProvider(library);
         RepeatStrategy repeatStrat = new RepeatStrategy(provider, 5);
         
-        rom.setPosition(0x04C01C);
+        rom.setRealPosition(0x04C01C);
         repeatStrat.execute(rom);
         
         provider.randomize(new Random());

@@ -2,11 +2,11 @@ package rand.prov;
 
 import java.util.List;
 import java.util.Random;
-import rand.Rom;
+import rand.ByteStream;
 import rand.lib.BattleChip;
 import rand.lib.ChipLibrary;
 
-public class RewardProvider extends RomProvider {
+public class RewardProvider extends DataProvider {
     private enum RewardType {
         CHIP,
         ZENNY,
@@ -61,11 +61,11 @@ public class RewardProvider extends RomProvider {
     }
 
     @Override
-    public void execute(Rom rom) {
+    public void execute(ByteStream stream) {
         System.out.println("Collected reward data at 0x"
-                + String.format("%06X", rom.getPosition()));
+                + String.format("%06X", stream.getRealPosition()));
         
-        int reward = rom.readUInt16();
+        int reward = stream.readUInt16();
         
         RewardType type;
         if ((reward & 0xC000) == 0xC000) {
@@ -78,7 +78,7 @@ public class RewardProvider extends RomProvider {
             type = RewardType.CHIP;
         }
         
-        rom.advance(-2);
-        registerData(rom, type, 2);
+        stream.advance(-2);
+        registerData(stream, type, 2);
     }
 }

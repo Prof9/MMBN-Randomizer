@@ -1,14 +1,14 @@
 package rand.strat;
 
-import rand.Rom;
+import rand.ByteStream;
 import java.util.Arrays;
 
 /**
  * A strategy that repeatedly applies a delegate strategy to a ROM for a set
  * number of iterations or until the given byte pattern is reached.
  */
-public class RepeatStrategy implements RomStrategy {
-    private final RomStrategy strategy;
+public class RepeatStrategy implements StreamStrategy {
+    private final StreamStrategy strategy;
     private final int amount;
     private final byte[] until;
     
@@ -18,7 +18,7 @@ public class RepeatStrategy implements RomStrategy {
      * @param strategy The delegate strategy to use.
      * @param amount The amount of iterations.
      */
-    public RepeatStrategy(final RomStrategy strategy, int amount) {
+    public RepeatStrategy(final StreamStrategy strategy, int amount) {
         this(strategy, amount, null);
     }
     
@@ -29,7 +29,7 @@ public class RepeatStrategy implements RomStrategy {
      * @param strategy The delegate strategy to use.
      * @param until The byte pattern to stop at.
      */
-    public RepeatStrategy(final RomStrategy strategy, byte[] until) {
+    public RepeatStrategy(final StreamStrategy strategy, byte[] until) {
         this(strategy, -1, until);
     }
     
@@ -41,7 +41,7 @@ public class RepeatStrategy implements RomStrategy {
      * @param amount The maximum amount of iterations, or -1 for no maximum.
      * @param until The byte pattern to stop at, or null.
      */
-    public RepeatStrategy(final RomStrategy strategy, int amount,
+    public RepeatStrategy(final StreamStrategy strategy, int amount,
             byte[] until) {
         if (until != null && until.length < 1) {
             throw new IllegalArgumentException("The ending byte pattern cannot "
@@ -78,27 +78,27 @@ public class RepeatStrategy implements RomStrategy {
     }
     
     /**
-     * Repeatedly processes the position of the given ROM.
+     * Repeatedly processes the given byte stream.
      * 
-     * @param rom The ROM to execute on.
+     * @param stream The byte stream to execute on.
      */
     @Override
-    public void execute(Rom rom) {
+    public void execute(ByteStream stream) {
         int i = 0;
         while (true) {
             if (this.amount >= 0 && i >= this.amount) {
                 break;
             }
             if (this.until != null) {
-                if (Arrays.equals(rom.readBytes(this.until.length),
+                if (Arrays.equals(stream.readBytes(this.until.length),
                         this.until)) {
                     break;
                 } else {
-                    rom.advance(-this.until.length);
+                    stream.advance(-this.until.length);
                 }
             }
             
-            this.strategy.execute(rom);
+            this.strategy.execute(stream);
             i++;
         }
     }

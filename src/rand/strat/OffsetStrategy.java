@@ -1,13 +1,13 @@
 package rand.strat;
 
-import rand.Rom;
+import rand.ByteStream;
 
 /**
  * A strategy that modifies the position of the ROM relative to its current
  * position.
  */
-public class OffsetStrategy implements RomStrategy {
-    private final RomStrategy strategy;
+public class OffsetStrategy implements StreamStrategy {
+    private final StreamStrategy strategy;
     private final int offset;
     
     /**
@@ -17,20 +17,20 @@ public class OffsetStrategy implements RomStrategy {
      * @param strategy The delegate strategy to use.
      * @param offset The amount to advance the position of the ROM.
      */
-    public OffsetStrategy(final RomStrategy strategy, int offset)
+    public OffsetStrategy(final StreamStrategy strategy, int offset)
     {
         this.strategy = strategy;
         this.offset = offset;
     }
     
     /**
-     * Process the given ROM.
+     * Process the given byte stream.
      * 
-     * @param rom The ROM to execute on.
+     * @param stream The byte stream to execute on.
      */
     @Override
-    public void execute(Rom rom) {
-        rom.advance(this.offset);
-        this.strategy.execute(rom);
+    public void execute(ByteStream stream) {
+        stream.advance(this.offset);
+        this.strategy.execute(stream);
     }
 }

@@ -3,14 +3,14 @@ package rand.prov;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
-import rand.Rom;
-import rand.strat.RomStrategy;
+import rand.ByteStream;
+import rand.strat.StreamStrategy;
 
 /**
  * A provider that reads data from a ROM, randomizes it, then writes it back to
  * a ROM.
  */
-public abstract class RomProvider implements RomStrategy {
+public abstract class DataProvider implements StreamStrategy {
     /**
      * A wrapper for a byte array with optional type.
      */
@@ -92,7 +92,7 @@ public abstract class RomProvider implements RomStrategy {
     /**
      * Constructs a new RandomProvider with no registered data.
      */
-    public RomProvider() {
+    public DataProvider() {
         this.dataMap = new LinkedHashMap<>();
     }
     
@@ -108,38 +108,38 @@ public abstract class RomProvider implements RomStrategy {
     }
     
     /**
-     * Registers a new data entry at the current ROM position with a given
-     * amount of bytes read from the ROM.
+     * Registers a new data entry in the given byte stream at its current
+     * position with the given size.
      * 
-     * @param rom The ROM to read from.
+     * @param stream The byte stream to read from.
      * @param byteCount The amount of bytes to read.
      */
-    protected void registerData(Rom rom, int byteCount) {
-        registerData(rom, null, byteCount);
+    protected void registerData(ByteStream stream, int byteCount) {
+        registerData(stream, null, byteCount);
     }
     
     /**
-     * Registers a new data entry at the current ROM position with the given
-     * type and a given amount of bytes read from the ROM.
+     * Registers a new data entry in the given byte stream at its current
+     * position with the given type and size.
      * 
-     * @param rom The ROM to read from.
+     * @param stream The byte stream to read from.
      * @param type The type of the data entry.
      * @param byteCount The amount of bytes to read.
      */
-    protected final void registerData(Rom rom, Enum type, int byteCount) {
-        this.dataMap.put(rom.getPosition(),
-                new DataEntry(type, rom.readBytes(byteCount)));
+    protected final void registerData(ByteStream stream, Enum type, int byteCount) {
+        this.dataMap.put(stream.getRealPosition(),
+                new DataEntry(type, stream.readBytes(byteCount)));
     }
     
     /**
-     * Writes all registered data to the given ROM.
+     * Writes all registered data to the given byte stream.
      * 
-     * @param rom The ROM to write to.
+     * @param stream The byte stream to write to.
      */
-    public final void produce(Rom rom) {
+    public final void produce(ByteStream stream) {
         for (Map.Entry<Integer, DataEntry> entry : this.dataMap.entrySet()) {
-            rom.setPosition(entry.getKey());
-            rom.writeBytes(entry.getValue().getBytes());
+            stream.setRealPosition(entry.getKey());
+            stream.writeBytes(entry.getValue().getBytes());
         }
     }
     
@@ -167,10 +167,10 @@ public abstract class RomProvider implements RomStrategy {
     }
     
     /**
-     * Reads data from the ROM and registers it.
+     * Reads data from the given byte stream and registers it.
      * 
-     * @param rom The ROM to read from.
+     * @param stream The ROM to read from.
      */
     @Override
-    public abstract void execute(Rom rom);
+    public abstract void execute(ByteStream stream);
 }

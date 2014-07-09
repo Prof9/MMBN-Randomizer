@@ -19,7 +19,7 @@ public class Main {
         try {
             System.out.println("Starting");
             Path in = Paths.get(args[0]);
-            Rom rom = new Rom(in, false);
+            ByteStream rom = new ByteStream(in, 0x08000000);
 
             Random rng = new Random();
             RandomizerContext context = new RandomizerContext();

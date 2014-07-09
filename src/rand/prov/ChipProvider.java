@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import rand.Rom;
+import rand.ByteStream;
 import rand.lib.BattleChip;
 import rand.lib.ChipLibrary;
 import rand.lib.PALibrary;
@@ -18,7 +18,7 @@ import rand.lib.ProgramAdvance;
  * A provider that keeps track of chips from a ROM, randomizes them, then writes
  * them back to a ROM.
  */
-public class ChipProvider extends RomProvider {
+public class ChipProvider extends DataProvider {
     private final static int AMOUNT_OF_CODES = 27;
     
     /** A library that keeps track of all chips. */
@@ -103,22 +103,22 @@ public class ChipProvider extends RomProvider {
     }
     
     /**
-     * Reads a chip from the ROM and registers it.
+     * Reads a chip from the given byte stream and registers it.
      * 
-     * @param rom The chip to read from.
+     * @param stream The byte stream to read from.
      */
     @Override
-    public void execute(Rom rom) {
+    public void execute(ByteStream stream) {
         System.out.println("Collected chip data at 0x"
-                + String.format("%06X", rom.getPosition()));
+                + String.format("%06X", stream.getRealPosition()));
         
         // Load the chip.        
-        BattleChip chip = new BattleChip(rom);
+        BattleChip chip = new BattleChip(stream);
         // Rewind to register as data.
-        rom.advance(-chip.byteCount());
+        stream.advance(-chip.byteCount());
         // Save the chip in the library.
-        this.chipLibrary.addElement(rom.getPosition(), chip);
-        registerData(rom, chip.byteCount());
+        this.chipLibrary.addElement(stream.getPosition(), chip);
+        registerData(stream, chip.byteCount());
     }
     
     /**

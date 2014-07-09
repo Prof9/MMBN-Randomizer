@@ -3,11 +3,11 @@ package rand.prov;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import rand.Rom;
+import rand.ByteStream;
 import rand.lib.BattleChip;
 import rand.lib.ChipLibrary;
 
-public class TraderProvider extends RomProvider {
+public class TraderProvider extends DataProvider {
     private final ChipLibrary library;
     
     public TraderProvider(ChipLibrary library) {
@@ -60,32 +60,32 @@ public class TraderProvider extends RomProvider {
     }
 
     @Override
-    public void execute(Rom rom) {
-        rom.advance(4);
-        int traderPtr = rom.readPtr();
-        rom.pushPosition();
-        rom.setPosition(traderPtr);
+    public void execute(ByteStream stream) {
+        stream.advance(4);
+        int traderPtr = stream.readInt32();
+        stream.push();
+        stream.setPosition(traderPtr);
         
         // See how many chips there are.
-        int start = rom.getPosition();
-        while (rom.hasNext()) {
+        int start = stream.getRealPosition();
+        while (stream.hasNext()) {
             // Read the chip and its codes.
-            int chipIndex = rom.readUInt16();
-            byte[] codes = rom.readBytes(4);
+            int chipIndex = stream.readUInt16();
+            byte[] codes = stream.readBytes(4);
             
             // Stop on chip 0.
             if (chipIndex == 0) {
-                rom.advance(-6);
+                stream.advance(-6);
                 break;
             }
         }
         
         // Register the whole trader block.
-        int size = rom.getPosition() - start;
-        rom.advance(-size);
-        registerData(rom, size);
+        int size = stream.getRealPosition() - start;
+        stream.advance(-size);
+        registerData(stream, size);
         
-        rom.popPosition();
-        rom.advance(4);
+        stream.pop();
+        stream.advance(4);
     }
 }

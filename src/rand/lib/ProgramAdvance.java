@@ -1,6 +1,6 @@
 package rand.lib;
 
-import rand.Rom;
+import rand.ByteStream;
 
 /** Represents a Program Advance. */
 public final class ProgramAdvance {
@@ -15,14 +15,14 @@ public final class ProgramAdvance {
     private final int result;
     
     /**
-     * Loads a Program Advance from the given ROM.
+     * Loads a Program Advance from the given byte stream.
      * 
-     * @param rom The ROM to load from.
+     * @param stream The byte stream to load from.
      */
-    public ProgramAdvance(Rom rom) {
+    public ProgramAdvance(ByteStream stream) {
         // Read chip count and PA type.
-        this.chipCount = rom.readUInt8();
-        int typeValue = rom.readUInt8();
+        this.chipCount = stream.readUInt8();
+        int typeValue = stream.readUInt8();
         
         // Check PA type.
         int loadCount;
@@ -37,12 +37,12 @@ public final class ProgramAdvance {
         }
         
         // Read PA result.
-        this.result = rom.readUInt16();
+        this.result = stream.readUInt16();
         
         // Read required chips.
         this.chips = new int[loadCount];
         for (int i = 0; i < this.chips.length; i++) {
-            this.chips[i] = rom.readUInt16();
+            this.chips[i] = stream.readUInt16();
         }
     }
     

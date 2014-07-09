@@ -2,13 +2,13 @@ package rand.lib;
 
 import java.util.ArrayList;
 import java.util.List;
-import rand.Rom;
+import rand.ByteStream;
 
 /** A library that keeps track of chips. */
 public class ChipLibrary extends Library<BattleChip> {    
     @Override
-    protected BattleChip loadFromRom(Rom rom) {
-        return new BattleChip(rom);
+    protected BattleChip loadFromStream(ByteStream stream) {
+        return new BattleChip(stream);
     }
     
     /**

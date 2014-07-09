@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import rand.Rom;
+import rand.ByteStream;
 import rand.lib.BattleChip;
 import rand.lib.ChipLibrary;
 
-public class FolderProvider extends RomProvider {
+public class FolderProvider extends DataProvider {
     protected final class ChipCodePair implements Comparable<ChipCodePair> {
         private final int index;
         private final BattleChip chip;
@@ -210,10 +210,10 @@ public class FolderProvider extends RomProvider {
     }
 
     @Override
-    public void execute(Rom rom) {
+    public void execute(ByteStream stream) {
         System.out.println("Collected folder data at 0x"
-                + String.format("%06X", rom.getPosition()));
+                + String.format("%06X", stream.getRealPosition()));
         
-        registerData(rom, 30 * 2);
+        registerData(stream, 30 * 2);
     }
 }

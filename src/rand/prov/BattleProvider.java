@@ -1,9 +1,9 @@
 package rand.prov;
 
 import java.util.Random;
-import rand.Rom;
+import rand.ByteStream;
 
-public class BattleProvider extends RomProvider {
+public class BattleProvider extends DataProvider {
     @Override
     protected void randomizeData(Random rng, int position, DataEntry data) {
         byte[] obj = data.getBytes();
@@ -36,26 +36,26 @@ public class BattleProvider extends RomProvider {
     }
 
     @Override
-    public void execute(Rom rom) {
+    public void execute(ByteStream stream) {
         // Get to the enemy layout.
-        rom.advance(12);
-        int layoutPtr = rom.readPtr();
-        rom.pushPosition();
-        rom.setPosition(layoutPtr);
+        stream.advance(12);
+        int layoutPtr = stream.readInt32();
+        stream.push();
+        stream.setPosition(layoutPtr);
         
         // Read all enemy objects.
         int objType, objPos, objValue;
-        while ((objType = rom.readUInt8()) < 0xF0) {
-            objPos = rom.readInt8();
-            objValue = rom.readInt16();
+        while ((objType = stream.readUInt8()) < 0xF0) {
+            objPos = stream.readInt8();
+            objValue = stream.readInt16();
             
             // If the object is an enemy, register it.
             if (objType == 0x11 && objValue >= 1) {
-                rom.advance(-4);
-                registerData(rom, 4);
+                stream.advance(-4);
+                registerData(stream, 4);
             }
         }
         
-        rom.popPosition();
+        stream.pop();
     }
 }

@@ -1,14 +1,14 @@
 package rand.strat;
 
-import rand.Rom;
+import rand.ByteStream;
 import java.util.ArrayList;
 
 /**
  * A strategy that processes a list of pointers of a predetermined length and
  * applies a delegate strategy to each of them.
  */
-public class PointerListStrategy implements RomStrategy {
-    private final RomStrategy strategy;
+public class PointerListStrategy implements StreamStrategy {
+    private final StreamStrategy strategy;
     private final int length;
     private final boolean repeat;
     
@@ -20,7 +20,7 @@ public class PointerListStrategy implements RomStrategy {
      * @param strategy The delegate strategy to use.
      * @param length The length of the pointer list.
      */
-    public PointerListStrategy(final RomStrategy strategy, int length) {
+    public PointerListStrategy(final StreamStrategy strategy, int length) {
         this(strategy, length, false);
     }
     
@@ -33,7 +33,7 @@ public class PointerListStrategy implements RomStrategy {
      * @param length The length of the pointer list.
      * @param repeat Whether repeated pointers should be processed again.
      */
-    public PointerListStrategy(final RomStrategy strategy, int length,
+    public PointerListStrategy(final StreamStrategy strategy, int length,
             boolean repeat) {
         this.repeat = repeat;
         this.length = length;
@@ -60,24 +60,25 @@ public class PointerListStrategy implements RomStrategy {
     }
     
     /**
-     * Processes the pointer list at the current position in the given ROM.
+     * Processes the pointer list at the current position in the given byte
+     * stream.
      * 
-     * @param rom The ROM to execute on.
+     * @param stream The byte stream to execute on.
      */
     @Override
-    public void execute(Rom rom) {
+    public void execute(ByteStream stream) {
         ArrayList<Integer> processed = new ArrayList<>();
         
         int next;
         for (int i = 0; i < this.length; i++) {
-            next = rom.readPtr();
+            next = stream.readInt32();
             if (!repeat || !processed.contains(next)) {
-                rom.pushPosition();
-                rom.setPosition(next);
+                stream.push();
+                stream.setPosition(next);
                 
-                this.strategy.execute(rom);
+                this.strategy.execute(stream);
                 
-                rom.popPosition();
+                stream.pop();
                 processed.add(next);
             }
         }
