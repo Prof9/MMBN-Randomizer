@@ -309,18 +309,15 @@ public class ByteConverterTest {
     public void testWriteBits() {
         System.out.println("writeBits");
         byte[] bytes;
-        
         bytes = new byte[] { (byte)0xE0, (byte)0xFF, (byte)0x07 };
         assertArrayEquals(bytes,
                 ByteConverter.writeBits((int)(0x07FFE0 >> 5), 5, 14));
-        
         bytes = new byte[] {
             (byte)0x00, (byte)0xF8, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0x03
         };
         assertArrayEquals(bytes,
                 ByteConverter.writeBits((int)(0x03FFFFFFF800L >> 11), 11, 32));
-        
         bytes = new byte[] {
             (byte)0x00, (byte)0xF8, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0x07
@@ -335,12 +332,23 @@ public class ByteConverterTest {
     @Test
     public void testWriteInt8To() {
         System.out.println("writeInt8To");
-        byte value = 0;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeInt8To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] { (byte)0xFF, (byte)0xFF };
+        bytes = new byte[] { (byte)0x00, (byte)0xFF };
+        ByteConverter.writeInt8To((byte)0x00, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x00, (byte)0x01 };
+        ByteConverter.writeInt8To((byte)0x01, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0x01 };
+        ByteConverter.writeInt8To((byte)0xFF, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0x7F };
+        ByteConverter.writeInt8To((byte)0x7F, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x80, (byte)0x7F };
+        ByteConverter.writeInt8To((byte)0x80, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -349,12 +357,23 @@ public class ByteConverterTest {
     @Test
     public void testWriteUInt8To() {
         System.out.println("writeUInt8To");
-        short value = 0;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeUInt8To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] { (byte)0xFF, (byte)0xFF };
+        bytes = new byte[] { (byte)0x00, (byte)0xFF };
+        ByteConverter.writeUInt8To((byte)0x00, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x00, (byte)0x01 };
+        ByteConverter.writeUInt8To((byte)0x01, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0x01 };
+        ByteConverter.writeUInt8To((byte)0xFF, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0x7F };
+        ByteConverter.writeUInt8To((byte)0x7F, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x80, (byte)0x7F };
+        ByteConverter.writeUInt8To((byte)0x80, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -363,12 +382,23 @@ public class ByteConverterTest {
     @Test
     public void testWriteInt16To() {
         System.out.println("writeInt16To");
-        short value = 0;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeInt16To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF };
+        bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0xFF };
+        ByteConverter.writeInt16To((short)0x0000, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x00, (byte)0x01, (byte)0x00 };
+        ByteConverter.writeInt16To((short)0x0001, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x00 };
+        ByteConverter.writeInt16To((short)0xFFFF, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x7F };
+        ByteConverter.writeInt16To((short)0x7FFF, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x00, (byte)0x80, (byte)0x7F };
+        ByteConverter.writeInt16To((short)0x8000, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -377,12 +407,23 @@ public class ByteConverterTest {
     @Test
     public void testWriteUInt16To() {
         System.out.println("writeUInt16To");
-        int value = 0;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeUInt16To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF };
+        bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0xFF };
+        ByteConverter.writeUInt16To(0x0000, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x00, (byte)0x01, (byte)0x00 };
+        ByteConverter.writeUInt16To(0x0001, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x00 };
+        ByteConverter.writeUInt16To(0xFFFF, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x7F };
+        ByteConverter.writeUInt16To(0x7FFF, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] { (byte)0x00, (byte)0x80, (byte)0x7F };
+        ByteConverter.writeUInt16To(0x8000, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -391,12 +432,41 @@ public class ByteConverterTest {
     @Test
     public void testWriteInt32To() {
         System.out.println("writeInt32To");
-        int value = 0;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeInt32To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF
+        };
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+            (byte)0xFF
+        };
+        ByteConverter.writeInt32To(0x00000000, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00,
+            (byte)0x00
+        };
+        ByteConverter.writeInt32To(0x00000001, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0x00
+        };
+        ByteConverter.writeInt32To(0xFFFFFFFF, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0x7F
+        };
+        ByteConverter.writeInt32To(0x7FFFFFFF, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80,
+            (byte)0x7F
+        };
+        ByteConverter.writeInt32To(0x80000000, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -405,12 +475,41 @@ public class ByteConverterTest {
     @Test
     public void testWriteUInt32To() {
         System.out.println("writeUInt32To");
-        long value = 0L;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeUInt32To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF
+        };
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+            (byte)0xFF
+        };
+        ByteConverter.writeUInt32To(0x00000000L, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00,
+            (byte)0x00
+        };
+        ByteConverter.writeUInt32To(0x00000001L, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0x00
+        };
+        ByteConverter.writeUInt32To(0xFFFFFFFFL, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0x7F
+        };
+        ByteConverter.writeUInt32To(0x7FFFFFFFL, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80,
+            (byte)0x7F
+        };
+        ByteConverter.writeUInt32To(0x80000000L, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -419,12 +518,47 @@ public class ByteConverterTest {
     @Test
     public void testWriteInt64To() {
         System.out.println("writeInt64To");
-        long value = 0L;
-        byte[] dest = null;
-        int offset = 0;
-        ByteConverter.writeInt64To(value, dest, offset);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF
+        };
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+            (byte)0xFF
+        };
+        ByteConverter.writeInt64To(0x0000000000000000L, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00,
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+            (byte)0x00
+        };
+        ByteConverter.writeInt64To(0x0000000000000001L, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0x00
+        };
+        ByteConverter.writeInt64To(0xFFFFFFFFFFFFFFFFL, result, 0);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0x7F
+        };
+        ByteConverter.writeInt64To(0x7FFFFFFFFFFFFFFFL, result, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
+            (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80,
+            (byte)0x7F
+        };
+        ByteConverter.writeInt64To(0x8000000000000000L, result, 0);
+        assertArrayEquals(bytes, result);
     }
 
     /**
@@ -433,14 +567,47 @@ public class ByteConverterTest {
     @Test
     public void testWriteBitsTo() {
         System.out.println("writeBitsTo");
-        int value = 0;
-        byte[] dest = null;
-        int offset = 0;
-        int shift = 0;
-        int size = 0;
-        ByteConverter.writeBitsTo(value, dest, offset, shift, size);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        byte[] bytes;
+        byte[] result = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF
+        };
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0x07, (byte)0x00,
+            (byte)0x00, (byte)0x00, (byte)0xF8, (byte)0xFF
+        };
+        ByteConverter.writeBitsTo(0x00000000, result, 1, 11, 32);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0x07, (byte)0x00,
+            (byte)0x00, (byte)0x00, (byte)0xF8, (byte)0xF7
+        };
+        ByteConverter.writeBitsTo(0x00000000, result, 7, 3, 1);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0x5F, (byte)0xB5, (byte)0x4A,
+            (byte)0xB5, (byte)0x0A, (byte)0xF8, (byte)0xF7
+        };
+        ByteConverter.writeBitsTo((int)(0x0AB54AB540L >> 5), result, 1, 5, 32);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xB7, (byte)0x4A,
+            (byte)0xB5, (byte)0x0A, (byte)0xF8, (byte)0xF7
+        };
+        ByteConverter.writeBitsTo((int)(0x07FFE0 >> 5), result, 0, 5, 14);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF, (byte)0x0B, (byte)0xF8, (byte)0xF7
+        };
+        ByteConverter.writeBitsTo((int)(0x03FFFFFFF800L >> 11), result, 0, 11, 32);
+        assertArrayEquals(bytes, result);
+        bytes = new byte[] {
+            (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
+            (byte)0xFF, (byte)0x0F, (byte)0xF8, (byte)0xF7
+        };
+        ByteConverter.writeBitsTo((int)(0x07FFFFFFF800L >> 11), result, 0, 11, 32);
+        assertArrayEquals(bytes, result);
     }
     
 }
