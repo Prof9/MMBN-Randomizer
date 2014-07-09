@@ -155,121 +155,121 @@ public class ByteConverterTest {
     }
 
     /**
-     * Test of writeInt8 method, of class ByteConverter.
+     * Test of convertInt8 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt8() {
         System.out.println("writeInt8");
         byte[] bytes;
         bytes = new byte[] { (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeInt8((byte)0x00));
+        assertArrayEquals(bytes, ByteConverter.convertInt8((byte)0x00));
         bytes = new byte[] { (byte)0x01 };
-        assertArrayEquals(bytes, ByteConverter.writeInt8((byte)0x01));
+        assertArrayEquals(bytes, ByteConverter.convertInt8((byte)0x01));
         bytes = new byte[] { (byte)0xFF };
-        assertArrayEquals(bytes, ByteConverter.writeInt8((byte)0xFF));
+        assertArrayEquals(bytes, ByteConverter.convertInt8((byte)0xFF));
         bytes = new byte[] { (byte)0x7F };
-        assertArrayEquals(bytes, ByteConverter.writeInt8((byte)0x7F));
+        assertArrayEquals(bytes, ByteConverter.convertInt8((byte)0x7F));
         bytes = new byte[] { (byte)0x80 };
-        assertArrayEquals(bytes, ByteConverter.writeInt8((byte)0x80));
+        assertArrayEquals(bytes, ByteConverter.convertInt8((byte)0x80));
     }
 
     /**
-     * Test of writeUInt8 method, of class ByteConverter.
+     * Test of convertUInt8 method, of class ByteConverter.
      */
     @Test
     public void testWriteUInt8() {
         System.out.println("writeUInt8");
         byte[] bytes;
         bytes = new byte[] { (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt8((short)0x00));
+        assertArrayEquals(bytes, ByteConverter.convertUInt8((short)0x00));
         bytes = new byte[] { (byte)0x01 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt8((short)0x01));
+        assertArrayEquals(bytes, ByteConverter.convertUInt8((short)0x01));
         bytes = new byte[] { (byte)0xFF };
-        assertArrayEquals(bytes, ByteConverter.writeUInt8((short)0xFF));
+        assertArrayEquals(bytes, ByteConverter.convertUInt8((short)0xFF));
         bytes = new byte[] { (byte)0x7F };
-        assertArrayEquals(bytes, ByteConverter.writeUInt8((short)0x7F));
+        assertArrayEquals(bytes, ByteConverter.convertUInt8((short)0x7F));
         bytes = new byte[] { (byte)0x80 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt8((short)0x80));
+        assertArrayEquals(bytes, ByteConverter.convertUInt8((short)0x80));
     }
 
     /**
-     * Test of writeInt16 method, of class ByteConverter.
+     * Test of convertInt16 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt16() {
         System.out.println("writeInt16");
         byte[] bytes;
         bytes = new byte[] { (byte)0x00, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeInt16((short)0x0000));
+        assertArrayEquals(bytes, ByteConverter.convertInt16((short)0x0000));
         bytes = new byte[] { (byte)0x01, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeInt16((short)0x0001));
+        assertArrayEquals(bytes, ByteConverter.convertInt16((short)0x0001));
         bytes = new byte[] { (byte)0xFF, (byte)0xFF };
-        assertArrayEquals(bytes, ByteConverter.writeInt16((short)0xFFFF));
+        assertArrayEquals(bytes, ByteConverter.convertInt16((short)0xFFFF));
         bytes = new byte[] { (byte)0xFF, (byte)0x7F };
-        assertArrayEquals(bytes, ByteConverter.writeInt16((short)0x7FFF));
+        assertArrayEquals(bytes, ByteConverter.convertInt16((short)0x7FFF));
         bytes = new byte[] { (byte)0x00, (byte)0x80 };
-        assertArrayEquals(bytes, ByteConverter.writeInt16((short)0x8000));
+        assertArrayEquals(bytes, ByteConverter.convertInt16((short)0x8000));
     }
 
     /**
-     * Test of writeUInt16 method, of class ByteConverter.
+     * Test of convertUInt16 method, of class ByteConverter.
      */
     @Test
     public void testWriteUInt16() {
         System.out.println("writeUInt16");
         byte[] bytes;
         bytes = new byte[] { (byte)0x00, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt16(0x0000));
+        assertArrayEquals(bytes, ByteConverter.convertUInt16(0x0000));
         bytes = new byte[] { (byte)0x01, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt16(0x0001));
+        assertArrayEquals(bytes, ByteConverter.convertUInt16(0x0001));
         bytes = new byte[] { (byte)0xFF, (byte)0xFF };
-        assertArrayEquals(bytes, ByteConverter.writeUInt16(0xFFFF));
+        assertArrayEquals(bytes, ByteConverter.convertUInt16(0xFFFF));
         bytes = new byte[] { (byte)0xFF, (byte)0x7F };
-        assertArrayEquals(bytes, ByteConverter.writeUInt16(0x7FFF));
+        assertArrayEquals(bytes, ByteConverter.convertUInt16(0x7FFF));
         bytes = new byte[] { (byte)0x00, (byte)0x80 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt16(0x8000));
+        assertArrayEquals(bytes, ByteConverter.convertUInt16(0x8000));
     }
 
     /**
-     * Test of writeInt32 method, of class ByteConverter.
+     * Test of convertInt32 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt32() {
         System.out.println("writeInt32");
         byte[] bytes;
         bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeInt32(0x00000000));
+        assertArrayEquals(bytes, ByteConverter.convertInt32(0x00000000));
         bytes = new byte[] { (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeInt32(0x00000001));
+        assertArrayEquals(bytes, ByteConverter.convertInt32(0x00000001));
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF };
-        assertArrayEquals(bytes, ByteConverter.writeInt32(0xFFFFFFFF));
+        assertArrayEquals(bytes, ByteConverter.convertInt32(0xFFFFFFFF));
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0x7F };
-        assertArrayEquals(bytes, ByteConverter.writeInt32(0x7FFFFFFF));
+        assertArrayEquals(bytes, ByteConverter.convertInt32(0x7FFFFFFF));
         bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80 };
-        assertArrayEquals(bytes, ByteConverter.writeInt32(0x80000000));
+        assertArrayEquals(bytes, ByteConverter.convertInt32(0x80000000));
     }
 
     /**
-     * Test of writeUInt32 method, of class ByteConverter.
+     * Test of convertUInt32 method, of class ByteConverter.
      */
     @Test
     public void testWriteUInt32() {
         System.out.println("writeUInt32");
         byte[] bytes;
         bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt32(0x00000000L));
+        assertArrayEquals(bytes, ByteConverter.convertUInt32(0x00000000L));
         bytes = new byte[] { (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt32(0x00000001L));
+        assertArrayEquals(bytes, ByteConverter.convertUInt32(0x00000001L));
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF };
-        assertArrayEquals(bytes, ByteConverter.writeUInt32(0xFFFFFFFFL));
+        assertArrayEquals(bytes, ByteConverter.convertUInt32(0xFFFFFFFFL));
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0x7F };
-        assertArrayEquals(bytes, ByteConverter.writeUInt32(0x7FFFFFFFL));
+        assertArrayEquals(bytes, ByteConverter.convertUInt32(0x7FFFFFFFL));
         bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80 };
-        assertArrayEquals(bytes, ByteConverter.writeUInt32(0x80000000L));
+        assertArrayEquals(bytes, ByteConverter.convertUInt32(0x80000000L));
     }
 
     /**
-     * Test of writeInt64 method, of class ByteConverter.
+     * Test of convertInt64 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt64() {
@@ -279,31 +279,31 @@ public class ByteConverterTest {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00
         };
-        assertArrayEquals(bytes, ByteConverter.writeInt64(0x0000000000000000L));
+        assertArrayEquals(bytes, ByteConverter.convertInt64(0x0000000000000000L));
         bytes = new byte[] {
             (byte)0x01, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00
         };
-        assertArrayEquals(bytes, ByteConverter.writeInt64(0x0000000000000001L));
+        assertArrayEquals(bytes, ByteConverter.convertInt64(0x0000000000000001L));
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF
         };
-        assertArrayEquals(bytes, ByteConverter.writeInt64(0xFFFFFFFFFFFFFFFFL));
+        assertArrayEquals(bytes, ByteConverter.convertInt64(0xFFFFFFFFFFFFFFFFL));
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0x7F
         };
-        assertArrayEquals(bytes, ByteConverter.writeInt64(0x7FFFFFFFFFFFFFFFL));
+        assertArrayEquals(bytes, ByteConverter.convertInt64(0x7FFFFFFFFFFFFFFFL));
         bytes = new byte[] {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80
         };
-        assertArrayEquals(bytes, ByteConverter.writeInt64(0x8000000000000000L));
+        assertArrayEquals(bytes, ByteConverter.convertInt64(0x8000000000000000L));
     }
 
     /**
-     * Test of writeBits method, of class ByteConverter.
+     * Test of convertBits method, of class ByteConverter.
      */
     @Test
     public void testWriteBits() {
@@ -311,23 +311,23 @@ public class ByteConverterTest {
         byte[] bytes;
         bytes = new byte[] { (byte)0xE0, (byte)0xFF, (byte)0x07 };
         assertArrayEquals(bytes,
-                ByteConverter.writeBits((int)(0x07FFE0 >> 5), 5, 14));
+                ByteConverter.convertBits((int)(0x07FFE0 >> 5), 5, 14));
         bytes = new byte[] {
             (byte)0x00, (byte)0xF8, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0x03
         };
         assertArrayEquals(bytes,
-                ByteConverter.writeBits((int)(0x03FFFFFFF800L >> 11), 11, 32));
+                ByteConverter.convertBits((int)(0x03FFFFFFF800L >> 11), 11, 32));
         bytes = new byte[] {
             (byte)0x00, (byte)0xF8, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0x07
         };
         assertArrayEquals(bytes,
-                ByteConverter.writeBits((int)(0x07FFFFFFF800L >> 11), 11, 32));
+                ByteConverter.convertBits((int)(0x07FFFFFFF800L >> 11), 11, 32));
     }
 
     /**
-     * Test of writeInt8To method, of class ByteConverter.
+     * Test of writeInt8 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt8To() {
@@ -335,24 +335,24 @@ public class ByteConverterTest {
         byte[] bytes;
         byte[] result = new byte[] { (byte)0xFF, (byte)0xFF };
         bytes = new byte[] { (byte)0x00, (byte)0xFF };
-        ByteConverter.writeInt8To((byte)0x00, result, 0);
+        ByteConverter.writeInt8((byte)0x00, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x00, (byte)0x01 };
-        ByteConverter.writeInt8To((byte)0x01, result, 1);
+        ByteConverter.writeInt8((byte)0x01, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0x01 };
-        ByteConverter.writeInt8To((byte)0xFF, result, 0);
+        ByteConverter.writeInt8((byte)0xFF, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0x7F };
-        ByteConverter.writeInt8To((byte)0x7F, result, 1);
+        ByteConverter.writeInt8((byte)0x7F, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x80, (byte)0x7F };
-        ByteConverter.writeInt8To((byte)0x80, result, 0);
+        ByteConverter.writeInt8((byte)0x80, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeUInt8To method, of class ByteConverter.
+     * Test of writeUInt8 method, of class ByteConverter.
      */
     @Test
     public void testWriteUInt8To() {
@@ -360,24 +360,24 @@ public class ByteConverterTest {
         byte[] bytes;
         byte[] result = new byte[] { (byte)0xFF, (byte)0xFF };
         bytes = new byte[] { (byte)0x00, (byte)0xFF };
-        ByteConverter.writeUInt8To((byte)0x00, result, 0);
+        ByteConverter.writeUInt8((byte)0x00, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x00, (byte)0x01 };
-        ByteConverter.writeUInt8To((byte)0x01, result, 1);
+        ByteConverter.writeUInt8((byte)0x01, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0x01 };
-        ByteConverter.writeUInt8To((byte)0xFF, result, 0);
+        ByteConverter.writeUInt8((byte)0xFF, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0x7F };
-        ByteConverter.writeUInt8To((byte)0x7F, result, 1);
+        ByteConverter.writeUInt8((byte)0x7F, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x80, (byte)0x7F };
-        ByteConverter.writeUInt8To((byte)0x80, result, 0);
+        ByteConverter.writeUInt8((byte)0x80, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeInt16To method, of class ByteConverter.
+     * Test of writeInt16 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt16To() {
@@ -385,24 +385,24 @@ public class ByteConverterTest {
         byte[] bytes;
         byte[] result = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF };
         bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0xFF };
-        ByteConverter.writeInt16To((short)0x0000, result, 0);
+        ByteConverter.writeInt16((short)0x0000, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x00, (byte)0x01, (byte)0x00 };
-        ByteConverter.writeInt16To((short)0x0001, result, 1);
+        ByteConverter.writeInt16((short)0x0001, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x00 };
-        ByteConverter.writeInt16To((short)0xFFFF, result, 0);
+        ByteConverter.writeInt16((short)0xFFFF, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x7F };
-        ByteConverter.writeInt16To((short)0x7FFF, result, 1);
+        ByteConverter.writeInt16((short)0x7FFF, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x00, (byte)0x80, (byte)0x7F };
-        ByteConverter.writeInt16To((short)0x8000, result, 0);
+        ByteConverter.writeInt16((short)0x8000, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeUInt16To method, of class ByteConverter.
+     * Test of writeUInt16 method, of class ByteConverter.
      */
     @Test
     public void testWriteUInt16To() {
@@ -410,24 +410,24 @@ public class ByteConverterTest {
         byte[] bytes;
         byte[] result = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0xFF };
         bytes = new byte[] { (byte)0x00, (byte)0x00, (byte)0xFF };
-        ByteConverter.writeUInt16To(0x0000, result, 0);
+        ByteConverter.writeUInt16(0x0000, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x00, (byte)0x01, (byte)0x00 };
-        ByteConverter.writeUInt16To(0x0001, result, 1);
+        ByteConverter.writeUInt16(0x0001, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x00 };
-        ByteConverter.writeUInt16To(0xFFFF, result, 0);
+        ByteConverter.writeUInt16(0xFFFF, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0xFF, (byte)0xFF, (byte)0x7F };
-        ByteConverter.writeUInt16To(0x7FFF, result, 1);
+        ByteConverter.writeUInt16(0x7FFF, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] { (byte)0x00, (byte)0x80, (byte)0x7F };
-        ByteConverter.writeUInt16To(0x8000, result, 0);
+        ByteConverter.writeUInt16(0x8000, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeInt32To method, of class ByteConverter.
+     * Test of writeInt32 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt32To() {
@@ -441,36 +441,36 @@ public class ByteConverterTest {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0xFF
         };
-        ByteConverter.writeInt32To(0x00000000, result, 0);
+        ByteConverter.writeInt32(0x00000000, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00,
             (byte)0x00
         };
-        ByteConverter.writeInt32To(0x00000001, result, 1);
+        ByteConverter.writeInt32(0x00000001, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0x00
         };
-        ByteConverter.writeInt32To(0xFFFFFFFF, result, 0);
+        ByteConverter.writeInt32(0xFFFFFFFF, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0x7F
         };
-        ByteConverter.writeInt32To(0x7FFFFFFF, result, 1);
+        ByteConverter.writeInt32(0x7FFFFFFF, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80,
             (byte)0x7F
         };
-        ByteConverter.writeInt32To(0x80000000, result, 0);
+        ByteConverter.writeInt32(0x80000000, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeUInt32To method, of class ByteConverter.
+     * Test of writeUInt32 method, of class ByteConverter.
      */
     @Test
     public void testWriteUInt32To() {
@@ -484,36 +484,36 @@ public class ByteConverterTest {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0xFF
         };
-        ByteConverter.writeUInt32To(0x00000000L, result, 0);
+        ByteConverter.writeUInt32(0x00000000L, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00,
             (byte)0x00
         };
-        ByteConverter.writeUInt32To(0x00000001L, result, 1);
+        ByteConverter.writeUInt32(0x00000001L, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0x00
         };
-        ByteConverter.writeUInt32To(0xFFFFFFFFL, result, 0);
+        ByteConverter.writeUInt32(0xFFFFFFFFL, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0x7F
         };
-        ByteConverter.writeUInt32To(0x7FFFFFFFL, result, 1);
+        ByteConverter.writeUInt32(0x7FFFFFFFL, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80,
             (byte)0x7F
         };
-        ByteConverter.writeUInt32To(0x80000000L, result, 0);
+        ByteConverter.writeUInt32(0x80000000L, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeInt64To method, of class ByteConverter.
+     * Test of writeInt64 method, of class ByteConverter.
      */
     @Test
     public void testWriteInt64To() {
@@ -529,40 +529,40 @@ public class ByteConverterTest {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0xFF
         };
-        ByteConverter.writeInt64To(0x0000000000000000L, result, 0);
+        ByteConverter.writeInt64(0x0000000000000000L, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0x00, (byte)0x01, (byte)0x00, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0x00
         };
-        ByteConverter.writeInt64To(0x0000000000000001L, result, 1);
+        ByteConverter.writeInt64(0x0000000000000001L, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0x00
         };
-        ByteConverter.writeInt64To(0xFFFFFFFFFFFFFFFFL, result, 0);
+        ByteConverter.writeInt64(0xFFFFFFFFFFFFFFFFL, result, 0);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0x7F
         };
-        ByteConverter.writeInt64To(0x7FFFFFFFFFFFFFFFL, result, 1);
+        ByteConverter.writeInt64(0x7FFFFFFFFFFFFFFFL, result, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0x00, (byte)0x80,
             (byte)0x7F
         };
-        ByteConverter.writeInt64To(0x8000000000000000L, result, 0);
+        ByteConverter.writeInt64(0x8000000000000000L, result, 0);
         assertArrayEquals(bytes, result);
     }
 
     /**
-     * Test of writeBitsTo method, of class ByteConverter.
+     * Test of writeBits method, of class ByteConverter.
      */
     @Test
     public void testWriteBitsTo() {
@@ -576,38 +576,37 @@ public class ByteConverterTest {
             (byte)0xFF, (byte)0xFF, (byte)0x07, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0xF8, (byte)0xFF
         };
-        ByteConverter.writeBitsTo(0x00000000, result, 1, 11, 32);
+        ByteConverter.writeBits(0x00000000, result, 1, 11, 32);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0x07, (byte)0x00,
             (byte)0x00, (byte)0x00, (byte)0xF8, (byte)0xF7
         };
-        ByteConverter.writeBitsTo(0x00000000, result, 7, 3, 1);
+        ByteConverter.writeBits(0x00000000, result, 7, 3, 1);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0x5F, (byte)0xB5, (byte)0x4A,
             (byte)0xB5, (byte)0x0A, (byte)0xF8, (byte)0xF7
         };
-        ByteConverter.writeBitsTo((int)(0x0AB54AB540L >> 5), result, 1, 5, 32);
+        ByteConverter.writeBits((int)(0x0AB54AB540L >> 5), result, 1, 5, 32);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xB7, (byte)0x4A,
             (byte)0xB5, (byte)0x0A, (byte)0xF8, (byte)0xF7
         };
-        ByteConverter.writeBitsTo((int)(0x07FFE0 >> 5), result, 0, 5, 14);
+        ByteConverter.writeBits((int)(0x07FFE0 >> 5), result, 0, 5, 14);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0x0B, (byte)0xF8, (byte)0xF7
         };
-        ByteConverter.writeBitsTo((int)(0x03FFFFFFF800L >> 11), result, 0, 11, 32);
+        ByteConverter.writeBits((int)(0x03FFFFFFF800L >> 11), result, 0, 11, 32);
         assertArrayEquals(bytes, result);
         bytes = new byte[] {
             (byte)0xFF, (byte)0xFF, (byte)0xFF, (byte)0xFF,
             (byte)0xFF, (byte)0x0F, (byte)0xF8, (byte)0xF7
         };
-        ByteConverter.writeBitsTo((int)(0x07FFFFFFF800L >> 11), result, 0, 11, 32);
+        ByteConverter.writeBits((int)(0x07FFFFFFF800L >> 11), result, 0, 11, 32);
         assertArrayEquals(bytes, result);
     }
-    
 }
