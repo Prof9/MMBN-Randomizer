@@ -1,6 +1,5 @@
 package mmbn.bn6;
 
-import mmbn.bn6.BN6BattleObjectProducer;
 import rand.ByteStream;
 import rand.DataProducer;
 import mmbn.Battle;

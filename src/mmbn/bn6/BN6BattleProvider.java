@@ -4,7 +4,6 @@ import java.util.Random;
 import rand.DataProvider;
 import mmbn.Battle;
 import mmbn.BattleObject;
-import mmbn.bn6.BN6BattleProducer;
 
 public class BN6BattleProvider extends DataProvider<Battle> {
     public BN6BattleProvider(BN6BattleProducer producer) {

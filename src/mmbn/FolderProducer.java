@@ -1,9 +1,6 @@
 package mmbn;
 import rand.ByteStream;
 import rand.DataProducer;
-import mmbn.ChipLibrary;
-import mmbn.Folder;
-import mmbn.Reward;
 
 public class FolderProducer implements DataProducer<Folder> {
     protected final RewardProducer rewardProducer;

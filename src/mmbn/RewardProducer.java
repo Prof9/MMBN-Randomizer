@@ -1,8 +1,6 @@
 package mmbn;
 
 import rand.DataProducer;
-import mmbn.ChipLibrary;
-import mmbn.Reward;
 
 public abstract class RewardProducer implements DataProducer<Reward> {
     protected ChipLibrary library;

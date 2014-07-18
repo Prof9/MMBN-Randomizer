@@ -1,6 +1,5 @@
 package mmbn.bn6;
 
-import mmbn.bn6.BN6ChipTraderEntryProducer;
 import rand.ByteStream;
 import rand.DataProducer;
 import rand.Library;

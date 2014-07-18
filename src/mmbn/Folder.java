@@ -2,8 +2,6 @@ package mmbn;
 
 import java.util.ArrayList;
 import java.util.List;
-import rand.ByteStream;
-import rand.DataProducer;
 
 public class Folder {
     private static final int FOLDER_SIZE = 30;

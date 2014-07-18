@@ -2,12 +2,8 @@ package mmbn;
 
 import java.util.List;
 import java.util.Random;
-import rand.ByteStream;
 import rand.DataProvider;
 import rand.DataProducer;
-import mmbn.ChipLibrary;
-import mmbn.BattleChip;
-import mmbn.Reward;
 
 public class RewardProvider extends DataProvider<Reward> {
     private final ChipLibrary library;

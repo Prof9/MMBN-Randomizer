@@ -1,7 +1,5 @@
 package rand;
 
-import rand.ByteStream;
-
 /**
  * A strategy that acts on a byte stream.
  */

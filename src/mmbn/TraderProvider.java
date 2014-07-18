@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.Random;
 import rand.DataProducer;
 import rand.DataProvider;
-import mmbn.ChipLibrary;
-import mmbn.BattleChip;
-import mmbn.ChipTrader;
-import mmbn.ChipTraderEntry;
 
 public class TraderProvider extends DataProvider<ChipTrader> {
     private final ChipLibrary library;

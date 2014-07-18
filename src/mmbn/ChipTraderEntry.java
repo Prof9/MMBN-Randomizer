@@ -1,7 +1,5 @@
 package mmbn;
 
-import mmbn.BattleChip;
-
 public class ChipTraderEntry {
     private BattleChip chip;
     private final byte[] codes;

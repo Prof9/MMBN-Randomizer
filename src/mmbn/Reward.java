@@ -1,7 +1,5 @@
 package mmbn;
 
-import mmbn.BattleChip;
-
 public class Reward {
     public enum Type {
         CHIP,

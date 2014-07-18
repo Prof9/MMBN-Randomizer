@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import rand.DataProvider;
-import mmbn.ChipLibrary;
-import mmbn.BattleChip;
-import mmbn.Folder;
-import mmbn.Reward;
 
 public class FolderProvider extends DataProvider<Folder> {
     protected ChipLibrary library;

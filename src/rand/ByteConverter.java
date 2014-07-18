@@ -122,6 +122,7 @@ public final class ByteConverter {
      * @param bytes The byte array to read from.
      * @param offset The position in the byte array from which to begin reading.
      * @param shift The amount of bits to shift the value to the right.
+     * @param size The amount of bits to read.
      * @return The value that was read.
      */
     public static int readBits(byte[] bytes, int offset, int shift, int size) {

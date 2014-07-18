@@ -2,9 +2,7 @@ package mmbn;
 
 import rand.ByteStream;
 import rand.DataProducer;
-import mmbn.ChipLibrary;
 import rand.Library;
-import mmbn.BattleChip;
 
 public abstract class ChipProducer implements DataProducer<BattleChip> {
     private final BattleChip.Element[] elements;
