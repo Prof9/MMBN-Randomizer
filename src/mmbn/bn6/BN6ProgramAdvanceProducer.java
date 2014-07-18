@@ -1,12 +1,12 @@
-package rand.prod;
+package mmbn.bn6;
 
 import java.util.ArrayList;
 import java.util.List;
 import rand.ByteStream;
 import rand.DataProducer;
-import rand.lib.Library;
-import rand.obj.BattleChip;
-import rand.obj.ProgramAdvance;
+import rand.Library;
+import mmbn.BattleChip;
+import mmbn.ProgramAdvance;
 
 public class BN6ProgramAdvanceProducer implements DataProducer<ProgramAdvance> {
     protected final Library<BattleChip> library;

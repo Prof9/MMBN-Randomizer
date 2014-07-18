@@ -1,6 +1,6 @@
-package rand.lib;
+package mmbn;
 
-import rand.obj.BattleChip;
+import rand.Library;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,9 +1,8 @@
-package rand.lib;
+package mmbn;
 
+import rand.Library;
 import java.util.ArrayList;
 import java.util.List;
-import rand.obj.BattleChip;
-import rand.obj.ProgramAdvance;
 
 /** A library that keeps track of Program Advances. */
 public class PALibrary extends Library<ProgramAdvance> {    

@@ -1,16 +1,24 @@
 package rand;
 
+import rand.strat.LoaderStrategy;
+import rand.strat.RepeatStrategy;
+import rand.strat.PointerListStrategy;
+import mmbn.TraderProvider;
+import mmbn.RewardProvider;
+import mmbn.FolderProvider;
+import mmbn.ChipProvider;
+import mmbn.bn6.BN6BattleProvider;
+import mmbn.PALibrary;
+import mmbn.ChipLibrary;
 import java.util.Random;
 import rand.lib.*;
-import rand.prod.BN6BattleProducer;
-import rand.prod.BN6ChipProducer;
-import rand.prod.BN6ProgramAdvanceProducer;
-import rand.prod.BN6RewardProducer;
-import rand.prod.ChipProducer;
-import rand.prod.BN6ChipTraderProducer;
-import rand.prod.FolderProducer;
-import rand.prov.*;
-import rand.strat.*;
+import mmbn.bn6.BN6BattleProducer;
+import mmbn.bn6.BN6ChipProducer;
+import mmbn.bn6.BN6ProgramAdvanceProducer;
+import mmbn.bn6.BN6RewardProducer;
+import mmbn.ChipProducer;
+import mmbn.bn6.BN6ChipTraderProducer;
+import mmbn.FolderProducer;
 
 public class RandomizerContext {    
     public RandomizerContext() {

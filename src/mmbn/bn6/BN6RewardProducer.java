@@ -1,8 +1,9 @@
-package rand.prod;
+package mmbn.bn6;
 
 import rand.ByteStream;
-import rand.lib.ChipLibrary;
-import rand.obj.Reward;
+import mmbn.ChipLibrary;
+import mmbn.Reward;
+import mmbn.RewardProducer;
 
 public class BN6RewardProducer extends RewardProducer {
     public BN6RewardProducer(ChipLibrary library) {

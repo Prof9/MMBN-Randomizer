@@ -1,4 +1,4 @@
-package rand.lib;
+package rand;
 
 import java.util.ArrayList;
 import java.util.List;

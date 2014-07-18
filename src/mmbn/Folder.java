@@ -1,4 +1,4 @@
-package rand.obj;
+package mmbn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +38,7 @@ public class Folder {
     }
     
     public void addChip(Reward chip) {
-        if (chip.type != Reward.Type.CHIP) {
+        if (chip.getType() != Reward.Type.CHIP) {
             throw new IllegalArgumentException("Reward is not a chip.");
         }
         if (isFull()) {

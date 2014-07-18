@@ -1,8 +1,9 @@
-package rand.prod;
+package mmbn.bn6;
 
 import rand.ByteConverter;
 import rand.ByteStream;
-import rand.obj.BattleObject;
+import mmbn.BattleObject;
+import mmbn.BattleObjectProducer;
 
 public class BN6BattleObjectProducer extends BattleObjectProducer {
     public BN6BattleObjectProducer() {

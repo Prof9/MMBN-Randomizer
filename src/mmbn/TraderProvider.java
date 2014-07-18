@@ -1,14 +1,14 @@
-package rand.prov;
+package mmbn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import rand.DataProducer;
 import rand.DataProvider;
-import rand.lib.ChipLibrary;
-import rand.obj.BattleChip;
-import rand.obj.ChipTrader;
-import rand.obj.ChipTraderEntry;
+import mmbn.ChipLibrary;
+import mmbn.BattleChip;
+import mmbn.ChipTrader;
+import mmbn.ChipTraderEntry;
 
 public class TraderProvider extends DataProvider<ChipTrader> {
     private final ChipLibrary library;

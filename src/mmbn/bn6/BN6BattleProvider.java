@@ -1,10 +1,10 @@
-package rand.prov;
+package mmbn.bn6;
 
 import java.util.Random;
 import rand.DataProvider;
-import rand.obj.Battle;
-import rand.obj.BattleObject;
-import rand.prod.BN6BattleProducer;
+import mmbn.Battle;
+import mmbn.BattleObject;
+import mmbn.bn6.BN6BattleProducer;
 
 public class BN6BattleProvider extends DataProvider<Battle> {
     public BN6BattleProvider(BN6BattleProducer producer) {

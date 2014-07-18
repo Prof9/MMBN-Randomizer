@@ -1,14 +1,13 @@
-package rand.prov;
+package mmbn;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import rand.DataProvider;
-import rand.lib.ChipLibrary;
-import rand.obj.BattleChip;
-import rand.obj.Folder;
-import rand.obj.Reward;
-import rand.prod.FolderProducer;
+import mmbn.ChipLibrary;
+import mmbn.BattleChip;
+import mmbn.Folder;
+import mmbn.Reward;
 
 public class FolderProvider extends DataProvider<Folder> {
     protected ChipLibrary library;

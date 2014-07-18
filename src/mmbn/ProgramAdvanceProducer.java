@@ -1,4 +1,4 @@
-package rand.prod;
+package mmbn;
 
 public class ProgramAdvanceProducer {
     

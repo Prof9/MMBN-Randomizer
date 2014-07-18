@@ -1,4 +1,4 @@
-package rand.prov;
+package mmbn;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,10 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import rand.DataProvider;
-import rand.lib.PALibrary;
-import rand.obj.BattleChip;
-import rand.obj.ProgramAdvance;
-import rand.prod.ChipProducer;
+import mmbn.PALibrary;
+import mmbn.BattleChip;
+import mmbn.ProgramAdvance;
 
 /**
  * A provider that keeps track of chips from a ROM, randomizes them, then writes

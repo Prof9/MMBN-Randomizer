@@ -1,4 +1,4 @@
-package rand.obj;
+package mmbn;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
-package rand.prod;
+package mmbn;
 
 import rand.DataProducer;
-import rand.obj.BattleObject;
+import mmbn.BattleObject;
 
 public abstract class BattleObjectProducer implements DataProducer<BattleObject> {
     private final BattleObject.Type[] objectTypes;

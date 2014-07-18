@@ -1,4 +1,4 @@
-package rand.obj;
+package mmbn;
 
 public class BattleObject {
     public enum Type {

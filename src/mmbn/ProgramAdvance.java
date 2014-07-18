@@ -1,5 +1,6 @@
-package rand.obj;
+package mmbn;
 
+import mmbn.BattleChip;
 import java.util.ArrayList;
 import java.util.List;
 

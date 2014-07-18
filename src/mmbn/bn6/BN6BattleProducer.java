@@ -1,8 +1,9 @@
-package rand.prod;
+package mmbn.bn6;
 
+import mmbn.bn6.BN6BattleObjectProducer;
 import rand.ByteStream;
 import rand.DataProducer;
-import rand.obj.Battle;
+import mmbn.Battle;
 
 public class BN6BattleProducer implements DataProducer<Battle> {
     protected BN6BattleObjectProducer objectProducer;
