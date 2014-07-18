@@ -1,115 +1,38 @@
 package rand.prov;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import rand.ByteStream;
-import rand.lib.BattleChip;
+import rand.DataProvider;
 import rand.lib.ChipLibrary;
+import rand.obj.BattleChip;
+import rand.obj.Folder;
+import rand.obj.Reward;
+import rand.prod.FolderProducer;
 
-public class FolderProvider extends DataProvider {
-    protected final class ChipCodePair implements Comparable<ChipCodePair> {
-        private final int index;
-        private final BattleChip chip;
-        private final byte code;
-        
-        public ChipCodePair(int index, BattleChip chip, byte code) {
-            this.index = index;
-            this.chip = chip;
-            this.code = code;
-        }
-        
-        public int index() {
-            return this.index;
-        }
-        
-        public BattleChip chip() {
-            return this.chip;
-        }
-        
-        public byte code() {
-            return this.code;
-        }        
-
-        @Override
-        public int compareTo(ChipCodePair o) {
-            int result = Integer.compare(this.index, o.index);
-            if (result == 0) {
-                result = Integer.compare(this.code, o.code);
-            }
-            
-            return result;
-        }        
-    }
+public class FolderProvider extends DataProvider<Folder> {
+    protected ChipLibrary library;
     
-    private final ChipLibrary library;
-    
-    public FolderProvider(ChipLibrary library) {
-        this.library = library;
-    }
-    
-    protected ChipCodePair[] extractChips(DataEntry data) {
-        byte[] bytes = data.getBytes();
-        int chipCount = bytes.length / 2;
-        ChipCodePair[] chips = new ChipCodePair[chipCount];
-        
-        // Load all chips.
-        for (int i = 0; i < chipCount; i++) {
-            // Separate chip and code values.
-            int entry = (bytes[i * 2 + 0] & 0xFF)
-                    + ((bytes[i * 2 + 1] << 8) & 0xFF);
-            int chipIndex = entry & 0x1FF;
-            byte code = (byte)(entry >> 9);
-            
-            BattleChip chip = this.library.getElement(chipIndex);
-            chips[i] = new ChipCodePair(chipIndex, chip, code);
-        }
-        
-        return chips;
-    }
-    
-    protected void insertChips(DataEntry data, ChipCodePair[] chips) {
-        byte[] bytes = data.getBytes();
-        int chipCount = Math.max(chips.length, bytes.length / 2);
-        
-        // Sort the chips by ID.
-        Arrays.sort(chips);
-        
-        // Insert all chips.
-        for (int i = 0; i < chipCount; i++) {
-            ChipCodePair pair = chips[i];
-            int chipIndex = pair.index();
-            int code = pair.code();
-            
-            // Merge chip and code values.
-            int entry = (chipIndex + (code << 9)) & 0xFFFF;
-            bytes[i * 2 + 0] = (byte)(entry & 0xFF);
-            bytes[i * 2 + 1] = (byte)((entry >> 8) & 0xFF);
-        }
-        
-        data.setBytes(bytes);
+    public FolderProvider(FolderProducer producer) {
+        super(producer);
+        this.library = producer.library();
     }
     
     @Override
-    protected void randomizeData(Random rng, int position, DataEntry data) {
-        ChipCodePair[] folder = extractChips(data);
-        ChipCodePair[] newFolder = new ChipCodePair[folder.length];
+    protected void randomizeData(Random rng, Folder folder, int position) {
+        folder.clear();
         
         // Set number of chips that should/can be added.
         int megaLeft = 0;
         int gigaLeft = 0;
         
         // Get some libraries.
-        List<Integer> stdChips
-                = this.library.query(BattleChip.Library.STANDARD);
-        List<Integer> megaChips
-                = this.library.query(BattleChip.Library.MEGA);
-        List<Integer> gigaChips
-                = this.library.query(BattleChip.Library.GIGA);
+        List<BattleChip> stdChips = this.library.query(BattleChip.Library.STANDARD);
+        List<BattleChip> megaChips = this.library.query(BattleChip.Library.MEGA);
+        List<BattleChip> gigaChips = this.library.query(BattleChip.Library.GIGA);
         
         // Merge the three libraries.
-        List<Integer> allChips = new ArrayList<>();
+        List<BattleChip> allChips = new ArrayList<>();
         allChips.addAll(stdChips);
         if (megaLeft > 0) {
             allChips.addAll(megaChips);
@@ -119,17 +42,14 @@ public class FolderProvider extends DataProvider {
         }
         
         // Add chips until the folder is full.
-        int addedChips = 0;
-        int folderSize = newFolder.length;
-        while (addedChips < folderSize) {
+        while (!folder.isFull()) {
             // Pick a random chip to add.
             int r = rng.nextInt(allChips.size());
-            int chipIndex = allChips.get(r);
-            BattleChip chip = this.library.getElement(chipIndex);
+            BattleChip chip = allChips.get(r);
             
             // Get the max amount of this chip that can be added.
             int canAdd = 1;
-            switch (chip.library()) {
+            switch (chip.getLibrary()) {
                 case STANDARD:
                     // Check MB to determine the maximum.
                     int mb = chip.getMB();
@@ -164,8 +84,8 @@ public class FolderProvider extends DataProvider {
             }
             
             // Make sure not to exceed the folder limit.
-            if (addedChips + canAdd > folderSize) {
-                canAdd = folderSize - addedChips;
+            if (folder.size() + canAdd > folder.maxSize()) {
+                canAdd = folder.maxSize() - folder.size();
             }
             
             // Choose a random code.
@@ -185,8 +105,7 @@ public class FolderProvider extends DataProvider {
             
             // Add the first chip codes to the folder.
             while (toAdd-- > 0) {
-                newFolder[addedChips++] = new ChipCodePair(chipIndex, chip,
-                        code);
+                folder.addChip(new Reward(chip, code));
             }
             
             // Choose the second code.
@@ -197,23 +116,11 @@ public class FolderProvider extends DataProvider {
             
             // Add the second chip codes to the folder.
             while (toAdd-- > 0) {
-                newFolder[addedChips++] = new ChipCodePair(chipIndex, chip,
-                        code);
+                folder.addChip(new Reward(chip, code));
             }
             
             // Remove the chip from the selectable chips, if it's still in.
-            allChips.remove((Integer)chipIndex);
+            allChips.remove(chip);
         }
-        
-        // Insert the new folder.
-        insertChips(data, newFolder);
-    }
-
-    @Override
-    public void execute(ByteStream stream) {
-        System.out.println("Collected folder data at 0x"
-                + String.format("%06X", stream.getRealPosition()));
-        
-        registerData(stream, 30 * 2);
     }
 }

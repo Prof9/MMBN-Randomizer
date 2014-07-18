@@ -1,43 +1,38 @@
 package rand.prov;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import rand.ByteStream;
-import rand.lib.BattleChip;
-import rand.lib.ChipLibrary;
+import rand.DataProvider;
 import rand.lib.PALibrary;
-import rand.lib.ProgramAdvance;
+import rand.obj.BattleChip;
+import rand.obj.ProgramAdvance;
+import rand.prod.ChipProducer;
 
 /**
  * A provider that keeps track of chips from a ROM, randomizes them, then writes
  * them back to a ROM.
  */
-public class ChipProvider extends DataProvider {
-    private final static int AMOUNT_OF_CODES = 27;
-    
-    /** A library that keeps track of all chips. */
-    private final ChipLibrary chipLibrary;
+public class ChipProvider extends DataProvider<BattleChip> {
     /** A library that keeps track of all Program Advances. */
     private final PALibrary paLibrary;
     
+    /** Maps chip indices to their preset chip codes. */
     private Map<Integer, List<Byte>> presetCodes;
     
     /**
-     * Constructs a new ChipProvider that uses the given chip library and
-     * Program Advance library.
+     * Constructs a new ChipProvider using the given chip producer that utilizes
+     * the given Program Advance library.
      * 
-     * @param chipLibrary The chip library to use.
+     * @param producer The chip producer to use.
      * @param paLibrary The Program Advance library to use.
      */
-    public ChipProvider(ChipLibrary chipLibrary,
-            PALibrary paLibrary) {
-        this.chipLibrary = chipLibrary;
+    public ChipProvider(ChipProducer producer, PALibrary paLibrary) {
+        super(producer);
         this.paLibrary = paLibrary;
     }
     
@@ -61,67 +56,6 @@ public class ChipProvider extends DataProvider {
     }
     
     /**
-     * Generates a given amount of random chip codes.
-     * 
-     * @param amount The amount of chip codes to generate.
-     * @param rng The random number generator to use.
-     * @param excluded The chip codes that must be excluded. Can be null.
-     * @return A byte array of sorted random chip codes with the given size.
-     */
-    protected byte[] generateRandomCodes(int amount, Random rng,
-            Iterable<Byte> excluded) {
-        if (amount < 0 || amount > ChipProvider.AMOUNT_OF_CODES) {
-            throw new IndexOutOfBoundsException("Code amount out of bounds.");
-        }
-            
-        // Create list of codes A-Z.
-        ArrayList<Byte> possible
-                = new ArrayList<>(ChipProvider.AMOUNT_OF_CODES);
-        for (int i = 0; i < ChipProvider.AMOUNT_OF_CODES; i++) {
-            possible.add((byte)i);
-        }
-        // Remove excluded codes.
-        if (excluded != null) {
-            for (byte c : excluded) {
-                possible.remove((Byte)c);
-            }
-        }
-        
-        // Pull out random codes.
-        // Could use Collections.shuffle(), but that does not allow a Random
-        // parameter.
-        byte[] codes = new byte[amount];
-        for (int i = 0; i < amount; i++) {
-            int codeIndex = rng.nextInt(possible.size());
-            codes[i] = possible.get(codeIndex);
-            possible.remove(codeIndex);
-        }
-        
-        // Sort and return.
-        Arrays.sort(codes);
-        return codes;
-    }
-    
-    /**
-     * Reads a chip from the given byte stream and registers it.
-     * 
-     * @param stream The byte stream to read from.
-     */
-    @Override
-    public void execute(ByteStream stream) {
-        System.out.println("Collected chip data at 0x"
-                + String.format("%06X", stream.getRealPosition()));
-        
-        // Load the chip.        
-        BattleChip chip = new BattleChip(stream);
-        // Rewind to register as data.
-        stream.advance(-chip.byteCount());
-        // Save the chip in the library.
-        this.chipLibrary.addElement(stream.getPosition(), chip);
-        registerData(stream, chip.byteCount());
-    }
-    
-    /**
      * Randomizes all registered chips with the given random number generator.
      * 
      * @param rng The random number generator to use.
@@ -140,26 +74,20 @@ public class ChipProvider extends DataProvider {
      * Randomizes a single chip.
      * 
      * @param rng The random number generator to use.
-     * @param position The ROM pointer of the chip to be randomized.
-     * @param data The data to randomize.
+     * @param chip The chip to randomize.
+     * @param position The position of the chip to randomize.
      */
     @Override
-    protected void randomizeData(Random rng, int position, DataEntry data) {
-        // Get index of chip.
-        int index = this.chipLibrary.getIndexFromPointer(position);
-        
-        // Get the chip.
-        BattleChip chip = this.chipLibrary.getElement(index);
+    protected void randomizeData(Random rng, BattleChip chip, int position) {
+        // Get the current codes of the chip.
         byte[] oldCodes = chip.getCodes();
         
-        // Get the preset codes and determine how much codes are left to choose.
-        List<Byte> codes = this.presetCodes.getOrDefault((Integer)index,
-                new ArrayList<Byte>());
+        // Get the preset codes for this chip.
+        List<Byte> codes = this.presetCodes.getOrDefault(chip.index(), new ArrayList<Byte>());
         
         // If necessary, generate random codes, excluding the preset codes.
         if (codes.size() < oldCodes.length) {
-            byte[] randomCodes = generateRandomCodes(oldCodes.length
-                    - codes.size(), rng, codes);
+            byte[] randomCodes = chip.generateRandomCodes(rng, oldCodes.length - codes.size(), codes);
             
             // Append the random codes to the new code array.
             for (int i = 0; i < randomCodes.length; i++) {
@@ -174,7 +102,6 @@ public class ChipProvider extends DataProvider {
         }
         
         chip.setCodes(newCodes);
-        data.setBytes(chip.toBytes());
     }
     
     private void fixPAs(Random rng) {
@@ -199,14 +126,14 @@ public class ChipProvider extends DataProvider {
         });
         
         // Keep track of all processed chips.
-        List<Integer> processed = new ArrayList<>();
+        List<BattleChip> processed = new ArrayList<>();
         
         // Fix all consecutive PAs first.
         for (ProgramAdvance pa : pas) {
             // If any chips in the PA have already been processed, skip it.
             boolean skip = false;
-            for (int c : pa.chips()) {
-                if (processed.contains(c)) {
+            for (BattleChip chip : pa.chips()) {
+                if (processed.contains(chip)) {
                     skip = true;
                     break;
                 }
@@ -226,16 +153,16 @@ public class ChipProvider extends DataProvider {
             }
             
             // Mark all components as processed.
-            for (int c : pa.chips()) {
-                if (!processed.contains(c)) {
-                    processed.add(c);
+            for (BattleChip chip : pa.chips()) {
+                if (!processed.contains(chip)) {
+                    processed.add(chip);
                 }
             }
         }
     }
     
     protected void fixCodePA(ProgramAdvance pa, Random rng) {
-        int chipIndex = pa.chips()[0];
+        BattleChip chip = pa.chips().get(0);
         int chipCount = pa.chipCount();
         
         // Select a random starting code.
@@ -247,7 +174,7 @@ public class ChipProvider extends DataProvider {
             codes.add((byte)(startingCode + i));
         }
         
-        presetCodes(chipIndex, codes);
+        presetCodes(chip.index(), codes);
     }
     
     protected void fixMultiPA(ProgramAdvance pa, Random rng) {
@@ -257,15 +184,15 @@ public class ChipProvider extends DataProvider {
         codes.add(code);
         
         // Keep track of which components have been processed.
-        List<Integer> processed = new ArrayList<>(pa.chipCount());
+        List<BattleChip> processed = new ArrayList<>(pa.chipCount());
         
         // Preset the code for all PA components.
-        for (int chipIndex : pa.chips()) {
-            presetCodes(chipIndex, codes);
+        for (BattleChip chip : pa.chips()) {
+            presetCodes(chip.index(), codes);
             
             // Mark the component as processed.
-            if (!processed.contains(chipIndex)) {
-                processed.add(chipIndex);
+            if (!processed.contains(chip)) {
+                processed.add(chip);
             }
         }
     }

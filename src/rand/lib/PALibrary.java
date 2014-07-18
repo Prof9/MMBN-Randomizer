@@ -2,17 +2,13 @@ package rand.lib;
 
 import java.util.ArrayList;
 import java.util.List;
-import rand.ByteStream;
+import rand.obj.BattleChip;
+import rand.obj.ProgramAdvance;
 
 /** A library that keeps track of Program Advances. */
-public class PALibrary extends Library<ProgramAdvance> {
-    @Override
-    public ProgramAdvance loadFromStream(ByteStream stream) {
-        return new ProgramAdvance(stream);
-    }
-    
-    public List<Integer> query(ProgramAdvance.Type type) {
-        ArrayList<Integer> result = new ArrayList<>(this.elements.size());
+public class PALibrary extends Library<ProgramAdvance> {    
+    public List<ProgramAdvance> query(ProgramAdvance.Type type) {
+        ArrayList<ProgramAdvance> result = new ArrayList<>(this.elements.size());
         
         // Search all program advances.
         for (int i = 0; i < this.size(); i++) {
@@ -20,25 +16,25 @@ public class PALibrary extends Library<ProgramAdvance> {
             
             // If the PA type matches the given type, add it to the result list.
             if (pa.type() == type) {
-                result.add(i);
+                result.add(pa);
             }
         }
         
         return result;
     }
     
-    public List<Integer> queryComponent(int chip) {
-        ArrayList<Integer> result = new ArrayList<>(this.elements.size());
+    public List<ProgramAdvance> queryComponent(BattleChip chip) {
+        ArrayList<ProgramAdvance> result = new ArrayList<>(this.elements.size());
         
         // Search all Program Advances.
         for (int i = 0; i < this.size(); i++) {
             ProgramAdvance pa = this.getElement(i);
             
             // Check the components of the Program Advance.
-            for (int component : pa.chips()) {
+            for (BattleChip component : pa.chips()) {
                 // If match found, add to results and break.
-                if (chip == component) {
-                    result.add(i);
+                if (chip.index() == component.index()) {
+                    result.add(pa);
                     break;
                 }
             }

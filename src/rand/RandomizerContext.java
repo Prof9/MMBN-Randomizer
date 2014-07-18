@@ -2,6 +2,13 @@ package rand;
 
 import java.util.Random;
 import rand.lib.*;
+import rand.prod.BN6BattleProducer;
+import rand.prod.BN6ChipProducer;
+import rand.prod.BN6ProgramAdvanceProducer;
+import rand.prod.BN6RewardProducer;
+import rand.prod.ChipProducer;
+import rand.prod.BN6ChipTraderProducer;
+import rand.prod.FolderProducer;
 import rand.prov.*;
 import rand.strat.*;
 
@@ -10,11 +17,22 @@ public class RandomizerContext {
     }
     
     public ChipLibrary randomizeChips(ByteStream rom) {
-        PALibrary paLibrary = new PALibrary();
         ChipLibrary chipLibrary = new ChipLibrary();
+        ChipProducer chipProducer = new BN6ChipProducer(chipLibrary);
+        PALibrary paLibrary = new PALibrary();
+        BN6ProgramAdvanceProducer paProducer = new BN6ProgramAdvanceProducer(chipLibrary);
         
-        // Get Program Advance.
-        PALoaderStrategy paStrat = new PALoaderStrategy(paLibrary);
+        // Get chips.
+        ChipProvider chipProvider = new ChipProvider(chipProducer, paLibrary);
+        // Load all chips.
+        RepeatStrategy chipRepeatStrat = new RepeatStrategy(chipProvider, 411);
+        
+        rom.setRealPosition(0x021AB0);
+        rom.setPosition(rom.readInt32());
+        chipRepeatStrat.execute(rom);
+        
+        // Get Program Advances.        
+        LoaderStrategy paStrat = new LoaderStrategy(paProducer);
         // Load single PA pointer.
         PointerListStrategy paPtrStrat = new PointerListStrategy(paStrat, 1,
                 false);
@@ -28,15 +46,6 @@ public class RandomizerContext {
         rom.setRealPosition(0x0295B4);
         paPtrListListStrat.execute(rom);
         
-        // Get chip.
-        ChipProvider chipProvider = new ChipProvider(chipLibrary, paLibrary);
-        // Load all chips.
-        RepeatStrategy chipRepeatStrat = new RepeatStrategy(chipProvider, 411);
-        
-        rom.setRealPosition(0x021AB0);
-        rom.setPosition(rom.readInt32());
-        chipRepeatStrat.execute(rom);
-        
         // Randomize chips.
         //chipProvider.randomize(new Random());
         //chipProvider.produce(rom);
@@ -45,7 +54,9 @@ public class RandomizerContext {
     }
     
     public void randomizeFolders(ByteStream rom, ChipLibrary library) {
-        FolderProvider provider = new FolderProvider(library);
+        FolderProducer producer = new FolderProducer(
+                new BN6RewardProducer(library));
+        FolderProvider provider = new FolderProvider(producer);
         PointerListStrategy processListStrat
                 = new PointerListStrategy(provider, 2);
         
@@ -61,7 +72,8 @@ public class RandomizerContext {
     }
     
     public void randomizeBattles(ByteStream rom) {
-        BattleProvider provider = new BattleProvider();
+        BN6BattleProducer producer = new BN6BattleProducer();
+        BN6BattleProvider provider = new BN6BattleProvider(producer);
         RepeatStrategy repeatStrat = new RepeatStrategy(provider,
                 ByteConverter.convertUInt8((short)0xFF));
         PointerListStrategy processListStrat
@@ -80,7 +92,8 @@ public class RandomizerContext {
     
     public void randomizeRewards(ByteStream rom, ChipLibrary library) {
         // Randomize enemy drops
-        RewardProvider provider = new RewardProvider(library);
+        BN6RewardProducer producer = new BN6RewardProducer(library);
+        RewardProvider provider = new RewardProvider(producer, library);
         RepeatStrategy dropRepeatStrat = new RepeatStrategy(provider,
                 802 * 2 * 5);
         
@@ -98,7 +111,8 @@ public class RandomizerContext {
     }
     
     public void randomizeTraders(ByteStream rom, ChipLibrary library) {
-        TraderProvider provider = new TraderProvider(library);
+        BN6ChipTraderProducer traderProducer = new BN6ChipTraderProducer(library);
+        TraderProvider provider = new TraderProvider(traderProducer, library);
         RepeatStrategy repeatStrat = new RepeatStrategy(provider, 5);
         
         rom.setRealPosition(0x04C01C);

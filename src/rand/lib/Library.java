@@ -2,7 +2,6 @@ package rand.lib;
 
 import java.util.ArrayList;
 import java.util.List;
-import rand.ByteStream;
 
 public abstract class Library<T> {
     /** The pointers of the elements contained in this library. */
@@ -37,22 +36,6 @@ public abstract class Library<T> {
         this.ptrs.add(ptr);
         this.elements.add(element);
     }
-    
-    /**
-     * Loads an element from the given byte stream and adds it to the library.
-     * 
-     * @param stream The byte stream to load from.
-     */
-    public final void addElement(ByteStream stream) {
-        // Load the element from the ROM.
-        int ptr = stream.getPosition();
-        T element = loadFromStream(stream);
-        
-        // Add the chip to the library.
-        addElement(ptr, element);
-    }
-    
-    protected abstract T loadFromStream(ByteStream stream);
     
     /**
      * Gets all elements with the given indices.

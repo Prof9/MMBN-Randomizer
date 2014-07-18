@@ -3,82 +3,42 @@ package rand.prov;
 import java.util.List;
 import java.util.Random;
 import rand.ByteStream;
-import rand.lib.BattleChip;
+import rand.DataProvider;
+import rand.DataProducer;
 import rand.lib.ChipLibrary;
+import rand.obj.BattleChip;
+import rand.obj.Reward;
 
-public class RewardProvider extends DataProvider {
-    private enum RewardType {
-        CHIP,
-        ZENNY,
-        BUGFRAG,
-        HP
-    }
-    
+public class RewardProvider extends DataProvider<Reward> {
     private final ChipLibrary library;
     
-    public RewardProvider(final ChipLibrary library) {
+    public RewardProvider(final DataProducer<Reward> reader,
+            final ChipLibrary library) {
+        super(reader);
         this.library = library;
     }
     
     @Override
-    protected void randomizeData(Random rng, int position, DataEntry data) {        
-        byte[] bytes = data.getBytes();
-        int reward = (bytes[0] & 0xFF) + ((bytes[1] & 0xFF) << 8);
-        reward &= 0x3FFF;
-        
-        switch ((RewardType)data.type()) {
+    protected void randomizeData(Random rng, Reward reward, int position) {        
+        switch (reward.getType()) {
             case CHIP:
-                // Get the old battle chip.
-                int oldReward = reward & 0x1FF;
-                BattleChip oldChip = this.library.getElement(oldReward);
-                
-                // Randomize Standard chips only.
-                if (oldChip.library() != BattleChip.Library.STANDARD) {
-                    break;
+                BattleChip chip = reward.getChip();
+                if (chip.getLibrary() == BattleChip.Library.STANDARD) {
+                    // Choose a random new battle chip with the same library and
+                    // rarity.
+                    List<BattleChip> possibleChips =
+                            this.library.query((byte)-1, chip.getRarity(),
+                                    chip.getRarity(), null, chip.getLibrary(),
+                                    0, 99);
+                    
+                    BattleChip newChip = possibleChips.get(rng.nextInt(
+                            possibleChips.size()));
+                    reward.setChip(newChip);
+                    
+                    // Choose a random code.
+                    byte[] codes = chip.getCodes();
+                    reward.setCode(codes[rng.nextInt(codes.length)]);
                 }
-                
-                // Choose a random new battle chip with the same library and
-                // rarity.
-                List<Integer> possibleChips
-                        = this.library.query((byte)-1, oldChip.rarity(),
-                                oldChip.rarity(), null, oldChip.library(), 1,
-                                99);
-                
-                reward = possibleChips.get(rng.nextInt(possibleChips.size()));
-                BattleChip chip = library.getElement(reward);
-                
-                // Choose a random code.
-                byte[] codes = chip.getCodes();
-                int code = codes[rng.nextInt(codes.length)];
-                
-                reward |= code << 9;
-                break;
         }
-        
-        bytes[0] = (byte)(reward & 0xFF);
-        bytes[1] = (byte)(reward >> 8);
-        data.setBytes(bytes);
-    }
-
-    @Override
-    public void execute(ByteStream stream) {
-        System.out.println("Collected reward data at 0x"
-                + String.format("%06X", stream.getRealPosition()));
-        
-        int reward = stream.readUInt16();
-        
-        RewardType type;
-        if ((reward & 0xC000) == 0xC000) {
-            type = RewardType.BUGFRAG;
-        } else if ((reward & 0x8000) != 0) {
-            type = RewardType.HP;
-        } else if ((reward & 0x4000) != 0) {
-            type = RewardType.ZENNY;
-        } else {
-            type = RewardType.CHIP;
-        }
-        
-        stream.advance(-2);
-        registerData(stream, type, 2);
     }
 }

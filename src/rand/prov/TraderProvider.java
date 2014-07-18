@@ -3,89 +3,45 @@ package rand.prov;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import rand.ByteStream;
-import rand.lib.BattleChip;
+import rand.DataProducer;
+import rand.DataProvider;
 import rand.lib.ChipLibrary;
+import rand.obj.BattleChip;
+import rand.obj.ChipTrader;
+import rand.obj.ChipTraderEntry;
 
-public class TraderProvider extends DataProvider {
+public class TraderProvider extends DataProvider<ChipTrader> {
     private final ChipLibrary library;
     
-    public TraderProvider(ChipLibrary library) {
+    public TraderProvider(DataProducer<ChipTrader> reader, ChipLibrary library) {
+        super(reader);
         this.library = library;
     }
     
     @Override
-    protected void randomizeData(Random rng, int position, DataEntry data) {
-        byte[] bytes = data.getBytes();
-        
+    protected void randomizeData(Random rng, ChipTrader trader, int position) {
         // Get some libraries.
-        List<Integer> stdChips = this.library.query(
-                BattleChip.Library.STANDARD);
-        List<Integer> megaChips = this.library.query(BattleChip.Library.MEGA);
-        List<Integer> gigaChips = this.library.query(BattleChip.Library.GIGA);
+        List<BattleChip> stdChips = this.library.query(BattleChip.Library.STANDARD);
+        List<BattleChip> megaChips = this.library.query(BattleChip.Library.MEGA);
         // Merge the libraries.
-        List<Integer> allChips = new ArrayList<>();
+        List<BattleChip> allChips = new ArrayList<>();
         allChips.addAll(stdChips);
         allChips.addAll(megaChips);
-        allChips.addAll(gigaChips);
         
         // Add chips until the trader is full.
-        int chipCount = bytes.length / 6;
-        for (int i = 0; i < chipCount; i++) {
-            int start = i * 6;
+        for (int i = 0; i < trader.size(); i++) {
+            ChipTraderEntry entry = trader.getEntry(i);
             
             // Pick a random chip to add.
             int r = rng.nextInt(allChips.size());
-            int chipIndex = allChips.get(r);
-            BattleChip chip = this.library.getElement(chipIndex);
+            BattleChip chip = allChips.get(r);
             
-            // Null all the codes.
-            for (int j = 0; j < 4; j++) {
-                bytes[start + 2 + j] = -1;
-            }            
-            
-            // Insert the chip index.
-            bytes[start] = (byte)(chipIndex & 0xFF);
-            bytes[start + 1] = (byte)((chipIndex >> 8) & 0xFF);
-            
-            // Insert the chip codes.
-            byte[] codes = chip.getCodes();
-            System.arraycopy(codes, 0, bytes, start + 2, codes.length);
+            // Insert the chip.
+            entry.setChip(chip);
+            entry.setCodes(chip.getCodes());
             
             // Remove the chip from the selectable chips.
-            allChips.remove((Integer)chipIndex);
-        }        
-        
-        data.setBytes(bytes);
-    }
-
-    @Override
-    public void execute(ByteStream stream) {
-        stream.advance(4);
-        int traderPtr = stream.readInt32();
-        stream.push();
-        stream.setPosition(traderPtr);
-        
-        // See how many chips there are.
-        int start = stream.getRealPosition();
-        while (stream.hasNext()) {
-            // Read the chip and its codes.
-            int chipIndex = stream.readUInt16();
-            byte[] codes = stream.readBytes(4);
-            
-            // Stop on chip 0.
-            if (chipIndex == 0) {
-                stream.advance(-6);
-                break;
-            }
+            allChips.remove(chip);
         }
-        
-        // Register the whole trader block.
-        int size = stream.getRealPosition() - start;
-        stream.advance(-size);
-        registerData(stream, size);
-        
-        stream.pop();
-        stream.advance(4);
     }
 }

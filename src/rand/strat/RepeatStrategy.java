@@ -1,5 +1,6 @@
 package rand.strat;
 
+import rand.StreamStrategy;
 import rand.ByteStream;
 import java.util.Arrays;
 

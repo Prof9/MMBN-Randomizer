@@ -1,4 +1,4 @@
-package rand.strat;
+package rand;
 
 import rand.ByteStream;
 
