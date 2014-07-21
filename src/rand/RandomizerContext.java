@@ -179,16 +179,34 @@ public class RandomizerContext {
     }
     
     public void randomizeTraders(ByteStream rom, ChipLibrary library) {
+        // Randomize chip traders.
         BN6ChipTraderProducer traderProducer = new BN6ChipTraderProducer(library);
-        TraderProvider provider = new TraderProvider(traderProducer, library);
-        RepeatStrategy repeatStrat = new RepeatStrategy(provider, 5);
+        TraderProvider traderProvider = new TraderProvider(traderProducer, library);
+        RepeatStrategy traderArrayStrat = new RepeatStrategy(traderProvider, 5);
         
         rom.setRealPosition(0x04C018);
         rom.setPosition(rom.readInt32());
-        repeatStrat.execute(rom);
+        traderArrayStrat.execute(rom);
         
-        provider.randomize(new Random());
-        provider.produce(rom);
+        traderProvider.randomize(new Random());
+        traderProvider.produce(rom);
+        
+        // Randomize Number Trader.
+        rom.setRealPosition(0x13D484);
+        rom.setPosition(rom.readInt32());
+        NumberCodeProducer numberProducer
+                = new BN6NumberCodeProducer(rom.readBytes(10));
+        NumberCodeProvider numberProvider
+                = new NumberCodeProvider(numberProducer, library);
+        RepeatStrategy numberArrayStrat
+                = new RepeatStrategy(numberProvider, new byte[] { -1 });
+        
+        rom.setRealPosition(0x13D480);
+        rom.setPosition(rom.readInt32());
+        numberArrayStrat.execute(rom);
+        
+        numberProvider.randomize(new Random());
+        numberProvider.produce(rom);
     }
     
     public void randomizeShops(ByteStream rom, ChipLibrary library) {

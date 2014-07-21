@@ -24,12 +24,12 @@ public class Main {
             Random rng = new Random();
             RandomizerContext context = new RandomizerContext();
             ChipLibrary library = context.randomizeChips(rom);
-            context.randomizeBattles(rom);
             context.randomizeFolders(rom, library);
             context.randomizeRewards(rom, library);
             context.randomizeTraders(rom, library);
             context.randomizeMysteryData(rom, library);
             context.randomizeShops(rom, library);
+            context.randomizeBattles(rom);
             
             Files.write(Paths.get(args[1]), rom.toBytes());
         }
