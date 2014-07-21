@@ -30,7 +30,7 @@ public class MysteryDataContentsProvider extends DataProvider<MysteryDataContent
                 contents.setValue(newChip.index());
 
                 // Choose a random code.
-                byte[] codes = chip.getCodes();
+                byte[] codes = newChip.getCodes();
                 contents.setSubValue(codes[rng.nextInt(codes.length)]);
                 break;
         }

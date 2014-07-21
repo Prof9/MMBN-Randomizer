@@ -31,7 +31,7 @@ public class RewardProvider extends DataProvider<Reward> {
                 reward.setChip(newChip);
 
                 // Choose a random code.
-                byte[] codes = chip.getCodes();
+                byte[] codes = newChip.getCodes();
                 reward.setCode(codes[rng.nextInt(codes.length)]);
                 break;
         }
