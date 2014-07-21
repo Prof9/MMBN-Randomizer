@@ -1,23 +1,32 @@
 package rand;
 
-import rand.strat.LoaderStrategy;
-import rand.strat.RepeatStrategy;
-import rand.strat.PointerListStrategy;
-import mmbn.TraderProvider;
-import mmbn.RewardProvider;
-import mmbn.FolderProvider;
-import mmbn.ChipProvider;
-import mmbn.bn6.BN6BattleProvider;
-import mmbn.PALibrary;
-import mmbn.ChipLibrary;
+import java.util.List;
 import java.util.Random;
+import mmbn.BattleChip;
+import mmbn.ChipLibrary;
+import mmbn.ChipProducer;
+import mmbn.ChipProvider;
+import mmbn.Folder;
+import mmbn.FolderProducer;
+import mmbn.FolderProvider;
+import mmbn.MysteryDataContentsProducer;
+import mmbn.MysteryDataContentsProvider;
+import mmbn.PALibrary;
+import mmbn.Reward;
+import mmbn.RewardProvider;
+import mmbn.TraderProvider;
 import mmbn.bn6.BN6BattleProducer;
+import mmbn.bn6.BN6BattleProvider;
 import mmbn.bn6.BN6ChipProducer;
+import mmbn.bn6.BN6ChipTraderProducer;
+import mmbn.bn6.BN6MysteryDataContentsProducer;
 import mmbn.bn6.BN6ProgramAdvanceProducer;
 import mmbn.bn6.BN6RewardProducer;
-import mmbn.ChipProducer;
-import mmbn.bn6.BN6ChipTraderProducer;
-import mmbn.FolderProducer;
+import rand.strat.FilterStrategy;
+import rand.strat.LoaderStrategy;
+import rand.strat.OffsetStrategy;
+import rand.strat.PointerListStrategy;
+import rand.strat.RepeatStrategy;
 
 public class RandomizerContext {    
     public RandomizerContext() {
@@ -27,7 +36,7 @@ public class RandomizerContext {
         ChipLibrary chipLibrary = new ChipLibrary();
         ChipProducer chipProducer = new BN6ChipProducer(chipLibrary);
         PALibrary paLibrary = new PALibrary();
-        BN6ProgramAdvanceProducer paProducer = new BN6ProgramAdvanceProducer(chipLibrary);
+        BN6ProgramAdvanceProducer paProducer = new BN6ProgramAdvanceProducer(paLibrary, chipLibrary);
         
         // Get chips.
         ChipProvider chipProvider = new ChipProvider(chipProducer, paLibrary);
@@ -60,7 +69,8 @@ public class RandomizerContext {
         return chipLibrary;
     }
     
-    public void randomizeFolders(ByteStream rom, ChipLibrary library) {
+    public void randomizeFolders(ByteStream rom, ChipLibrary library) {        
+        // Randomize Folder
         FolderProducer producer = new FolderProducer(
                 new BN6RewardProducer(library));
         FolderProvider provider = new FolderProvider(producer);
@@ -76,6 +86,28 @@ public class RandomizerContext {
         
         provider.randomize(new Random());
         provider.produce(rom);
+        
+        // Get new starting Folder
+        rom.setRealPosition(0x0050E8);
+        rom.setPosition(rom.readInt32());
+        Folder startFolder = producer.readFromStream(rom);
+        List<Reward> chips = startFolder.getChips();
+        
+        // Set a random chip to the CentralArea1 gate
+        Reward chipEntry = chips.remove(new Random().nextInt(chips.size()));
+        int chipIndex = chipEntry.getChip().index();
+        rom.setRealPosition(0x75E6E4);
+        if (rom.readInt32() == 0xAA010083) {
+            rom.advance(-5);
+            rom.writeUInt8((short)(chipIndex >> 8));
+            rom.writeUInt8((short)(chipIndex & 0xFF));
+        }
+        rom.setRealPosition(0x75E6B8);
+        if (rom.readInt32() == 0x832AEF00) {
+            rom.advance(-1);
+            rom.writeUInt8((short)(chipIndex >> 8));
+            rom.writeUInt8((short)(chipIndex & 0xFF));
+        }
     }
     
     public void randomizeBattles(ByteStream rom) {
@@ -112,6 +144,60 @@ public class RandomizerContext {
         
         rom.setRealPosition(0x0211A0);
         mdRepeatStrat.execute(rom);
+        
+        provider.randomize(new Random());
+        provider.produce(rom);
+    }
+    
+    public void randomizeMysteryData(ByteStream rom, ChipLibrary library) {
+        // Randomize Green, Blue and Purple Mystery Data
+        MysteryDataContentsProducer producer
+                = new BN6MysteryDataContentsProducer(library);
+        MysteryDataContentsProvider provider
+                = new MysteryDataContentsProvider(producer, library);
+        RepeatStrategy contentsArrayStrat
+                = new RepeatStrategy(provider, new byte[] { 0 });
+        PointerListStrategy contentsPtrStrat
+                = new PointerListStrategy(contentsArrayStrat, 1);
+        OffsetStrategy mysteryDataStrat
+                = new OffsetStrategy(contentsPtrStrat, 8);
+        RepeatStrategy mysteryDataArrayStrat
+                = new RepeatStrategy(mysteryDataStrat, new byte[] { 0 });
+        PointerListStrategy mysteryDataPtrStrat
+                = new PointerListStrategy(mysteryDataArrayStrat, 1);
+        RepeatStrategy subAreaArrayStrat
+                = new RepeatStrategy(mysteryDataPtrStrat, new byte[] {
+                    0, 0, 0, 0
+                });
+        PointerListStrategy subAreaPtrStrat
+                = new PointerListStrategy(subAreaArrayStrat, 1);
+        OffsetStrategy subAreaStrat
+                = new OffsetStrategy(subAreaPtrStrat, 4);
+        FilterStrategy emptyAreaFilter
+                = new FilterStrategy(subAreaStrat, new byte[] {
+                    0, 0, 0, 0, 0, 0, 0, 0
+                }, new byte[] {
+                    -1, -1, -1, -1, 0, 0, 0, 0
+                }, true);
+        RepeatStrategy areaArrayStrat
+                = new RepeatStrategy(emptyAreaFilter, new byte[] {
+                    1, 0, 0, 0
+                });
+        PointerListStrategy areasArrayStrat
+                = new PointerListStrategy(areaArrayStrat, 2);
+        
+        rom.setRealPosition(0x09FE94);
+        areasArrayStrat.execute(rom);
+        
+        // Randomize Gold Mystery Data
+        OffsetStrategy goldAreaStrat
+                = new OffsetStrategy(contentsPtrStrat, 4, 4);
+        RepeatStrategy goldAreaArrayStrat
+                = new RepeatStrategy(goldAreaStrat, new byte[] { 0, 0, 0, 0 });
+        
+        rom.setRealPosition(0x09FE90);
+        rom.setPosition(rom.readInt32());
+        goldAreaArrayStrat.execute(rom);
         
         provider.randomize(new Random());
         provider.produce(rom);

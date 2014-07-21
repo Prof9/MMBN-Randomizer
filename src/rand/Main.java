@@ -28,6 +28,7 @@ public class Main {
             context.randomizeFolders(rom, library);
             context.randomizeRewards(rom, library);
             context.randomizeTraders(rom, library);
+            context.randomizeMysteryData(rom, library);
             
             Files.write(Paths.get(args[1]), rom.toBytes());
         }
