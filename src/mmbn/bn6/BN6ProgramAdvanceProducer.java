@@ -2,37 +2,46 @@ package mmbn.bn6;
 
 import java.util.ArrayList;
 import java.util.List;
-import rand.ByteStream;
-import rand.DataProducer;
-import rand.Library;
 import mmbn.BattleChip;
 import mmbn.ProgramAdvance;
+import mmbn.ProgramAdvanceProducer;
+import rand.ByteStream;
+import rand.Library;
 
-public class BN6ProgramAdvanceProducer implements DataProducer<ProgramAdvance> {
-    protected final Library<BattleChip> library;
+public class BN6ProgramAdvanceProducer extends ProgramAdvanceProducer {
+    protected final Library<BattleChip> chipLibrary;
     
-    public BN6ProgramAdvanceProducer(final Library<BattleChip> library) {
-        this.library = library;
+    public BN6ProgramAdvanceProducer(final Library<ProgramAdvance> paLibrary,
+            final Library<BattleChip> chipLibrary) {
+        super(paLibrary, new ProgramAdvance.Type[] {
+            ProgramAdvance.Type.CONSECUTIVE,
+            null,
+            null,
+            null,
+            ProgramAdvance.Type.COMBINATION
+        });
+        this.chipLibrary = chipLibrary;
     }
     
     @Override
-    public ProgramAdvance readFromStream(ByteStream stream) {
+    public ProgramAdvance deferredReadFromStream(ByteStream stream) {
         // Read chip count and PA type.
         int chipCount = stream.readUInt8();
-        int typeValue = stream.readUInt8();
+        ProgramAdvance.Type type = typeFromIndex(stream.readUInt8());
         
         // Read PA result.
-        BattleChip result = this.library.getElement(stream.readUInt16());
+        BattleChip result = this.chipLibrary.getElement(stream.readUInt16());
         
         // Check PA type.
-        switch (typeValue) {
-            case 0:
-                BattleChip chip = this.library.getElement(stream.readUInt16());
+        switch (type) {
+            case CONSECUTIVE:
+                BattleChip chip = this.chipLibrary.getElement(
+                        stream.readUInt16());
                 return new ProgramAdvance(result, chip, chipCount);
-            case 4:
+            case COMBINATION:
                 List<BattleChip> chips = new ArrayList<>(chipCount);
                 for (int i = 0; i < chipCount; i++) {
-                    chips.add(this.library.getElement(stream.readUInt16()));
+                    chips.add(this.chipLibrary.getElement(stream.readUInt16()));
                 }
                 return new ProgramAdvance(result, chips);
             default:
@@ -43,18 +52,7 @@ public class BN6ProgramAdvanceProducer implements DataProducer<ProgramAdvance> {
     @Override
     public void writeToStream(ByteStream stream, ProgramAdvance pa) {
         stream.writeUInt8((short)pa.chipCount());
-        
-        switch (pa.type()) {
-            case CONSECUTIVE:
-                stream.writeUInt8((short)0);
-                break;
-            case COMBINATION:
-                stream.writeUInt8((short)4);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown PA type.");
-        }
-        
+        stream.writeUInt8((short)indexFromType(pa.type()));
         stream.writeUInt16(pa.result().index());
         
         for (BattleChip chip : pa.chips()) {

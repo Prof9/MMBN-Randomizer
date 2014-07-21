@@ -1,18 +1,15 @@
 package mmbn;
 
 import rand.ByteStream;
-import rand.DataProducer;
-import rand.Library;
 
-public abstract class ChipProducer implements DataProducer<BattleChip> {
+public abstract class ChipProducer extends LibraryProducer<BattleChip> {
     private final BattleChip.Element[] elements;
     private final BattleChip.Library[] libraries;
-    private final Library<BattleChip> library;
     
     public ChipProducer(final ChipLibrary library,
             final BattleChip.Element[] elements,
             final BattleChip.Library[] libraries) {
-        this.library = library;
+        super(library);
         this.elements = elements;
         this.libraries = libraries;
     }
@@ -41,13 +38,9 @@ public abstract class ChipProducer implements DataProducer<BattleChip> {
     }
     
     @Override
-    public final BattleChip readFromStream(ByteStream stream) {
-        int ptr = stream.getPosition();
-        BattleChip chip = deferredReadFromStream(stream, this.library.size());
-        this.library.addElement(ptr, chip);
-        return chip;
+    protected BattleChip deferredReadFromStream(ByteStream stream) {
+        return this.deferredReadFromStream(stream, this.library.size());
     }
     
-    protected abstract BattleChip deferredReadFromStream(ByteStream stream,
-            int chipIndex);
+    protected abstract BattleChip deferredReadFromStream(ByteStream stream, int chipIndex);
 }
