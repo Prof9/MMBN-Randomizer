@@ -13,7 +13,7 @@ public class FolderProducer implements DataProducer<Folder> {
     public Folder readFromStream(ByteStream stream) {
         Folder folder = new Folder();
         
-        while (folder.isFull()) {
+        while (!folder.isFull()) {
             folder.addChip(this.rewardProducer.readFromStream(stream));
         }
         
