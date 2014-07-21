@@ -1,6 +1,7 @@
 package mmbn;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import rand.DataProvider;
@@ -117,5 +118,10 @@ public class FolderProvider extends DataProvider<Folder> {
             // Remove the chip from the selectable chips, if it's still in.
             allChips.remove(chip);
         }
+        folder.sort();
+    }
+    
+    public Collection<Folder> folders() {
+        return this.allData();
     }
 }

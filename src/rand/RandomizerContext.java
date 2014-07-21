@@ -1,5 +1,6 @@
 package rand;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import mmbn.*;
@@ -37,9 +38,28 @@ public class RandomizerContext {
         rom.setRealPosition(0x0295B4);
         paPtrListListStrat.execute(rom);
         
+        // Make sure the combo from the tutorial works.
+        List<BattleChip> comboChips = new ArrayList<>(2);
+        comboChips.add(chipLibrary.getElement(72));
+        comboChips.add(chipLibrary.getElement(163));
+        ProgramAdvance tutorialCombo = new ProgramAdvance(null, comboChips);
+        paLibrary.addElement(-1, tutorialCombo);
+        
         // Randomize chips.
-        //chipProvider.randomize(new Random());
-        //chipProvider.produce(rom);
+        chipProvider.randomize(new Random());
+        chipProvider.produce(rom);
+        
+        // Remove Library restriction gates.
+        rom.setRealPosition(0x76218C);
+        if (rom.readInt32() == 0x6434EF00) {
+            rom.advance(-1);
+            rom.writeUInt8((short)0);
+        }
+        rom.setRealPosition(0x762E2C);
+        if (rom.readInt32() == 0xC8C80034) {
+            rom.advance(-2);
+            rom.writeUInt8((short)0);
+        }
         
         return chipLibrary;
     }
@@ -50,11 +70,7 @@ public class RandomizerContext {
                 new BN6RewardProducer(library));
         FolderProvider provider = new FolderProvider(producer);
         PointerListStrategy processListStrat
-                = new PointerListStrategy(provider, 2);
-        
-        rom.setRealPosition(0x0050E8);
-        rom.setPosition(rom.readInt32());
-        provider.execute(rom);
+                = new PointerListStrategy(provider, 6);
         
         rom.setRealPosition(0x137868);
         processListStrat.execute(rom);
@@ -63,7 +79,7 @@ public class RandomizerContext {
         provider.produce(rom);
         
         // Get new starting Folder
-        rom.setRealPosition(0x0050E8);
+        rom.setRealPosition(0x137868);
         rom.setPosition(rom.readInt32());
         Folder startFolder = producer.readFromStream(rom);
         List<Reward> chips = startFolder.getChips();
@@ -73,15 +89,72 @@ public class RandomizerContext {
         int chipIndex = chipEntry.getChip().index();
         rom.setRealPosition(0x75E6E4);
         if (rom.readInt32() == 0xAA010083) {
-            rom.advance(-4);
-            rom.writeUInt8((short)(chipIndex & 0xFF));
+            rom.advance(-5);
             rom.writeUInt8((short)(chipIndex >> 8));
+            rom.writeUInt8((short)(chipIndex & 0xFF));
         }
         rom.setRealPosition(0x75E6B8);
         if (rom.readInt32() == 0x832AEF00) {
             rom.advance(-1);
             rom.writeUInt8((short)(chipIndex & 0xFF));
             rom.writeUInt8((short)(chipIndex >> 8));
+        }
+        
+        // Set another random chip to the SeasideArea1 gate
+        chipEntry = chips.remove(new Random().nextInt(chips.size()));
+        chipIndex = chipEntry.getChip().index();
+        rom.setRealPosition(0x75F0C0);
+        if (rom.readInt32() == 0x03010018) {
+            rom.advance(-4);
+            rom.writeUInt8((short)(chipIndex & 0xFF));
+            rom.writeUInt8((short)(chipIndex >> 8));
+        }
+        rom.setRealPosition(0x75F150);
+        if (rom.readInt32() == 0xAA011800) {
+            rom.advance(-4);
+            rom.writeUInt8((short)(chipIndex >> 8));
+            rom.writeUInt8((short)(chipIndex & 0xFF));
+        }
+        
+        // Fix tutorial folders.
+        FolderProvider tutorialProvider
+                = new FolderProvider(producer);
+        PointerListStrategy tutorialPtrStrat
+                = new PointerListStrategy(tutorialProvider, 1);
+        FilterStrategy filterEmptyStrat
+                = new FilterStrategy(tutorialPtrStrat, new byte[] {
+                    0, 0, 0, 0
+                }, new byte[] {
+                    -1, -1, -1, -1
+                }, true);
+        RepeatStrategy tutorialPtrArrayStrat
+                = new RepeatStrategy(filterEmptyStrat, 12);
+        rom.setRealPosition(0x00A4D8);
+        rom.setPosition(rom.readInt32());
+        tutorialPtrArrayStrat.execute(rom);
+        byte[] codesWideSwrd = library.getElement(72).getCodes();
+        byte[] codesAreaGrab = library.getElement(163).getCodes();
+        List<Byte> possibleCodes = new ArrayList<>(4);
+        for (byte a : codesWideSwrd) {
+            for (byte b : codesAreaGrab) {
+                if (a == b) {
+                    possibleCodes.add(a);
+                }
+            }
+        }
+        byte comboCode = possibleCodes.get(new Random().nextInt(
+                possibleCodes.size()));
+        for (Folder folder : tutorialProvider.folders()) {
+            for (Reward chip : folder.getChips()) {
+                if (chip.getChip().index() == 72
+                        || chip.getChip().index() == 163) {
+                    chip.setCode(comboCode);
+                } else {
+                    byte[] codes = chip.getChip().getCodes();
+                    chip.setCode(codes[new Random().nextInt(codes.length)]);
+                }
+            }
+            tutorialProvider.produce(rom);
         }
     }
     

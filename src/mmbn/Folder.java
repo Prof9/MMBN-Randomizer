@@ -1,6 +1,7 @@
 package mmbn;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Folder {
@@ -33,6 +34,15 @@ public class Folder {
     
     public void clear() {
         this.chips.clear();
+    }
+    
+    public void sort() {
+        this.chips.sort(new Comparator<Reward>() {
+            @Override
+            public int compare(Reward a, Reward b) {
+                return Integer.compare(a.getChip().index(), b.getChip().index());
+            }
+        });
     }
     
     public void addChip(Reward chip) {

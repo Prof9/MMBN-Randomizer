@@ -1,5 +1,6 @@
 package rand;
 
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Random;
@@ -78,6 +79,15 @@ public abstract class DataProvider<T> implements StreamStrategy {
      */
     protected void produceData(ByteStream stream, T data) {
         this.producer.writeToStream(stream, data);
+    }
+    
+    /**
+     * Gets all registered data.
+     * 
+     * @return The collection of data.
+     */
+    protected Collection<T> allData() {
+        return this.pointerMap.values();
     }
     
     /**
