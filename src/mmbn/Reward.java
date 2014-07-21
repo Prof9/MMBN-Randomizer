@@ -2,7 +2,7 @@ package mmbn;
 
 public class Reward {
     public enum Type {
-        CHIP,
+        BATTLECHIP,
         ZENNY,
         HP,
         BUGFRAG
@@ -14,7 +14,7 @@ public class Reward {
     protected int amount;
 
     public Reward(BattleChip chip, byte code) {
-        this.type = Type.CHIP;
+        this.type = Type.BATTLECHIP;
         this.chip = chip;
         this.code = code;
         this.amount = 1;

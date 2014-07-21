@@ -31,7 +31,7 @@ public class BN6RewardProducer extends RewardProducer {
     public void writeToStream(ByteStream stream, Reward reward) {
         int value = 0;
         switch (reward.getType()) {
-            case CHIP:
+            case BATTLECHIP:
                 value |= reward.getChip().index() & 0x1FF;
                 value |= (reward.getCode() & 0x1F) << 9;
                 break;

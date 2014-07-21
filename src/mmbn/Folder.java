@@ -36,7 +36,7 @@ public class Folder {
     }
     
     public void addChip(Reward chip) {
-        if (chip.getType() != Reward.Type.CHIP) {
+        if (chip.getType() != Reward.Type.BATTLECHIP) {
             throw new IllegalArgumentException("Reward is not a chip.");
         }
         if (isFull()) {
