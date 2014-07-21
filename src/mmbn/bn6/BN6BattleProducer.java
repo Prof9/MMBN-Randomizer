@@ -1,14 +1,13 @@
 package mmbn.bn6;
 
-import rand.ByteStream;
-import rand.DataProducer;
 import mmbn.Battle;
+import mmbn.BattleObject;
+import mmbn.BattleProducer;
+import rand.ByteStream;
 
-public class BN6BattleProducer implements DataProducer<Battle> {
-    protected BN6BattleObjectProducer objectProducer;
-    
+public class BN6BattleProducer extends BattleProducer {
     public BN6BattleProducer() {
-        this.objectProducer = new BN6BattleObjectProducer();
+        super(new BN6BattleObjectProducer());
     }
     
     @Override
@@ -35,5 +34,11 @@ public class BN6BattleProducer implements DataProducer<Battle> {
         stream.writeBytes(battle.base());
         
         int ptr = stream.readInt32();
+        stream.push();
+        stream.setPosition(ptr);
+        
+        for (BattleObject obj : battle.getObjects()) {
+            this.objectProducer.writeToStream(stream, obj);
+        }
     }
 }
