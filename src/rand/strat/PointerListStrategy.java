@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class PointerListStrategy implements StreamStrategy {
     private final StreamStrategy strategy;
+    private final int basePointer;
     private final int length;
     private final boolean repeat;
     
@@ -36,9 +37,39 @@ public class PointerListStrategy implements StreamStrategy {
      */
     public PointerListStrategy(final StreamStrategy strategy, int length,
             boolean repeat) {
+        this(strategy, length, 0, repeat);
+    }
+    
+    /**
+     * Constructs a new ProcessPointerListStrategy with the given delegate
+     * strategy, base pointer and pointer list length that does not process
+     * repeated pointers twice.
+     * 
+     * @param strategy The delegate strategy to use.
+     * @param length The length of the pointer list.
+     * @param basePtr The base pointer to use.
+     */
+    public PointerListStrategy(final StreamStrategy strategy, int length,
+            int basePtr) {
+        this(strategy, length, basePtr, false);
+    }
+    
+    /**
+     * Constructs a new ProcessPointerListStrategy with the given delegate
+     * strategy, base pointer and pointer list length that optionally can
+     * process repeated pointers multiple times.
+     * 
+     * @param strategy The delegate strategy to use.
+     * @param length The length of the pointer list.
+     * @param basePointer The base pointer to use.
+     * @param repeat Whether repeated pointers should be processed again.
+     */
+    public PointerListStrategy(final StreamStrategy strategy, int length,
+            int basePointer, boolean repeat) {
         this.repeat = repeat;
         this.length = length;
         this.strategy = strategy;
+        this.basePointer = basePointer;
     }
     
     /**
@@ -75,7 +106,7 @@ public class PointerListStrategy implements StreamStrategy {
             next = stream.readInt32();
             if (!repeat || !processed.contains(next)) {
                 stream.push();
-                stream.setPosition(next);
+                stream.setPosition(basePointer + next);
                 
                 this.strategy.execute(stream);
                 

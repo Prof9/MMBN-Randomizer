@@ -29,6 +29,7 @@ public class Main {
             context.randomizeRewards(rom, library);
             context.randomizeTraders(rom, library);
             context.randomizeMysteryData(rom, library);
+            context.randomizeShops(rom, library);
             
             Files.write(Paths.get(args[1]), rom.toBytes());
         }

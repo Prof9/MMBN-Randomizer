@@ -2,36 +2,11 @@ package rand;
 
 import java.util.List;
 import java.util.Random;
-import mmbn.BattleChip;
-import mmbn.ChipLibrary;
-import mmbn.ChipProducer;
-import mmbn.ChipProvider;
-import mmbn.Folder;
-import mmbn.FolderProducer;
-import mmbn.FolderProvider;
-import mmbn.MysteryDataContentsProducer;
-import mmbn.MysteryDataContentsProvider;
-import mmbn.PALibrary;
-import mmbn.Reward;
-import mmbn.RewardProvider;
-import mmbn.TraderProvider;
-import mmbn.bn6.BN6BattleProducer;
-import mmbn.bn6.BN6BattleProvider;
-import mmbn.bn6.BN6ChipProducer;
-import mmbn.bn6.BN6ChipTraderProducer;
-import mmbn.bn6.BN6MysteryDataContentsProducer;
-import mmbn.bn6.BN6ProgramAdvanceProducer;
-import mmbn.bn6.BN6RewardProducer;
-import rand.strat.FilterStrategy;
-import rand.strat.LoaderStrategy;
-import rand.strat.OffsetStrategy;
-import rand.strat.PointerListStrategy;
-import rand.strat.RepeatStrategy;
+import mmbn.*;
+import mmbn.bn6.*;
+import rand.strat.*;
 
-public class RandomizerContext {    
-    public RandomizerContext() {
-    }
-    
+public class RandomizerContext {        
     public ChipLibrary randomizeChips(ByteStream rom) {
         ChipLibrary chipLibrary = new ChipLibrary();
         ChipProducer chipProducer = new BN6ChipProducer(chipLibrary);
@@ -98,15 +73,15 @@ public class RandomizerContext {
         int chipIndex = chipEntry.getChip().index();
         rom.setRealPosition(0x75E6E4);
         if (rom.readInt32() == 0xAA010083) {
-            rom.advance(-5);
-            rom.writeUInt8((short)(chipIndex >> 8));
+            rom.advance(-4);
             rom.writeUInt8((short)(chipIndex & 0xFF));
+            rom.writeUInt8((short)(chipIndex >> 8));
         }
         rom.setRealPosition(0x75E6B8);
         if (rom.readInt32() == 0x832AEF00) {
             rom.advance(-1);
-            rom.writeUInt8((short)(chipIndex >> 8));
             rom.writeUInt8((short)(chipIndex & 0xFF));
+            rom.writeUInt8((short)(chipIndex >> 8));
         }
     }
     
@@ -208,8 +183,40 @@ public class RandomizerContext {
         TraderProvider provider = new TraderProvider(traderProducer, library);
         RepeatStrategy repeatStrat = new RepeatStrategy(provider, 5);
         
-        rom.setRealPosition(0x04C01C);
+        rom.setRealPosition(0x04C018);
+        rom.setPosition(rom.readInt32());
         repeatStrat.execute(rom);
+        
+        provider.randomize(new Random());
+        provider.produce(rom);
+    }
+    
+    public void randomizeShops(ByteStream rom, ChipLibrary library) {
+        DataProducer<ShopItem> producer
+                = new BN6ShopItemProducer();
+        ShopItemProvider provider
+                = new ShopItemProvider(producer, library);
+        RepeatStrategy itemArrayStrat
+                = new RepeatStrategy(provider, new byte[] { 0 });
+        
+        rom.setRealPosition(0x047478);
+        int itemPoolPtr = rom.readInt32();
+        PointerListStrategy itemArrayPtrStrat
+                = new PointerListStrategy(itemArrayStrat, 1, itemPoolPtr);
+        
+        
+        OffsetStrategy shopEntryStrat
+                = new OffsetStrategy(itemArrayPtrStrat, 8, 4);
+        RepeatStrategy shopEntryArrayStrat
+                = new RepeatStrategy(shopEntryStrat, 19);
+        
+        rom.setRealPosition(0x046CF0);
+        rom.setPosition(rom.readInt32());
+        shopEntryArrayStrat.execute(rom);
+        
+        rom.setRealPosition(0x048F94);
+        rom.setPosition(rom.readInt32());
+        itemArrayStrat.execute(rom);
         
         provider.randomize(new Random());
         provider.produce(rom);
