@@ -7,14 +7,16 @@ To run this program, Java 7 must be installed on your computer.
 Usage
 -----
 ```
-java -jar MMBNRandomizer.jar inputrom outputrom
+java -jar MMBNRandomizer.jar inputrom [outputrom [seed]]
 ```
 
-To use MMBN Randomizer, pass it the file paths of the input ROM and where it should save the output.
+To use MMBN Randomizer, pass it the file path of the input ROM. You can also pass it the path of the output ROM and, if you do that, the seed to use for randomizing the ROM (as a decimal 32-bit signed number).
 
 Compatibility
 -------------
 Currently MMBN Randomizer only works for Mega Man Battle Network 6: Cybeast Falzar (U), but support for other games and regions is planned.
+
+Since all chip codes are randomized, save files are locked to the seed that was used. If you use a save file from the clean ROM or a randomized ROM with a different seed, the game will softlock when you enter folder edit and you can't use any of your chips in battle.
 
 Notes
 -----
