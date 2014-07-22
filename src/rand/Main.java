@@ -1,5 +1,6 @@
 package rand;
 
+import mmbn.bn6.BN6RandomizerContext;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,14 +23,8 @@ public class Main {
             ByteStream rom = new ByteStream(in, 0x08000000);
 
             Random rng = new Random();
-            RandomizerContext context = new RandomizerContext();
-            ChipLibrary library = context.randomizeChips(rom);
-            context.randomizeFolders(rom, library);
-            context.randomizeRewards(rom, library);
-            context.randomizeTraders(rom, library);
-            context.randomizeMysteryData(rom, library);
-            context.randomizeShops(rom, library);
-            context.randomizeBattles(rom);
+            BN6RandomizerContext context = new BN6RandomizerContext(rng);
+            context.randomize(rom);
             
             Files.write(Paths.get(args[1]), rom.toBytes());
         }

@@ -7,15 +7,15 @@ import mmbn.BattleChip;
 import mmbn.ChipTraderEntry;
 
 public class BN6ChipTraderEntryProducer implements DataProducer<ChipTraderEntry> {
-    protected final Library<BattleChip> library;
+    protected final Library<BattleChip> chipLibrary;
     
-    public BN6ChipTraderEntryProducer(final Library<BattleChip> library) {
-        this.library = library;
+    public BN6ChipTraderEntryProducer(final Library<BattleChip> chipLibrary) {
+        this.chipLibrary = chipLibrary;
     }
     
     @Override
     public ChipTraderEntry readFromStream(ByteStream stream) {
-        BattleChip chip = this.library.getElement(stream.readUInt16());
+        BattleChip chip = this.chipLibrary.getElement(stream.readUInt16());
         byte[] codes = stream.readBytes(4);
         
         return new ChipTraderEntry(chip, codes);
