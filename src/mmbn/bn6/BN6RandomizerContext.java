@@ -15,12 +15,19 @@ public class BN6RandomizerContext extends RandomizerContext {
     
     @Override
     public void randomize(ByteStream rom) {
+        System.out.println("Processing chips...");
         ChipLibrary chipLibrary = randomizeChips(rom);
+        System.out.println("Processing folders...");
         randomizeFolders(rom, chipLibrary);
+        System.out.println("Processing shops...");
         randomizeShops(rom, chipLibrary);
+        System.out.println("Processing Mystery Data...");
         randomizeMysteryData(rom, chipLibrary);
+        System.out.println("Processing rewards...");
         randomizeRewards(rom, chipLibrary);
+        System.out.println("Processing traders...");
         randomizeTraders(rom, chipLibrary);
+        System.out.println("Processing battles...");
         randomizeBattles(rom);
     }
     
