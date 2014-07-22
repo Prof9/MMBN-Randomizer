@@ -4,7 +4,7 @@ import mmbn.ChipLibrary;
 import mmbn.Item;
 import mmbn.NumberCode;
 import mmbn.NumberCodeProducer;
-import rand.ByteConverter;
+import rand.Bytes;
 import rand.ByteStream;
 
 public class BN6NumberCodeProducer extends NumberCodeProducer {
@@ -30,9 +30,9 @@ public class BN6NumberCodeProducer extends NumberCodeProducer {
         byte[] bytes = stream.readBytes(12);
         NumberCode code = new NumberCode(bytes);
         
-        Item.Type type = getItemType(ByteConverter.readUInt8(bytes, 0));
-        int subValue = ByteConverter.readUInt8(bytes, 1);
-        int value = ByteConverter.readUInt16(bytes, 2);
+        Item.Type type = getItemType(Bytes.readUInt8(bytes, 0));
+        int subValue = Bytes.readUInt8(bytes, 1);
+        int value = Bytes.readUInt16(bytes, 2);
         
         setItem(code, type, value, subValue);
         byte[] numberCode = new byte[8];
@@ -46,9 +46,9 @@ public class BN6NumberCodeProducer extends NumberCodeProducer {
     public void writeToStream(ByteStream stream, NumberCode code) {
         byte[] bytes = code.base();
         
-        ByteConverter.writeUInt8((short)getItemTypeIndex(code.type()), bytes, 0);
-        ByteConverter.writeUInt8((short)code.subValue(), bytes, 1);
-        ByteConverter.writeUInt16(code.value(), bytes, 2);
+        Bytes.writeUInt8((short)getItemTypeIndex(code.type()), bytes, 0);
+        Bytes.writeUInt8((short)code.subValue(), bytes, 1);
+        Bytes.writeUInt16(code.value(), bytes, 2);
         System.arraycopy(encode(code.getNumberCode()), 0, bytes, 4, 8);
         
         stream.writeBytes(bytes);

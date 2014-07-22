@@ -1,6 +1,6 @@
 package mmbn.bn6;
 
-import rand.ByteConverter;
+import rand.Bytes;
 import rand.ByteStream;
 import mmbn.ChipLibrary;
 import mmbn.BattleChip;
@@ -45,7 +45,7 @@ public class BN6ChipProducer extends ChipProducer {
         chip.setLibrary(libraryFromIndex(bytes[7]));        
         chip.setMB(bytes[8]);
         
-        chip.setIsInLibrary(ByteConverter.readBits(bytes, 9, 6, 1) != 0);
+        chip.setIsInLibrary(Bytes.readBits(bytes, 9, 6, 1) != 0);
         
         return chip;
     }
@@ -61,7 +61,7 @@ public class BN6ChipProducer extends ChipProducer {
         bytes[7] = indexFromLibrary(chip.getLibrary());
         bytes[8] = chip.getMB();
         
-        ByteConverter.writeBits(chip.getIsInLibrary() ? 1 : 0, bytes, 9, 6, 1);
+        Bytes.writeBits(chip.getIsInLibrary() ? 1 : 0, bytes, 9, 6, 1);
         
         stream.writeBytes(bytes);
     }

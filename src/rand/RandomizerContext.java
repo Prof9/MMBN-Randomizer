@@ -30,7 +30,7 @@ public class RandomizerContext {
                 false);
         // Load pointers until 0x00000000.
         RepeatStrategy paPtrListStrat = new RepeatStrategy(paPtrStrat,
-                ByteConverter.convertInt32(0));
+                Bytes.convertInt32(0));
         // Load two pointers.
         PointerListStrategy paPtrListListStrat
                 = new PointerListStrategy(paPtrListStrat, 2);
@@ -163,7 +163,7 @@ public class RandomizerContext {
         BN6BattleProducer producer = new BN6BattleProducer();
         BN6BattleProvider provider = new BN6BattleProvider(producer);
         RepeatStrategy repeatStrat = new RepeatStrategy(provider,
-                ByteConverter.convertUInt8((short)0xFF));
+                Bytes.convertUInt8((short)0xFF));
         PointerListStrategy processListStrat
                 = new PointerListStrategy(repeatStrat, 16);
         PointerListStrategy processListListStrat

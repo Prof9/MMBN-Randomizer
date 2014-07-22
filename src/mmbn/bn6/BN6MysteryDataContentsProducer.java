@@ -4,7 +4,7 @@ import mmbn.ChipLibrary;
 import mmbn.Item;
 import mmbn.ItemProducer;
 import mmbn.MysteryDataContents;
-import rand.ByteConverter;
+import rand.Bytes;
 import rand.ByteStream;
 
 public class BN6MysteryDataContentsProducer extends ItemProducer<MysteryDataContents> {
@@ -30,10 +30,10 @@ public class BN6MysteryDataContentsProducer extends ItemProducer<MysteryDataCont
         byte[] bytes = stream.readBytes(8);
         MysteryDataContents item = new MysteryDataContents(bytes);
         
-        Item.Type type = getItemType(ByteConverter.readUInt8(bytes, 0) - 1);
-        int probability = ByteConverter.readUInt8(bytes, 1);
-        int subValue = ByteConverter.readUInt8(bytes, 3);
-        int value = ByteConverter.readInt32(bytes, 4);
+        Item.Type type = getItemType(Bytes.readUInt8(bytes, 0) - 1);
+        int probability = Bytes.readUInt8(bytes, 1);
+        int subValue = Bytes.readUInt8(bytes, 3);
+        int value = Bytes.readInt32(bytes, 4);
         
         setItem(item, type, value, subValue);
         item.setProbability(probability);
@@ -45,10 +45,10 @@ public class BN6MysteryDataContentsProducer extends ItemProducer<MysteryDataCont
     public void writeToStream(ByteStream stream, MysteryDataContents item) {
         byte[] bytes = item.base();
         
-        ByteConverter.writeUInt8((short)(getItemTypeIndex(item.type()) + 1), bytes, 0);
-        ByteConverter.writeUInt8((short)item.getProbability(), bytes, 1);
-        ByteConverter.writeUInt8((short)item.subValue(), bytes, 3);
-        ByteConverter.writeInt32(item.value(), bytes, 4);
+        Bytes.writeUInt8((short)(getItemTypeIndex(item.type()) + 1), bytes, 0);
+        Bytes.writeUInt8((short)item.getProbability(), bytes, 1);
+        Bytes.writeUInt8((short)item.subValue(), bytes, 3);
+        Bytes.writeInt32(item.value(), bytes, 4);
         
         stream.writeBytes(bytes);
     }

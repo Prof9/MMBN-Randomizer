@@ -239,7 +239,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 2)
             throw new IllegalStateException("Not enough bytes left.");
         
-        short r = ByteConverter.readInt16(this.bytes, this.position);
+        short r = Bytes.readInt16(this.bytes, this.position);
         this.position += 2;
         return r;
     }
@@ -254,7 +254,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 2)
             throw new IllegalStateException("Not enough bytes left.");
         
-        int r = ByteConverter.readUInt16(this.bytes, this.position);
+        int r = Bytes.readUInt16(this.bytes, this.position);
         this.position += 2;
         return r;
     }
@@ -269,7 +269,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 4)
             throw new IllegalStateException("Not enough bytes left.");
         
-        int r = ByteConverter.readInt32(this.bytes, this.position);
+        int r = Bytes.readInt32(this.bytes, this.position);
         this.position += 4;
         return r;
     }
@@ -284,7 +284,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 4)
             throw new IllegalStateException("Not enough bytes left.");
         
-        long r = ByteConverter.readUInt32(this.bytes, this.position);
+        long r = Bytes.readUInt32(this.bytes, this.position);
         this.position += 4;
         return r;
     }
@@ -299,7 +299,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 8)
             throw new IllegalStateException("Not enough bytes left.");
         
-        int r = ByteConverter.readInt32(this.bytes, this.position);
+        int r = Bytes.readInt32(this.bytes, this.position);
         this.position += 8;
         return r;
     }
@@ -340,7 +340,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 2)
             throw new IllegalStateException("Not enough bytes left.");
         
-        ByteConverter.writeInt16(value, this.bytes, this.position);
+        Bytes.writeInt16(value, this.bytes, this.position);
         this.position += 2;
     }
     
@@ -354,7 +354,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 2)
             throw new IllegalStateException("Not enough bytes left.");
         
-        ByteConverter.writeUInt16(value, this.bytes, this.position);
+        Bytes.writeUInt16(value, this.bytes, this.position);
         this.position += 2;
     }
     
@@ -368,7 +368,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 4)
             throw new IllegalStateException("Not enough bytes left.");
         
-        ByteConverter.writeInt32(value, this.bytes, this.position);
+        Bytes.writeInt32(value, this.bytes, this.position);
         this.position += 4;
     }
     
@@ -382,7 +382,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 4)
             throw new IllegalStateException("Not enough bytes left.");
         
-        ByteConverter.writeUInt32(value, this.bytes, this.position);
+        Bytes.writeUInt32(value, this.bytes, this.position);
         this.position += 4;
     }
     
@@ -396,7 +396,7 @@ public class ByteStream {
         if (this.bytes.length - this.position < 8)
             throw new IllegalStateException("Not enough bytes left.");
         
-        ByteConverter.writeInt64(value, this.bytes, this.position);
+        Bytes.writeInt64(value, this.bytes, this.position);
         this.position += 8;
     }
 }

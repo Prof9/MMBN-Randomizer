@@ -4,7 +4,7 @@ package rand;
  * Provides various methods for reading and writing from a little-endian byte
  * array.
  */
-public final class ByteConverter {
+public final class Bytes {
     /**
      * Reads the given number of bytes from the given byte array into a signed
      * 64-bit integer.
