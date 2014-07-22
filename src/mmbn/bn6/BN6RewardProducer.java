@@ -1,53 +1,53 @@
 package mmbn.bn6;
 
-import rand.ByteStream;
 import mmbn.ChipLibrary;
-import mmbn.Reward;
-import mmbn.RewardProducer;
+import mmbn.Item;
+import mmbn.ItemProducer;
+import rand.ByteConverter;
+import rand.ByteStream;
 
-public class BN6RewardProducer extends RewardProducer {
+public class BN6RewardProducer extends ItemProducer<Item> {
     public BN6RewardProducer(ChipLibrary library) {
-        super(library);
+        super(library, new Item.Type[] {
+            Item.Type.BATTLECHIP,
+            Item.Type.ZENNY,
+            Item.Type.HP,
+            Item.Type.BUGFRAG
+        });
     }
 
     @Override
-    public Reward readFromStream(ByteStream stream) {
-        int value = stream.readUInt16();
-        switch (value >> 14) {
-            case 0:
-                return new Reward(this.library.getElement(value & 0x1FF),
-                        (byte)((value >> 9) & 0x1F));
-            case 1:
-                return new Reward(Reward.Type.ZENNY, value & 0x3FFF);
-            case 2:
-                return new Reward(Reward.Type.HP, value & 0x3FFF);
-            case 3:
-                return new Reward(Reward.Type.BUGFRAG, value & 0x3FFF);
+    public Item readFromStream(ByteStream stream) {
+        byte[] bytes = stream.readBytes(2);
+        Item reward = new Item(bytes);
+        
+        Item.Type type = getItemType(ByteConverter.readBits(bytes, 0, 14, 2));
+        int value, subValue;
+        if (type == Item.Type.BATTLECHIP) {
+            value = ByteConverter.readBits(bytes, 0, 0, 9);
+            subValue = ByteConverter.readBits(bytes, 0, 9, 5);
+        } else {
+            value = ByteConverter.readBits(bytes, 0, 0, 14);
+            subValue = 0;
         }
-        return null;
+        
+        setItem(reward, type, value, subValue);
+        return reward;
     }
 
     @Override
-    public void writeToStream(ByteStream stream, Reward reward) {
-        int value = 0;
-        switch (reward.getType()) {
-            case BATTLECHIP:
-                value |= reward.getChip().index() & 0x1FF;
-                value |= (reward.getCode() & 0x1F) << 9;
-                break;
-            case ZENNY:
-                value |= 1 << 14;
-                value |= reward.getAmount() & 0x3FFF;
-                break;
-            case HP:
-                value |= 2 << 14;
-                value |= reward.getAmount() & 0x3FFF;
-                break;
-            case BUGFRAG:
-                value |= 3 << 14;
-                value |= reward.getAmount() & 0x3FFF;
-                break;
+    public void writeToStream(ByteStream stream, Item reward) {
+        byte[] base = reward.base();
+        
+        Item.Type type = reward.type();
+        ByteConverter.writeBits(getItemTypeIndex(type), base, 0, 14, 2);
+        if (type == Item.Type.BATTLECHIP) {
+            ByteConverter.writeBits(reward.value(), base, 0, 0, 9);
+            ByteConverter.writeBits(reward.subValue(), base, 0, 9, 5);
+        } else {
+            ByteConverter.writeBits(reward.value(), base, 0, 0, 14);
         }
-        stream.writeUInt16(value);
+        
+        stream.writeBytes(base);
     }
 }

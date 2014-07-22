@@ -82,10 +82,10 @@ public class RandomizerContext {
         rom.setRealPosition(0x137868);
         rom.setPosition(rom.readInt32());
         Folder startFolder = producer.readFromStream(rom);
-        List<Reward> chips = startFolder.getChips();
+        List<Item> chips = startFolder.getChips();
         
         // Set a random chip to the CentralArea1 gate
-        Reward chipEntry = chips.remove(new Random().nextInt(chips.size()));
+        Item chipEntry = chips.remove(new Random().nextInt(chips.size()));
         int chipIndex = chipEntry.getChip().index();
         rom.setRealPosition(0x75E6E4);
         if (rom.readInt32() == 0xAA010083) {
@@ -145,13 +145,14 @@ public class RandomizerContext {
         byte comboCode = possibleCodes.get(new Random().nextInt(
                 possibleCodes.size()));
         for (Folder folder : tutorialProvider.folders()) {
-            for (Reward chip : folder.getChips()) {
+            for (Item chip : folder.getChips()) {
                 if (chip.getChip().index() == 72
                         || chip.getChip().index() == 163) {
-                    chip.setCode(comboCode);
+                    chip.setChipCode(chip.getChip(), comboCode);
                 } else {
                     byte[] codes = chip.getChip().getCodes();
-                    chip.setCode(codes[new Random().nextInt(codes.length)]);
+                    byte code = codes[new Random().nextInt(codes.length)];
+                    chip.setChipCode(chip.getChip(), code);
                 }
             }
             tutorialProvider.produce(rom);
@@ -179,8 +180,8 @@ public class RandomizerContext {
     
     public void randomizeRewards(ByteStream rom, ChipLibrary library) {
         // Randomize enemy drops
-        BN6RewardProducer producer = new BN6RewardProducer(library);
-        RewardProvider provider = new RewardProvider(producer, library);
+        ItemProducer producer = new BN6RewardProducer(library);
+        ItemProvider provider = new ItemProvider(producer);
         RepeatStrategy dropRepeatStrat = new RepeatStrategy(provider,
                 802 * 2 * 5);
         
@@ -199,10 +200,10 @@ public class RandomizerContext {
     
     public void randomizeMysteryData(ByteStream rom, ChipLibrary library) {
         // Randomize Green, Blue and Purple Mystery Data
-        MysteryDataContentsProducer producer
+        ItemProducer producer
                 = new BN6MysteryDataContentsProducer(library);
-        MysteryDataContentsProvider provider
-                = new MysteryDataContentsProvider(producer, library);
+        ItemProvider provider
+                = new ItemProvider(producer);
         RepeatStrategy contentsArrayStrat
                 = new RepeatStrategy(provider, new byte[] { 0 });
         PointerListStrategy contentsPtrStrat
@@ -267,10 +268,10 @@ public class RandomizerContext {
         // Randomize Number Trader.
         rom.setRealPosition(0x13D484);
         rom.setPosition(rom.readInt32());
-        NumberCodeProducer numberProducer
-                = new BN6NumberCodeProducer(rom.readBytes(10));
-        NumberCodeProvider numberProvider
-                = new NumberCodeProvider(numberProducer, library);
+        ItemProducer numberProducer
+                = new BN6NumberCodeProducer(library, rom.readBytes(10));
+        ItemProvider numberProvider
+                = new ItemProvider(numberProducer);
         RepeatStrategy numberArrayStrat
                 = new RepeatStrategy(numberProvider, new byte[] { -1 });
         
@@ -283,10 +284,10 @@ public class RandomizerContext {
     }
     
     public void randomizeShops(ByteStream rom, ChipLibrary library) {
-        DataProducer<ShopItem> producer
-                = new BN6ShopItemProducer();
-        ShopItemProvider provider
-                = new ShopItemProvider(producer, library);
+        ItemProducer producer
+                = new BN6ShopItemProducer(library);
+        ItemProvider provider
+                = new ItemProvider(producer);
         RepeatStrategy itemArrayStrat
                 = new RepeatStrategy(provider, new byte[] { 0 });
         

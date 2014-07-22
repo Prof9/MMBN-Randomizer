@@ -3,10 +3,10 @@ import rand.ByteStream;
 import rand.DataProducer;
 
 public class FolderProducer implements DataProducer<Folder> {
-    protected final RewardProducer rewardProducer;
+    protected final ItemProducer<Item> itemProducer;
     
-    public FolderProducer(RewardProducer rewardProducer) {
-        this.rewardProducer = rewardProducer;
+    public FolderProducer(ItemProducer<Item> itemProducer) {
+        this.itemProducer = itemProducer;
     }
     
     @Override
@@ -14,7 +14,7 @@ public class FolderProducer implements DataProducer<Folder> {
         Folder folder = new Folder();
         
         while (!folder.isFull()) {
-            folder.addChip(this.rewardProducer.readFromStream(stream));
+            folder.addChip(this.itemProducer.readFromStream(stream));
         }
         
         return folder;
@@ -22,12 +22,12 @@ public class FolderProducer implements DataProducer<Folder> {
 
     @Override
     public void writeToStream(ByteStream stream, Folder folder) {
-        for (Reward chip : folder.getChips()) {
-            this.rewardProducer.writeToStream(stream, chip);
+        for (Item chip : folder.getChips()) {
+            this.itemProducer.writeToStream(stream, chip);
         }
     }
     
-    public ChipLibrary library() {
-        return this.rewardProducer.library();
+    public ChipLibrary chipLibrary() {
+        return this.itemProducer.chipLibrary();
     }
 }

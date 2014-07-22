@@ -1,16 +1,15 @@
 package mmbn;
 
-import rand.DataProducer;
-
-public abstract class NumberCodeProducer implements DataProducer<NumberCode> {
-    protected final NumberCode.Type[] codeTypes;
+public abstract class NumberCodeProducer extends ItemProducer<NumberCode> {
     protected final byte[] cipher;
     
-    public NumberCodeProducer(final NumberCode.Type[] codeTypes, final byte[] cipher) {
+    public NumberCodeProducer(final ChipLibrary library,
+            final Item.Type[] itemTypes, final byte[] cipher) {
+        super(library, itemTypes);
+        
         if (cipher.length != 10) {
             throw new IllegalArgumentException("Cipher must have 10 bytes.");
         }
-        this.codeTypes = codeTypes;
         this.cipher = cipher.clone();
     }
     
@@ -47,18 +46,6 @@ public abstract class NumberCodeProducer implements DataProducer<NumberCode> {
     protected int decodeDigit(byte b) {
         for (int i = 0; i < this.cipher.length; i++) {
             if (this.cipher[i] == b) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    protected NumberCode.Type codeTypeFromIndex(int index) {
-        return this.codeTypes[index];
-    }
-    protected int indexFromCodeType(NumberCode.Type codeType) {
-        for (int i = 0; i < this.codeTypes.length; i++) {
-            if (this.codeTypes[i] == codeType) {
                 return i;
             }
         }

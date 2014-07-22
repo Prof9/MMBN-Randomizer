@@ -11,7 +11,7 @@ public class FolderProvider extends DataProvider<Folder> {
     
     public FolderProvider(FolderProducer producer) {
         super(producer);
-        this.library = producer.library();
+        this.library = producer.chipLibrary();
     }
     
     @Override
@@ -101,7 +101,9 @@ public class FolderProvider extends DataProvider<Folder> {
             
             // Add the first chip codes to the folder.
             while (toAdd-- > 0) {
-                folder.addChip(new Reward(chip, code));
+                Item item = new Item(new byte[2]);
+                item.setChipCode(chip, code);
+                folder.addChip(item);
             }
             
             // Choose the second code.
@@ -112,7 +114,9 @@ public class FolderProvider extends DataProvider<Folder> {
             
             // Add the second chip codes to the folder.
             while (toAdd-- > 0) {
-                folder.addChip(new Reward(chip, code));
+                Item item = new Item(new byte[2]);
+                item.setChipCode(chip, code);
+                folder.addChip(item);
             }
             
             // Remove the chip from the selectable chips, if it's still in.

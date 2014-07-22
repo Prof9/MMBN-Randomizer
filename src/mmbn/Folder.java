@@ -7,7 +7,7 @@ import java.util.List;
 public class Folder {
     private static final int FOLDER_SIZE = 30;
     
-    private final List<Reward> chips;
+    private final List<Item> chips;
     
     public Folder() {
         this.chips = new ArrayList<>(FOLDER_SIZE);
@@ -20,10 +20,10 @@ public class Folder {
         return FOLDER_SIZE;
     }
     
-    public List<Reward> getChips() {
+    public List<Item> getChips() {
         return new ArrayList<>(this.chips);
     }
-    public void setChips(List<Reward> chips) {
+    public void setChips(List<Item> chips) {
         if (chips.size() > FOLDER_SIZE) {
             throw new IllegalArgumentException("A folder can only hold "
             + FOLDER_SIZE + " chips at most.");
@@ -37,24 +37,24 @@ public class Folder {
     }
     
     public void sort() {
-        this.chips.sort(new Comparator<Reward>() {
+        this.chips.sort(new Comparator<Item>() {
             @Override
-            public int compare(Reward a, Reward b) {
+            public int compare(Item a, Item b) {
                 return Integer.compare(a.getChip().index(), b.getChip().index());
             }
         });
     }
     
-    public void addChip(Reward chip) {
-        if (chip.getType() != Reward.Type.BATTLECHIP) {
-            throw new IllegalArgumentException("Reward is not a chip.");
+    public void addChip(Item chip) {
+        if (chip.type() != Item.Type.BATTLECHIP) {
+            throw new IllegalArgumentException("Item is not a chip.");
         }
         if (isFull()) {
             throw new IllegalArgumentException("No more room for chips.");
         }
         this.chips.add(chip);
     }
-    public boolean removeChip(Reward chip) {
+    public boolean removeChip(Item chip) {
         return this.chips.remove(chip);
     }
     
