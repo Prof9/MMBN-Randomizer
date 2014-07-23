@@ -200,6 +200,7 @@ public class Item {
     }
     
     public void setProgramColor(int program, int color) {
+        this.type = Type.NAVICUST_PROGRAM;
         this.value = program;
         this.subValue = color;
         this.chip = null;
