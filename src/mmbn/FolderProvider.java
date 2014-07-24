@@ -1,6 +1,5 @@
 package mmbn;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
@@ -16,32 +15,49 @@ public class FolderProvider extends DataProvider<Folder> {
     
     @Override
     protected void randomizeData(Random rng, Folder folder, int position) {
+        List<Item> oldEntries = folder.getChips();        
         folder.clear();
         
         // Set number of chips that should/can be added.
-        int megaLeft = 0;
-        int gigaLeft = 0;
+        int megaLeft = 5;
+        int gigaLeft = 1;
         
         // Get some libraries.
-        List<BattleChip> stdChips = this.library.query(BattleChip.Library.STANDARD);
         List<BattleChip> megaChips = this.library.query(BattleChip.Library.MEGA);
         List<BattleChip> gigaChips = this.library.query(BattleChip.Library.GIGA);
         
-        // Merge the three libraries.
-        List<BattleChip> allChips = new ArrayList<>();
-        allChips.addAll(stdChips);
-        if (megaLeft > 0) {
-            allChips.addAll(megaChips);
-        }
-        if (gigaLeft > 0) {
-            allChips.addAll(gigaChips);
-        }
-        
         // Add chips until the folder is full.
         while (!folder.isFull()) {
+            // Pick a random chip from the old folder.
+            int r = rng.nextInt(oldEntries.size());
+            Item oldEntry = oldEntries.get(r);
+            BattleChip oldChip = oldEntry.getChip();
+            
+            // Find all chips with the same library and rarity.
+            List<BattleChip> possibleChips = this.library.query(
+                    (byte)-1,
+                    oldChip.getRarity(), oldChip.getRarity(),
+                    null,
+                    null,
+                    0, 99
+            );
+            
+            // Remove all chips already in the folder.
+            for (Item entry : folder.getChips()) {
+                possibleChips.remove(entry.getChip());
+            }
+            
+            // Remove Mega and Giga chips, if no more can be added.
+            if (megaLeft <= 0) {
+                possibleChips.removeAll(megaChips);
+            }
+            if (gigaLeft <= 0) {
+                possibleChips.removeAll(gigaChips);
+            }
+            
             // Pick a random chip to add.
-            int r = rng.nextInt(allChips.size());
-            BattleChip chip = allChips.get(r);
+            r = rng.nextInt(possibleChips.size());
+            BattleChip chip = possibleChips.get(r);
             
             // Get the max amount of this chip that can be added.
             int canAdd = 1;
@@ -64,18 +80,12 @@ public class FolderProvider extends DataProvider<Folder> {
                 case MEGA:
                     // Only add one, and decrement amount of Mega chips left.
                     canAdd = 1;
-                    // Remove Mega chips if all have been added.
-                    if (--megaLeft <= 0) {
-                        allChips.removeAll(megaChips);
-                    }
+                    megaLeft--;
                     break;
                 case GIGA:
                     // Only add one, and decrement amount of Giga chips left.
                     canAdd = 1;
-                    // Remove Giga chips if all have been added.
-                    if (--gigaLeft <= 0) {
-                        allChips.removeAll(gigaChips);
-                    }
+                    gigaLeft--;
                     break;
             }
             
@@ -119,10 +129,11 @@ public class FolderProvider extends DataProvider<Folder> {
                 folder.addChip(item);
             }
             
-            // Remove the chip from the selectable chips, if it's still in.
-            allChips.remove(chip);
+            // Remove chip from old folder.
+            oldEntries.remove(oldEntry);
         }
         folder.sort();
+        folder.setChips(folder.getChips());
     }
     
     public Collection<Folder> folders() {

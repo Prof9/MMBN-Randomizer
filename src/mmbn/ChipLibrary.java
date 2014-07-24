@@ -30,15 +30,23 @@ public class ChipLibrary extends Library<BattleChip> {
             int rarity = chip.getRarity();
             int mb = chip.getMB();
             
-            if (    // Check chip codes.
+            if (    // Check valid chip.
+                    chip.getIsInLibrary() &&
+                    // If no library specified, filter Standard, Mega and Giga.
+                    (library != null || (
+                    chip.getLibrary() == BattleChip.Library.STANDARD ||
+                    chip.getLibrary() == BattleChip.Library.MEGA ||
+                    chip.getLibrary() == BattleChip.Library.GIGA)) &&
+                    // Avoid chips without codes.
+                    (chip.getCodes().length > 0) &&
+                    // Check chip codes.
                     (code == -1 || chip.hasCode(code)) &&
                     // Check chip rarity.
                     (rarity >= minRarity && rarity <= maxRarity) &&
                     // Check chip element.
                     (element == null || chip.getElement() == element) &&
                     // Check chip library.
-                    (library == null || (chip.getIsInLibrary() &&
-                        chip.getLibrary() == library)) &&
+                    (library == null || chip.getLibrary() == library) &&
                     // Check MB.
                     (mb >= minMB && mb <= maxMB)) {
                 result.add(chip);
