@@ -47,6 +47,9 @@ public abstract class ItemProducer<T extends Item> implements DataProducer<T> {
             case EXPMEMORY:
                 item.setExpMemory(value);
                 break;
+            case HP:
+                item.setHP(value);
+                break;
             case HP_MEMORY:
                 item.setHPMemory(value);
                 break;
@@ -70,6 +73,8 @@ public abstract class ItemProducer<T extends Item> implements DataProducer<T> {
                 break;
             case ZENNY_TRAP:
                 item.setZennyTrap(value);
+            default:
+                throw new IllegalArgumentException("Unknown item type " + type);
         }
     }
 }

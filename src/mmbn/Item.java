@@ -73,6 +73,9 @@ public class Item {
         return this.type == Item.Type.BATTLECHIP_TRAP ||
                 this.type == Item.Type.ZENNY_TRAP;
     }
+    public boolean isHP() {
+        return this.type == Item.Type.HP;
+    }
     
     protected void checkChip() {
         if (!isChip()) {
@@ -167,6 +170,12 @@ public class Item {
     public void setExpMemory(int item) {
         setItem(item);
         this.type = Item.Type.EXPMEMORY;
+    }
+    
+    public void setHP(int amount) {
+        this.type = Item.Type.HP;
+        this.value = amount;
+        this.chip = null;
     }
     
     public void setHPMemory(int item) {
