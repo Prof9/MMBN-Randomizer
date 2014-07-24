@@ -251,6 +251,7 @@ public class BattleChip {
     public byte[] getAllCodes() {
         return this.codes;
     }
+    
     /**
      * Overwrites all codes of this BattleChip with the given codes.
      * 

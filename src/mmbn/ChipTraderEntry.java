@@ -28,6 +28,10 @@ public class ChipTraderEntry {
         System.arraycopy(codes, 0, this.codes, 0, Math.min(this.codes.length, codes.length));
     }
     
+    public byte[] getAllCodes() {
+        return this.codes.clone();
+    }
+    
     public int codeCount() {
         int r = 0;
         for (int i = 0; i < this.codes.length && this.codes[i] != -1; i++) {

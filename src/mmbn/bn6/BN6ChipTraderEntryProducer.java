@@ -24,6 +24,6 @@ public class BN6ChipTraderEntryProducer implements DataProducer<ChipTraderEntry>
     @Override
     public void writeToStream(ByteStream stream, ChipTraderEntry entry) {
         stream.writeUInt16(entry.getChip().index());
-        stream.writeBytes(entry.getCodes());
+        stream.writeBytes(entry.getAllCodes());
     }
 }
