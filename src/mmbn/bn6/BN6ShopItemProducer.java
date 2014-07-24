@@ -42,7 +42,13 @@ public class BN6ShopItemProducer extends ItemProducer<ShopItem> {
         Bytes.writeUInt8((short)itemTypeIndex, bytes, 0);
         Bytes.writeUInt8((short)item.getStock(), bytes, 1);
         Bytes.writeUInt16(item.value(), bytes, 2);
-        Bytes.writeUInt8((short)item.subValue(), bytes, 4);
+        
+        if (item.isChip() || item.isProgram()) {
+            Bytes.writeUInt8((short)item.subValue(), bytes, 4);
+        } else {
+            Bytes.writeUInt8((short)0xFF, bytes, 4);
+        }
+        
         Bytes.writeUInt16(item.getPrice(), bytes, 6);
         
         stream.writeBytes(bytes);
