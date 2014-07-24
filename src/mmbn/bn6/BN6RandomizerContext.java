@@ -72,6 +72,26 @@ public class BN6RandomizerContext extends RandomizerContext {
         // Randomize chips.
         process(chipProvider, rom);
         
+        // Fix LinkNavi special chips.
+        ItemProducer linkNaviChipProducer
+                = new BN6RewardProducer(chipLibrary);
+        ItemProvider linkNaviChipProvider
+                = new ItemProvider(linkNaviChipProducer);
+        RepeatStrategy linkNaviChipStrat
+                = new RepeatStrategy(linkNaviChipProvider, 11);
+        
+        rom.setRealPosition(0x0280DC);
+        rom.setPosition(rom.readInt32());
+        linkNaviChipStrat.execute(rom);
+        
+        List<Item> linkNaviChips = linkNaviChipProvider.allData();
+        for (Item linkNaviChip : linkNaviChips) {
+            BattleChip chip = linkNaviChip.getChip();
+            byte code = chip.getCodes()[0];
+            linkNaviChip.setChipCode(chip, code);
+        }
+        linkNaviChipProvider.produce(rom);
+        
         // Remove Library restriction gates.
         rom.setRealPosition(0x76218C);
         if (rom.readInt32() == 0x6434EF00) {
