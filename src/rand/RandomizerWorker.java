@@ -1,28 +1,50 @@
 package rand;
 
-import java.util.Observable;
-import java.util.Observer;
+import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
 public class RandomizerWorker extends SwingWorker<Void, String> {
     private final RandomizerContext context;
     private final ByteStream rom;
-    private final Runnable done;
+    private Runnable done;
+    private Throwable thrown;
 
-    public RandomizerWorker(RandomizerContext context, ByteStream rom, Runnable done) {
+    public RandomizerWorker(RandomizerContext context, ByteStream rom) {
         this.context = context;
         this.rom = rom;
+        this.done = null;
+        this.thrown = null;
+    }
+    
+    public void setDone(Runnable done) {
         this.done = done;
+    }
+    
+    public Throwable getThrown() {
+        return this.thrown;
     }
 
     @Override
-    protected Void doInBackground() throws Exception {
+    protected Void doInBackground() {
         this.context.randomize(rom);
         return null;
     }
 
     @Override
     protected void done() {
-        this.done.run();
+        try {
+            get();
+        }
+        catch (ExecutionException ex) {
+            this.thrown = ex.getCause();
+        }
+        catch (InterruptedException ex) {
+            this.thrown = ex;
+        }
+        finally {
+            if (this.done != null) {
+                this.done.run();
+            }
+        }
     }
 }

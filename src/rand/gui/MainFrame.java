@@ -3,20 +3,15 @@ package rand.gui;
 import java.awt.CardLayout;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollBar;
-import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.DefaultCaret;
 import mmbn.bn6.BN6RandomizerContext;
 import rand.ByteStream;
 import rand.Main;
@@ -374,24 +369,33 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         
-        new RandomizerWorker(context, rom, new Runnable() {
+        final RandomizerWorker worker = new RandomizerWorker(context, rom);
+        worker.setDone(new Runnable() {
             @Override
             public void run() {
-                // Write output ROM.
-                try {
-                    Main.writeFile(outPath, rom);
-                    appendStatus("Done!");
-                    statusProgressBar.setValue(100);
-                }
-                catch (IOException ex) {
-                    appendStatus("ERROR: Could not write output ROM.");
-                }
-                finally {
-                    isRunning = false;
-                    checkCanGo();
+                Throwable thrown = worker.getThrown();
+                if (thrown == null) {
+                    // Write output ROM.
+                    try {
+                        Main.writeFile(outPath, rom);
+                        appendStatus("Done!");
+                        statusProgressBar.setValue(100);
+                    }
+                    catch (IOException ex) {
+                        statusProgressBar.setValue(0);
+                        appendStatus("ERROR: Could not write output ROM.");
+                    }
+                    finally {
+                        isRunning = false;
+                        checkCanGo();
+                    }
+                } else {
+                    statusProgressBar.setValue(0);
+                    appendStatus("FATAL ERROR: " + thrown.getMessage());
                 }
             }
-        }).execute();
+        });
+        worker.execute();
     }
     
     private void clearStatus() {
