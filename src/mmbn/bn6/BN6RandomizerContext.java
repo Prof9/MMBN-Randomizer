@@ -222,17 +222,30 @@ public class BN6RandomizerContext extends RandomizerContext {
                 = new BN6BattleProducer();
         BN6BattleProvider provider
                 = new BN6BattleProvider(this, producer);
-        RepeatStrategy repeatStrat
+        RepeatStrategy battleListStrat
                 = new RepeatStrategy(provider, new byte[] { -1 });
-        PointerListStrategy processListStrat
-                = new PointerListStrategy(repeatStrat, 16);
-        PointerListStrategy processListListStrat
-                = new PointerListStrategy(processListStrat, 21);
-        PointerListStrategy processListListListStrat
-                = new PointerListStrategy(processListListStrat, 8);
+        PointerListStrategy subAreaListStrat
+                = new PointerListStrategy(battleListStrat, 16);
         
-        rom.setRealPosition(0x020170);
-        processListListListStrat.execute(rom);
+        PointerListStrategy lanAreaListStrat
+                = new PointerListStrategy(subAreaListStrat, 21);
+        PointerListStrategy lanStrat
+                = new PointerListStrategy(lanAreaListStrat, 1);
+        
+        PointerListStrategy megaAreaListStrat
+                        = new PointerListStrategy(subAreaListStrat, 23);
+        PointerListStrategy megaStrat
+                = new PointerListStrategy(megaAreaListStrat, 1);
+        
+        rom.setRealPosition(0x0AA694);
+        for (int i = 0; i < 4; i++) {
+            int ptr = rom.readInt32();
+            rom.push();
+            rom.setPosition(ptr);
+            lanStrat.execute(rom);
+            megaStrat.execute(rom);
+            rom.pop();
+        }
         
         runProvider(provider, rom);
     }
