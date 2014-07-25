@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import rand.DataProvider;
+import rand.RandomizerContext;
 
 /**
  * A provider that keeps track of chips from a ROM, randomizes them, then writes
@@ -24,11 +25,12 @@ public class ChipProvider extends DataProvider<BattleChip> {
      * Constructs a new ChipProvider using the given chip producer that utilizes
      * the given Program Advance library.
      * 
+     * @param context The randomizer context constructing this provider.
      * @param producer The chip producer to use.
      * @param paLibrary The Program Advance library to use.
      */
-    public ChipProvider(ChipProducer producer, PALibrary paLibrary) {
-        super(producer);
+    public ChipProvider(RandomizerContext context, ChipProducer producer, PALibrary paLibrary) {
+        super(context, producer);
         this.paLibrary = paLibrary;
     }
     

@@ -1,7 +1,6 @@
 package rand;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +8,7 @@ import java.util.Random;
 
 public abstract class DataProvider<T> implements StreamStrategy {
     protected final DataProducer<T> producer;
+    protected final RandomizerContext context;
     // Use LinkedHashMap to keep the original ordering.
     private final LinkedHashMap<Integer, T> pointerMap;
     
@@ -16,10 +16,12 @@ public abstract class DataProvider<T> implements StreamStrategy {
      * Constructs a new random data provider with no registered data using the
      * given data producer.
      * 
+     * @param context The randomizer context constructing this provider.
      * @param producer The producer to use.
      */
-    public DataProvider(final DataProducer<T> producer) {
+    public DataProvider(RandomizerContext context, DataProducer<T> producer) {
         this.producer = producer;
+        this.context = context;
         this.pointerMap = new LinkedHashMap<>();
     }
     
@@ -33,7 +35,7 @@ public abstract class DataProvider<T> implements StreamStrategy {
     protected final T registerData(ByteStream stream) {
         int pointer = stream.getRealPosition();
         T data = this.producer.readFromStream(stream);
-        System.out.println("Registered " + data.getClass().getName() + " at 0x"
+        this.context.status("Registered " + data.getClass().getName() + " at 0x"
                 + String.format("%06X", pointer));
         this.pointerMap.put(pointer, data);
         return data;

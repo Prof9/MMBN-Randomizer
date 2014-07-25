@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import rand.DataProvider;
+import rand.RandomizerContext;
 
 public class FolderProvider extends DataProvider<Folder> {
     protected ChipLibrary library;
     
-    public FolderProvider(FolderProducer producer) {
-        super(producer);
+    public FolderProvider(RandomizerContext context, FolderProducer producer) {
+        super(context, producer);
         this.library = producer.chipLibrary();
     }
     

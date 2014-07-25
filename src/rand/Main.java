@@ -5,12 +5,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import mmbn.bn6.BN6RandomizerContext;
 import rand.gui.MainFrame;
 
 public class Main {
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     private static final int RESULT_SUCCESS = 0;
     private static final int RESULT_WARNING = 1;
     private static final int RESULT_ERROR = 2;
@@ -60,7 +62,7 @@ public class Main {
         String inPath = args[0];
 
         // Get seed.
-        long seed = new Random().nextInt();
+        int seed = new Random().nextInt();
         if (args.length > 2) {
             try {
                 seed = Integer.parseInt(args[2]);
@@ -94,9 +96,15 @@ public class Main {
 
         // Run randomizer.
         System.out.println("Starting...");
-        Random rng = new Random(seed);
-        BN6RandomizerContext context = new BN6RandomizerContext(rng);
+        BN6RandomizerContext context = new BN6RandomizerContext(seed);
+        context.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                System.out.println((String)arg);
+            }
+        });
         context.randomize(rom);
+        
 
         // Write output ROM.
         try {

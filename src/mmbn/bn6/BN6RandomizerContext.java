@@ -2,32 +2,31 @@ package mmbn.bn6;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import mmbn.*;
 import rand.ByteStream;
 import rand.RandomizerContext;
 import rand.strat.*;
 
 public class BN6RandomizerContext extends RandomizerContext {
-    public BN6RandomizerContext(Random rng) {
-        super(rng);
+    public BN6RandomizerContext(int seed) {
+        super(seed);
     }
     
     @Override
     public void randomize(ByteStream rom) {
-        System.out.println("Processing chips...");
+        status("Processing chips...");
         ChipLibrary chipLibrary = randomizeChips(rom);
-        System.out.println("Processing folders...");
+        status("Processing folders...");
         randomizeFolders(rom, chipLibrary);
-        System.out.println("Processing shops...");
+        status("Processing shops...");
         randomizeShops(rom, chipLibrary);
-        System.out.println("Processing Mystery Data...");
+        status("Processing Mystery Data...");
         randomizeMysteryData(rom, chipLibrary);
-        System.out.println("Processing rewards...");
+        status("Processing rewards...");
         randomizeRewards(rom, chipLibrary);
-        System.out.println("Processing traders...");
+        status("Processing traders...");
         randomizeTraders(rom, chipLibrary);
-        System.out.println("Processing battles...");
+        status("Processing battles...");
         randomizeBattles(rom);
     }
     
@@ -41,7 +40,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         
         // Load all chips.
         ChipProvider chipProvider
-                = new ChipProvider(chipProducer, paLibrary);
+                = new ChipProvider(this, chipProducer, paLibrary);
         RepeatStrategy chipRepeatStrat
                 = new RepeatStrategy(chipProvider, 411);
         
@@ -70,13 +69,13 @@ public class BN6RandomizerContext extends RandomizerContext {
         paLibrary.addElement(-1, tutorialCombo);
         
         // Randomize chips.
-        process(chipProvider, rom);
+        runProvider(chipProvider, rom);
         
         // Fix LinkNavi special chips.
         ItemProducer linkNaviChipProducer
                 = new BN6RewardProducer(chipLibrary);
         ItemProvider linkNaviChipProvider
-                = new ItemProvider(linkNaviChipProducer);
+                = new ItemProvider(this, linkNaviChipProducer);
         RepeatStrategy linkNaviChipStrat
                 = new RepeatStrategy(linkNaviChipProvider, 11);
         
@@ -114,14 +113,14 @@ public class BN6RandomizerContext extends RandomizerContext {
         FolderProducer producer
                 = new FolderProducer(chipProducer);
         FolderProvider provider
-                = new FolderProvider(producer);
+                = new FolderProvider(this, producer);
         PointerListStrategy processListStrat
                 = new PointerListStrategy(provider, 6);
         
         rom.setRealPosition(0x137868);
         processListStrat.execute(rom);
         
-        process(provider, rom);
+        runProvider(provider, rom);
         
         // Get new starting Folder
         rom.setRealPosition(0x137868);
@@ -163,7 +162,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         
         // Fix tutorial folders.
         FolderProvider tutorialProvider
-                = new FolderProvider(producer);
+                = new FolderProvider(this, producer);
         PointerListStrategy tutorialPtrStrat
                 = new PointerListStrategy(tutorialProvider, 1);
         FilterStrategy filterEmptyStrat
@@ -207,7 +206,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         BN6BattleProducer producer
                 = new BN6BattleProducer();
         BN6BattleProvider provider
-                = new BN6BattleProvider(producer);
+                = new BN6BattleProvider(this, producer);
         RepeatStrategy repeatStrat
                 = new RepeatStrategy(provider, new byte[] { -1 });
         PointerListStrategy processListStrat
@@ -220,7 +219,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.setRealPosition(0x020170);
         processListListListStrat.execute(rom);
         
-        process(provider, rom);
+        runProvider(provider, rom);
     }
     
     protected void randomizeRewards(ByteStream rom, ChipLibrary library) {
@@ -228,7 +227,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         ItemProducer producer
                 = new BN6RewardProducer(library);
         ItemProvider provider
-                = new ItemProvider(producer);
+                = new ItemProvider(this, producer);
         RepeatStrategy dropRepeatStrat
                 = new RepeatStrategy(provider, 802 * 2 * 5);
         
@@ -242,7 +241,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.setRealPosition(0x0211A0);
         mdRepeatStrat.execute(rom);
         
-        process(provider, rom);
+        runProvider(provider, rom);
     }
     
     protected void randomizeMysteryData(ByteStream rom, ChipLibrary library) {
@@ -250,7 +249,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         ItemProducer producer
                 = new BN6MysteryDataContentsProducer(library);
         ItemProvider provider
-                = new ItemProvider(producer);
+                = new ItemProvider(this, producer);
         RepeatStrategy contentsArrayStrat
                 = new RepeatStrategy(provider, new byte[] { 0 });
         PointerListStrategy contentsPtrStrat
@@ -295,7 +294,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.setPosition(rom.readInt32());
         goldAreaArrayStrat.execute(rom);
         
-        process(provider, rom);
+        runProvider(provider, rom);
     }
     
     protected void randomizeTraders(ByteStream rom, ChipLibrary library) {
@@ -303,7 +302,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         BN6ChipTraderProducer traderProducer
                 = new BN6ChipTraderProducer(library);
         TraderProvider traderProvider
-                = new TraderProvider(traderProducer, library);
+                = new TraderProvider(this, traderProducer, library);
         RepeatStrategy traderArrayStrat
                 = new RepeatStrategy(traderProvider, 5);
         
@@ -311,7 +310,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.setPosition(rom.readInt32());
         traderArrayStrat.execute(rom);
         
-        process(traderProvider, rom);
+        runProvider(traderProvider, rom);
         
         // Randomize Number Trader.
         rom.setRealPosition(0x13D484);
@@ -319,7 +318,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         ItemProducer numberProducer
                 = new BN6NumberCodeProducer(library, rom.readBytes(10));
         ItemProvider numberProvider
-                = new ItemProvider(numberProducer);
+                = new ItemProvider(this, numberProducer);
         RepeatStrategy numberArrayStrat
                 = new RepeatStrategy(numberProvider, new byte[] { -1 });
         
@@ -327,14 +326,14 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.setPosition(rom.readInt32());
         numberArrayStrat.execute(rom);
         
-        process(numberProvider, rom);
+        runProvider(numberProvider, rom);
     }
     
     protected void randomizeShops(ByteStream rom, ChipLibrary library) {
         ItemProducer producer
                 = new BN6ShopItemProducer(library);
         ItemProvider provider
-                = new ItemProvider(producer);
+                = new ItemProvider(this, producer);
         RepeatStrategy itemArrayStrat
                 = new RepeatStrategy(provider, new byte[] { 0 });
         
@@ -356,6 +355,6 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.setPosition(rom.readInt32());
         itemArrayStrat.execute(rom);
         
-        process(provider, rom);
+        runProvider(provider, rom);
     }
 }

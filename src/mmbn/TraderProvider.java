@@ -5,12 +5,14 @@ import java.util.List;
 import java.util.Random;
 import rand.DataProducer;
 import rand.DataProvider;
+import rand.RandomizerContext;
 
 public class TraderProvider extends DataProvider<ChipTrader> {
     private final ChipLibrary library;
     
-    public TraderProvider(DataProducer<ChipTrader> reader, ChipLibrary library) {
-        super(reader);
+    public TraderProvider(RandomizerContext context,
+            DataProducer<ChipTrader> producer, ChipLibrary library) {
+        super(context, producer);
         this.library = library;
     }
     

@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Random;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
@@ -349,6 +351,7 @@ public class MainFrame extends javax.swing.JFrame {
     
     private void runRandomizer(String inPath, String outPath, int seed) {
         this.isRunning = true;
+        clearStatus();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "statusCard");
         
         // Load input ROM.
@@ -364,9 +367,14 @@ public class MainFrame extends javax.swing.JFrame {
         }
         
         // Run randomizer.
-        appendStatus("Starting...");
-        Random seededRng = new Random(seed);
-        BN6RandomizerContext context = new BN6RandomizerContext(seededRng);
+        appendStatus("Starting randomizer with seed " + seed + "...");
+        BN6RandomizerContext context = new BN6RandomizerContext(seed);
+        context.addObserver(new Observer() {
+            @Override
+            public void update(Observable o, Object arg) {
+                appendStatus((String)arg);
+            }
+        });
         context.randomize(rom);
         
         // Write output ROM.
@@ -388,7 +396,7 @@ public class MainFrame extends javax.swing.JFrame {
     }
     
     private void appendStatus(String status) {
-        statusTextArea.append(System.lineSeparator() + status);
+        statusTextArea.append(status + System.lineSeparator());
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

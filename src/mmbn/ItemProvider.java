@@ -3,12 +3,13 @@ package mmbn;
 import java.util.List;
 import java.util.Random;
 import rand.DataProvider;
+import rand.RandomizerContext;
 
 public class ItemProvider extends DataProvider<Item> {
     private final ChipLibrary chipLibrary;
     
-    public ItemProvider(ItemProducer producer) {
-        super(producer);
+    public ItemProvider(RandomizerContext context, ItemProducer producer) {
+        super(context, producer);
         this.chipLibrary = producer.chipLibrary();
     }
     
