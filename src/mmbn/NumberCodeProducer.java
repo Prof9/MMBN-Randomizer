@@ -13,6 +13,11 @@ public abstract class NumberCodeProducer extends ItemProducer<NumberCode> {
         this.cipher = cipher.clone();
     }
     
+    @Override
+    public String getDataName() {
+        return "Number Trader code";
+    }
+    
     protected int decode(byte[] bytes) {
         if (bytes.length != 8) {
             throw new IllegalArgumentException("Array must be 8 bytes long.");

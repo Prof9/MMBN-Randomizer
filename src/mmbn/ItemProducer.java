@@ -1,6 +1,5 @@
 package mmbn;
 
-import rand.ByteStream;
 import rand.DataProducer;
 
 public abstract class ItemProducer<T extends Item> implements DataProducer<T> {

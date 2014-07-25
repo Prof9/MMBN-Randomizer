@@ -1,12 +1,12 @@
 package mmbn.bn6;
 
-import rand.ByteStream;
-import rand.DataProducer;
-import rand.Library;
 import mmbn.BattleChip;
 import mmbn.ChipTraderEntry;
+import mmbn.ChipTraderEntryProducer;
+import rand.ByteStream;
+import rand.Library;
 
-public class BN6ChipTraderEntryProducer implements DataProducer<ChipTraderEntry> {
+public class BN6ChipTraderEntryProducer extends ChipTraderEntryProducer {
     protected final Library<BattleChip> chipLibrary;
     
     public BN6ChipTraderEntryProducer(final Library<BattleChip> chipLibrary) {

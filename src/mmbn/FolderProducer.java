@@ -10,6 +10,11 @@ public class FolderProducer implements DataProducer<Folder> {
     }
     
     @Override
+    public String getDataName() {
+        return "Folder";
+    }
+    
+    @Override
     public Folder readFromStream(ByteStream stream) {
         Folder folder = new Folder();
         

@@ -10,6 +10,11 @@ public abstract class ProgramAdvanceProducer extends LibraryProducer<ProgramAdva
         this.types = types;
     }
     
+    @Override
+    public String getDataName() {
+        return "Program Advance";
+    }
+    
     protected ProgramAdvance.Type typeFromIndex(int index) {
         return this.types[index];
     }

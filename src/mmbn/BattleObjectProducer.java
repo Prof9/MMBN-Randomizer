@@ -9,6 +9,11 @@ public abstract class BattleObjectProducer implements DataProducer<BattleObject>
         this.objectTypes = objectTypes;
     }
     
+    @Override
+    public String getDataName() {
+        return "battle object";
+    }
+    
     public BattleObject.Type objectTypeFromIndex(int index) {
         return this.objectTypes[index];
     }

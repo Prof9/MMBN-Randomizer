@@ -2,12 +2,12 @@ package mmbn.bn6;
 
 import mmbn.ChipLibrary;
 import mmbn.Item;
-import mmbn.ItemProducer;
 import mmbn.ShopItem;
-import rand.Bytes;
+import mmbn.ShopItemProducer;
 import rand.ByteStream;
+import rand.Bytes;
 
-public class BN6ShopItemProducer extends ItemProducer<ShopItem> {
+public class BN6ShopItemProducer extends ShopItemProducer {
     public BN6ShopItemProducer(final ChipLibrary chipLibrary) {
         super(chipLibrary, new Item.Type[] {
             Item.Type.ITEM,

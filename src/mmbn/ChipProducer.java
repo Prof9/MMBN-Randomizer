@@ -14,6 +14,11 @@ public abstract class ChipProducer extends LibraryProducer<BattleChip> {
         this.libraries = libraries;
     }
     
+    @Override
+    public String getDataName() {
+        return "BattleChip";
+    }
+    
     protected BattleChip.Element elementFromIndex(byte index) {
         return this.elements[index];
     }

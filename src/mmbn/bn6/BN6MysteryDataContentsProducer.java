@@ -2,12 +2,12 @@ package mmbn.bn6;
 
 import mmbn.ChipLibrary;
 import mmbn.Item;
-import mmbn.ItemProducer;
 import mmbn.MysteryDataContents;
-import rand.Bytes;
+import mmbn.MysteryDataContentsProducer;
 import rand.ByteStream;
+import rand.Bytes;
 
-public class BN6MysteryDataContentsProducer extends ItemProducer<MysteryDataContents> {
+public class BN6MysteryDataContentsProducer extends MysteryDataContentsProducer {
     public BN6MysteryDataContentsProducer(ChipLibrary library) {
         super(library, new Item.Type[] {
             Item.Type.BATTLECHIP,

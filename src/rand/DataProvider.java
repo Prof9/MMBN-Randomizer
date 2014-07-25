@@ -35,8 +35,8 @@ public abstract class DataProvider<T> implements StreamStrategy {
     protected final T registerData(ByteStream stream) {
         int pointer = stream.getRealPosition();
         T data = this.producer.readFromStream(stream);
-        this.context.status("Registered " + data.getClass().getName() + " at 0x"
-                + String.format("%06X", pointer));
+        this.context.status("Registered " + this.producer.getDataName() + " at "
+                + "0x" + String.format("%06X", pointer));
         this.pointerMap.put(pointer, data);
         return data;
     }
