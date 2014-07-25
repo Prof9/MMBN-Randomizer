@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package rand.gui;
 
 import java.awt.CardLayout;
@@ -14,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Random;
 import javax.swing.JFileChooser;
+import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -53,6 +48,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         this.isRunning = false;
         
+        initLookAndFeel();
         initComponents();
         setRandomSeed();
         
@@ -62,6 +58,17 @@ public class MainFrame extends javax.swing.JFrame {
         inFileTextField.getDocument().addDocumentListener(this.goButtonEnableListener);
         outFileTextField.getDocument().addDocumentListener(this.goButtonEnableListener);
         seedTextField.getDocument().addDocumentListener(this.goButtonEnableListener);
+    }
+    
+    @SuppressWarnings("UseSpecificCatch")
+    private void initLookAndFeel() {
+        try {
+            // Set look-and-feel to native system look-and-feel.
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Exception ex) {
+            // tough luck yo
+        }
     }
 
     /**
