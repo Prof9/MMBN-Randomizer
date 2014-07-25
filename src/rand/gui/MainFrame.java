@@ -37,15 +37,15 @@ public class MainFrame extends javax.swing.JFrame {
         this.goButtonEnableListener = new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
-                checkCanGo();
+                checkRunningControls();
             }
             @Override
             public void removeUpdate(DocumentEvent e) {
-                checkCanGo();
+                checkRunningControls();
             }
             @Override
             public void changedUpdate(DocumentEvent e) {
-                checkCanGo();
+                checkRunningControls();
             }
         };
         
@@ -326,24 +326,26 @@ public class MainFrame extends javax.swing.JFrame {
                 outFileTextField.getText(),
                 Main.toSeed(seedTextField.getText())
         );
-        checkCanGo();
+        checkRunningControls();
     }//GEN-LAST:event_goButtonActionPerformed
     
     private void setRandomSeed() {
         seedTextField.setText(Integer.toString(rng.nextInt()));
     }
     
-    private void checkCanGo() {
+    private void checkRunningControls() {
         goButton.setEnabled(
                 !this.isRunning &&
                 inFileTextField.getText().length() > 0 &&
                 outFileTextField.getText().length() > 0 &&
                 seedTextField.getText().length() > 0
         );
+        statusCloseButton.setEnabled(!this.isRunning);
     }
     
     private void runRandomizer(final String inPath, final String outPath, int seed) {
         this.isRunning = true;
+        checkRunningControls();
         clearStatus();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "statusCard");
         
@@ -385,14 +387,12 @@ public class MainFrame extends javax.swing.JFrame {
                         statusProgressBar.setValue(0);
                         appendStatus("ERROR: Could not write output ROM.");
                     }
-                    finally {
-                        isRunning = false;
-                        checkCanGo();
-                    }
                 } else {
                     statusProgressBar.setValue(0);
                     appendStatus("FATAL ERROR: " + thrown.getMessage());
                 }
+                isRunning = false;
+                checkRunningControls();
             }
         });
         worker.execute();
