@@ -6,11 +6,13 @@ To run this program, Java 7 must be installed on your computer.
 
 Usage
 -----
+Run the MMBN Randomizer like any other JAR file. If no command line arguments are provided, a GUI will be displayed.
+
 ```
 java -jar MMBNRandomizer.jar inputrom [outputrom [seed]]
 ```
 
-To use MMBN Randomizer, pass it the file path of the input ROM. You can also pass it the path of the output ROM and, if you do that, the seed to use for randomizing the ROM (as a decimal 32-bit signed number).
+To use the MMBN Randomizer from the command line, pass it the file path of the input ROM. You can also pass it the path of the output ROM and, if you do that, the seed to use for randomizing the ROM (as a decimal 32-bit signed number).
 
 Compatibility
 -------------
