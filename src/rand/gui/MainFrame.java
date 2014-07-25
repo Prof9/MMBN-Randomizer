@@ -54,6 +54,7 @@ public class MainFrame extends javax.swing.JFrame {
         initLookAndFeel();
         initComponents();
         setRandomSeed();
+        this.setTitle(this.getTitle() + Main.VERSION);
         
         inFileChooser.setFileFilter(gbaFileFilter);
         outFileChooser.setFileFilter(gbaFileFilter);
@@ -109,7 +110,7 @@ public class MainFrame extends javax.swing.JFrame {
         outFileChooser.setDialogType(javax.swing.JFileChooser.SAVE_DIALOG);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("MMBN Randomizer");
+        setTitle("MMBN Randomizer ");
         setResizable(false);
 
         basicPanel.setOpaque(false);
@@ -218,9 +219,7 @@ public class MainFrame extends javax.swing.JFrame {
             .addGroup(basicPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(basicPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(basicPanelLayout.createSequentialGroup()
-                        .addComponent(cardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(cardPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(basicPanelLayout.createSequentialGroup()
                         .addGroup(basicPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(inFileLabel)

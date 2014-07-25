@@ -12,6 +12,7 @@ import mmbn.bn6.BN6RandomizerContext;
 import rand.gui.MainFrame;
 
 public class Main {
+    public static final String VERSION = "v0.3";
     private static final boolean DEBUG = false;
     private static final int RESULT_SUCCESS = 0;
     private static final int RESULT_WARNING = 1;
@@ -53,6 +54,10 @@ public class Main {
     
     private static int runCMD(String[] args) {
         int result = RESULT_SUCCESS;
+        System.out.println("MMBN Randomizer " + Main.VERSION);
+        System.out.println("By Prof. 9");
+        System.out.println("https://github.com/prof9/mmbn-randomizer/");
+        System.out.println();
         
         // Get input path.
         if (args.length <= 0) {
@@ -98,7 +103,7 @@ public class Main {
         
         // Write output ROM.
         try {
-            Main.writeFile(outPath, rom);
+            writeFile(outPath, rom);
         }
         catch (IOException ex) {
             System.err.println("ERROR: Could not write output ROM.");
