@@ -9,6 +9,7 @@ import java.util.Random;
 public abstract class DataProvider<T> implements StreamStrategy {
     protected final DataProducer<T> producer;
     protected final RandomizerContext context;
+    private final int dataSize;
     // Use LinkedHashMap to keep the original ordering.
     private final LinkedHashMap<Integer, T> pointerMap;
     
@@ -22,23 +23,27 @@ public abstract class DataProvider<T> implements StreamStrategy {
     public DataProvider(RandomizerContext context, DataProducer<T> producer) {
         this.producer = producer;
         this.context = context;
+        this.dataSize = producer.getDataSize();
         this.pointerMap = new LinkedHashMap<>();
     }
     
     /**
      * Registers a new data entry in the given byte stream at its current
-     * position and returns it.
+     * position, if it was not registered already.
      * 
      * @param stream The byte stream to read from.
-     * @return The data entry that was read.
      */
-    protected final T registerData(ByteStream stream) {
+    protected final void registerData(ByteStream stream) {
         int pointer = stream.getRealPosition();
-        T data = this.producer.readFromStream(stream);
-        this.context.status("Registered " + this.producer.getDataName() + " at "
-                + "0x" + String.format("%06X", pointer));
-        this.pointerMap.put(pointer, data);
-        return data;
+        
+        if (this.pointerMap.containsKey(pointer) && dataSize > 0) {
+            stream.advance(this.producer.getDataSize());
+        } else {
+            T data = this.producer.readFromStream(stream);
+            this.context.status("Registered " + this.producer.getDataName() + " at "
+                    + "0x" + String.format("%06X", pointer));
+            this.pointerMap.put(pointer, data);
+        }
     }
     
     /**
