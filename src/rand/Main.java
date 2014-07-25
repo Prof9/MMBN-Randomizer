@@ -12,7 +12,7 @@ import mmbn.bn6.BN6RandomizerContext;
 import rand.gui.MainFrame;
 
 public class Main {
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final int RESULT_SUCCESS = 0;
     private static final int RESULT_WARNING = 1;
     private static final int RESULT_ERROR = 2;
@@ -27,7 +27,7 @@ public class Main {
                 args[1] = "out.gba";
                 args[2] = "" + 0x12345678;
             }
-
+            
             if (args.length == 0) {
                 runGUI();
             } else {
@@ -53,7 +53,7 @@ public class Main {
     
     private static int runCMD(String[] args) {
         int result = RESULT_SUCCESS;
-
+        
         // Get input path.
         if (args.length <= 0) {
             System.err.println("ERROR: Input path not specified.");
@@ -96,16 +96,16 @@ public class Main {
         });
         context.randomize(rom);
         
-
         // Write output ROM.
         try {
-            writeFile(outPath, rom);
+            Main.writeFile(outPath, rom);
         }
         catch (IOException ex) {
             System.err.println("ERROR: Could not write output ROM.");
             return RESULT_ERROR;
         }
-
+        
+        System.out.println("Done!");
         return result;
     }
     

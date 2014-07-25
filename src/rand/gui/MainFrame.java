@@ -10,13 +10,18 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 import javax.swing.JFileChooser;
+import javax.swing.JScrollBar;
+import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.text.DefaultCaret;
 import mmbn.bn6.BN6RandomizerContext;
 import rand.ByteStream;
 import rand.Main;
+import rand.RandomizerContext;
+import rand.RandomizerWorker;
 
 /**
  *
@@ -342,18 +347,18 @@ public class MainFrame extends javax.swing.JFrame {
         );
     }
     
-    private void runRandomizer(String inPath, String outPath, int seed) {
+    private void runRandomizer(final String inPath, final String outPath, int seed) {
         this.isRunning = true;
         clearStatus();
         ((CardLayout)cardPanel.getLayout()).show(cardPanel, "statusCard");
         
         // Load input ROM.
-        ByteStream rom;
+        final ByteStream rom;
         try {
             rom = Main.readFile(inPath);
         }
         catch (IOException ex) {
-            appendStatus("FATAL ERROR: Could not read input ROM.");
+            appendStatus("ERROR: Could not read input ROM.");
             this.isRunning = false;
             return;
         }
@@ -365,30 +370,39 @@ public class MainFrame extends javax.swing.JFrame {
             @Override
             public void update(Observable o, Object arg) {
                 appendStatus((String)arg);
+                statusProgressBar.setValue(((RandomizerContext)o).getProgress());
             }
         });
-        context.randomize(rom);
         
-        // Write output ROM.
-        try {
-            Main.writeFile(outPath, rom);
-        }
-        catch (IOException ex) {
-            appendStatus("FATAL ERROR: Could not write output ROM.");
-            this.isRunning = false;
-            return;
-        }
-        
-        appendStatus("Done!");
-        this.isRunning = false;
+        new RandomizerWorker(context, rom, new Runnable() {
+            @Override
+            public void run() {
+                // Write output ROM.
+                try {
+                    Main.writeFile(outPath, rom);
+                    appendStatus("Done!");
+                    statusProgressBar.setValue(100);
+                }
+                catch (IOException ex) {
+                    appendStatus("ERROR: Could not write output ROM.");
+                }
+                finally {
+                    isRunning = false;
+                    checkCanGo();
+                }
+            }
+        }).execute();
     }
     
     private void clearStatus() {
+        statusProgressBar.setValue(0);
         statusTextArea.setText(null);
     }
     
     private void appendStatus(String status) {
         statusTextArea.append(status + System.lineSeparator());
+        JScrollBar scrollBar = statusScrollPane.getVerticalScrollBar();
+        scrollBar.setValue(scrollBar.getMaximum());
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

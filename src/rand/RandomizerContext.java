@@ -5,9 +5,11 @@ import java.util.Random;
 
 public abstract class RandomizerContext extends Observable {
     private final Random rng;
+    private int progress;
     
     public RandomizerContext(int seed) {
         this.rng = new Random(seed);
+        this.progress = 0;
     }
     
     protected int next(int bound) {
@@ -17,6 +19,15 @@ public abstract class RandomizerContext extends Observable {
     protected void runProvider(DataProvider provider, ByteStream rom) {
         provider.randomize(this.rng);
         provider.produce(rom);
+    }
+    
+    public int getProgress() {
+        return this.progress;
+    }
+    
+    protected void setProgress(int progress) {
+        this.progress = progress;
+        setChanged();
     }
     
     protected void status(String message) {

@@ -14,20 +14,35 @@ public class BN6RandomizerContext extends RandomizerContext {
     
     @Override
     public void randomize(ByteStream rom) {
+        setProgress((100 * 0) / 7);
         status("Processing chips...");
         ChipLibrary chipLibrary = randomizeChips(rom);
+        
+        setProgress((100 * 1) / 7);
         status("Processing folders...");
         randomizeFolders(rom, chipLibrary);
+        
+        setProgress((100 * 2) / 7);
         status("Processing shops...");
         randomizeShops(rom, chipLibrary);
+        
+        setProgress((100 * 3) / 7);
         status("Processing Mystery Data...");
         randomizeMysteryData(rom, chipLibrary);
+        
+        setProgress((100 * 4) / 7);
         status("Processing rewards...");
         randomizeRewards(rom, chipLibrary);
+        
+        setProgress((100 * 5) / 7);
         status("Processing traders...");
         randomizeTraders(rom, chipLibrary);
+        
+        setProgress((100 * 6) / 7);
         status("Processing battles...");
         randomizeBattles(rom);
+        
+        setProgress(100);
     }
     
     protected ChipLibrary randomizeChips(ByteStream rom) {
