@@ -24,6 +24,11 @@ public class BN6ProgramAdvanceProducer extends ProgramAdvanceProducer {
     }
     
     @Override
+    public int getDataSize() {
+        return -1;
+    }
+    
+    @Override
     public ProgramAdvance deferredReadFromStream(ByteStream stream) {
         // Read chip count and PA type.
         int chipCount = stream.readUInt8();

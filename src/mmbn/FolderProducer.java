@@ -15,6 +15,11 @@ public class FolderProducer implements DataProducer<Folder> {
     }
     
     @Override
+    public int getDataSize() {
+        return 30 * this.itemProducer.getDataSize();
+    }
+    
+    @Override
     public Folder readFromStream(ByteStream stream) {
         Folder folder = new Folder();
         

@@ -14,6 +14,11 @@ public class BN6ChipTraderProducer extends ChipTraderProducer {
     public BN6ChipTraderProducer(final Library<BattleChip> library) {
         this.entryProducer = new BN6ChipTraderEntryProducer(library);
     }
+    
+    @Override
+    public int getDataSize() {
+        return 12;
+    }
 
     @Override
     public ChipTrader readFromStream(ByteStream stream) {

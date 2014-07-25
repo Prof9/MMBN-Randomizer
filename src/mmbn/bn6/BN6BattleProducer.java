@@ -11,6 +11,11 @@ public class BN6BattleProducer extends BattleProducer {
     }
     
     @Override
+    public int getDataSize() {
+        return 16;
+    }
+    
+    @Override
     public Battle readFromStream(ByteStream stream) {
         byte[] base = stream.readBytes(12);
         Battle battle = new Battle(base);

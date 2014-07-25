@@ -23,6 +23,11 @@ public class BN6BattleObjectProducer extends BattleObjectProducer {
     }
     
     @Override
+    public int getDataSize() {
+        return 4;
+    }
+    
+    @Override
     public BattleObject readFromStream(ByteStream stream) {
         byte[] bytes = stream.readBytes(4);
         

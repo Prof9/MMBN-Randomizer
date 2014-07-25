@@ -14,6 +14,11 @@ public class BN6ChipTraderEntryProducer extends ChipTraderEntryProducer {
     }
     
     @Override
+    public int getDataSize() {
+        return 6;
+    }
+    
+    @Override
     public ChipTraderEntry readFromStream(ByteStream stream) {
         BattleChip chip = this.chipLibrary.getElement(stream.readUInt16());
         byte[] codes = stream.readBytes(4);

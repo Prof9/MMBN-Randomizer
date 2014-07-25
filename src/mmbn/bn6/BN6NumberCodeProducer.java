@@ -24,6 +24,11 @@ public class BN6NumberCodeProducer extends NumberCodeProducer {
             (byte)0x18, (byte)0x4F, (byte)0x09, (byte)0x61, (byte)0xE9
         });
     }
+    
+    @Override
+    public int getDataSize() {
+        return 12;
+    }
 
     @Override
     public NumberCode readFromStream(ByteStream stream) {

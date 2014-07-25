@@ -26,6 +26,11 @@ public class BN6MysteryDataContentsProducer extends MysteryDataContentsProducer 
     }
     
     @Override
+    public int getDataSize() {
+        return 8;
+    }
+    
+    @Override
     public MysteryDataContents readFromStream(ByteStream stream) {
         byte[] bytes = stream.readBytes(8);
         MysteryDataContents item = new MysteryDataContents(bytes);

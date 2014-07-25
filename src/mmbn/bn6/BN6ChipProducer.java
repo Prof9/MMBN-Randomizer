@@ -32,6 +32,11 @@ public class BN6ChipProducer extends ChipProducer {
     }
     
     @Override
+    public int getDataSize() {
+        return 44;
+    }
+    
+    @Override
     protected BattleChip deferredReadFromStream(ByteStream stream, int chipIndex) {
         byte[] bytes = stream.readBytes(44);
         BattleChip chip = new BattleChip(chipIndex, bytes, 4);

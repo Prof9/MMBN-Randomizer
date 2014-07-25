@@ -15,6 +15,11 @@ public class BN6RewardProducer extends RewardProducer {
             Item.Type.BUGFRAG
         });
     }
+    
+    @Override
+    public int getDataSize() {
+        return 2;
+    }
 
     @Override
     public Item readFromStream(ByteStream stream) {

@@ -17,6 +17,11 @@ public class BN6ShopItemProducer extends ShopItemProducer {
     }
     
     @Override
+    public int getDataSize() {
+        return 8;
+    }
+    
+    @Override
     public ShopItem readFromStream(ByteStream stream) {
         byte[] bytes = stream.readBytes(8);
         ShopItem item = new ShopItem(bytes);
