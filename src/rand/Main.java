@@ -64,15 +64,7 @@ public class Main {
         // Get seed.
         int seed = new Random().nextInt();
         if (args.length > 2) {
-            try {
-                seed = Integer.parseInt(args[2]);
-            }
-            catch (NumberFormatException ex) {
-                // Do nothing
-                System.err.println("WARNING: Could not parse specified seed. "
-                        + "Using random seed " + seed + " instead.");
-                result = RESULT_WARNING;
-            }
+            seed = toSeed(args[2]);
         }
 
         // Get output path.
@@ -86,8 +78,7 @@ public class Main {
         // Load input ROM.
         ByteStream rom;
         try {
-            Path in = Paths.get(inPath);
-            rom = new ByteStream(in, 0x08000000);
+            rom = readFile(inPath);
         }
         catch (IOException ex) {
             System.err.println("ERROR: Could not read input ROM.");
@@ -108,7 +99,7 @@ public class Main {
 
         // Write output ROM.
         try {
-            Files.write(Paths.get(outPath), rom.toBytes());
+            writeFile(outPath, rom);
         }
         catch (IOException ex) {
             System.err.println("ERROR: Could not write output ROM.");
@@ -116,5 +107,23 @@ public class Main {
         }
 
         return result;
+    }
+    
+    public static int toSeed(String seedString) {
+        try {
+            return Integer.parseInt(seedString);
+        } catch (NumberFormatException ex) {
+            return seedString.hashCode();
+        }
+    }
+    
+    public static ByteStream readFile(String inPath) throws IOException {
+        Path in = Paths.get(inPath);
+        ByteStream rom = new ByteStream(in, 0x08000000);
+        return rom;
+    }
+    
+    public static void writeFile(String outPath, ByteStream rom) throws IOException {
+        Files.write(Paths.get(outPath), rom.toBytes());
     }
 }

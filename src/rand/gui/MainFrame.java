@@ -16,6 +16,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import mmbn.bn6.BN6RandomizerContext;
 import rand.ByteStream;
+import rand.Main;
 
 /**
  *
@@ -323,7 +324,7 @@ public class MainFrame extends javax.swing.JFrame {
         runRandomizer(
                 inFileTextField.getText(),
                 outFileTextField.getText(),
-                getSeed(seedTextField.getText())
+                Main.toSeed(seedTextField.getText())
         );
         checkCanGo();
     }//GEN-LAST:event_goButtonActionPerformed
@@ -341,14 +342,6 @@ public class MainFrame extends javax.swing.JFrame {
         );
     }
     
-    private int getSeed(String seedString) {
-        try {
-            return Integer.parseInt(seedString);
-        } catch (NumberFormatException ex) {
-            return seedString.hashCode();
-        }
-    }
-    
     private void runRandomizer(String inPath, String outPath, int seed) {
         this.isRunning = true;
         clearStatus();
@@ -357,8 +350,7 @@ public class MainFrame extends javax.swing.JFrame {
         // Load input ROM.
         ByteStream rom;
         try {
-            Path in = Paths.get(inPath);
-            rom = new ByteStream(in, 0x08000000);
+            rom = Main.readFile(inPath);
         }
         catch (IOException ex) {
             appendStatus("FATAL ERROR: Could not read input ROM.");
@@ -379,7 +371,7 @@ public class MainFrame extends javax.swing.JFrame {
         
         // Write output ROM.
         try {
-            Files.write(Paths.get(outPath), rom.toBytes());
+            Main.writeFile(outPath, rom);
         }
         catch (IOException ex) {
             appendStatus("FATAL ERROR: Could not write output ROM.");
