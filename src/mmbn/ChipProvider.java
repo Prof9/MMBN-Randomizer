@@ -81,7 +81,10 @@ public class ChipProvider extends DataProvider<BattleChip> {
         byte[] oldCodes = chip.getCodes();
         
         // Get the preset codes for this chip.
-        List<Byte> codes = this.presetCodes.getOrDefault(chip.index(), new ArrayList<Byte>());
+        List<Byte> codes = this.presetCodes.get(chip.index());
+        if (codes == null) {
+            codes = new ArrayList<>(0);
+        }
         
         // If necessary, generate random codes, excluding the preset codes.
         if (codes.size() < oldCodes.length) {
@@ -108,7 +111,7 @@ public class ChipProvider extends DataProvider<BattleChip> {
         
         // Sort all Program Advances by type and chip counts.
         // Fix all consecutive PAs first.
-        pas.sort(new Comparator<ProgramAdvance>() {
+        Collections.sort(pas, new Comparator<ProgramAdvance>() {
             @Override
             public int compare(ProgramAdvance a, ProgramAdvance b) {
                 if (a.type() == b.type()) {
