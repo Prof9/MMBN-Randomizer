@@ -8,12 +8,8 @@ import rand.RandomizerContext;
 import rand.strat.*;
 
 public class BN6RandomizerContext extends RandomizerContext {
-    public BN6RandomizerContext(int seed) {
-        super(seed);
-    }
-    
     @Override
-    public void randomize(ByteStream rom) {
+    public void randomize(String romId, ByteStream rom) {
         setProgress((100 * 0) / 7);
         status("Processing chips...");
         ChipLibrary chipLibrary = randomizeChips(rom);
@@ -384,5 +380,15 @@ public class BN6RandomizerContext extends RandomizerContext {
         itemArrayStrat.execute(rom);
         
         runProvider(provider, rom);
+    }
+
+    @Override
+    public String[] getSupportedRomIds() {
+        return new String[] {
+            // Mega Man Battle Network 6: Cybeast Falzar (U)
+            "BR6E",
+            // Mega Man Battle Network 6: Cybeast Falzar (E)
+            "BR6P"
+        };
     }
 }

@@ -2,17 +2,17 @@ package rand;
 
 import java.awt.EventQueue;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
-import mmbn.bn6.BN6RandomizerContext;
 import rand.gui.MainFrame;
 
 public class Main {
-    public static final String VERSION = "v0.3";
+    public static final String VERSION = "v0.4";
     private static final boolean DEBUG = false;
     private static final int RESULT_SUCCESS = 0;
     private static final int RESULT_WARNING = 1;
@@ -89,10 +89,17 @@ public class Main {
             System.err.println("ERROR: Could not read input ROM.");
             return RESULT_ERROR;
         }
-
+        
+        // Get randomizer context.
+        RandomizerContext context = ContextSelector.getAppropriateContext(rom);
+        if (context == null) {
+            System.err.println("ERROR: Unsupported ROM ID.");
+            return RESULT_ERROR;
+        }
+        
         // Run randomizer.
         System.out.println("Starting...");
-        BN6RandomizerContext context = new BN6RandomizerContext(seed);
+        context.setSeed(seed);
         context.addObserver(new Observer() {
             @Override
             public void update(Observable o, Object arg) {
@@ -130,5 +137,10 @@ public class Main {
     
     public static void writeFile(String outPath, ByteStream rom) throws IOException {
         Files.write(Paths.get(outPath), rom.toBytes());
+    }
+    
+    public static String getRomId(ByteStream rom) {
+        rom.setRealPosition(0x0000AC);
+        return new String(rom.readBytes(4), StandardCharsets.US_ASCII);
     }
 }

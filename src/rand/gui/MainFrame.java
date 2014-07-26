@@ -12,8 +12,8 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import mmbn.bn6.BN6RandomizerContext;
 import rand.ByteStream;
+import rand.ContextSelector;
 import rand.Main;
 import rand.RandomizerContext;
 import rand.RandomizerWorker;
@@ -359,9 +359,17 @@ public class MainFrame extends javax.swing.JFrame {
             return;
         }
         
+        // Get randomizer context.
+        RandomizerContext context = ContextSelector.getAppropriateContext(rom);
+        if (context == null) {
+            appendStatus("ERROR: Unsupported ROM ID.");
+            this.isRunning = false;
+            return;
+        }
+        
         // Run randomizer.
         appendStatus("Starting randomizer with seed " + seed + "...");
-        BN6RandomizerContext context = new BN6RandomizerContext(seed);
+        context.setSeed(seed);
         context.addObserver(new Observer() {
             @Override
             public void update(Observable o, Object arg) {

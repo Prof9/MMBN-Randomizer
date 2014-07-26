@@ -7,9 +7,13 @@ public abstract class RandomizerContext extends Observable {
     private final Random rng;
     private int progress;
     
-    public RandomizerContext(int seed) {
-        this.rng = new Random(seed);
+    public RandomizerContext() {
+        this.rng = new Random();
         this.progress = 0;
+    }
+    
+    public void setSeed(int seed) {
+        this.rng.setSeed(seed);
     }
     
     protected int next(int bound) {
@@ -35,5 +39,12 @@ public abstract class RandomizerContext extends Observable {
         notifyObservers(message);
     }
     
-    public abstract void randomize(ByteStream rom);
+    public void randomize(ByteStream rom) {
+        String romId = Main.getRomId(rom);
+        randomize(romId, rom);
+    }
+    
+    protected abstract void randomize(String romId, ByteStream rom);
+    
+    public abstract String[] getSupportedRomIds();
 }
