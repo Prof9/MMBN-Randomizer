@@ -41,7 +41,14 @@ public abstract class RandomizerContext extends Observable {
     
     public void randomize(ByteStream rom) {
         String romId = Main.getRomId(rom);
-        randomize(romId, rom);
+        for (String id : getSupportedRomIds()) {
+            if (romId.equals(id)) {
+                randomize(romId, rom);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unsupported ROM ID \"" + romId
+                + "\".");
     }
     
     protected abstract void randomize(String romId, ByteStream rom);

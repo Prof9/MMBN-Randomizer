@@ -136,8 +136,4 @@ public class FolderProvider extends DataProvider<Folder> {
         folder.sort();
         folder.setChips(folder.getChips());
     }
-    
-    public Collection<Folder> folders() {
-        return this.allData();
-    }
 }
