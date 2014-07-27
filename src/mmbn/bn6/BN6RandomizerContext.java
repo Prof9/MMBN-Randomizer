@@ -190,9 +190,10 @@ public class BN6RandomizerContext extends RandomizerContext {
         int chipIndex = chipEntry.getChip().index();
         rom.setRealPosition(0x75E6E4);
         if (rom.readInt32() == 0xAA010083) {
-            rom.advance(-5);
-            rom.writeUInt8((short)(chipIndex >> 8));
+            rom.advance(-4);
             rom.writeUInt8((short)(chipIndex & 0xFF));
+            rom.advance(1);
+            rom.writeUInt8((short)((chipIndex >> 8) + 1));
         }
         rom.setRealPosition(0x75E6B8);
         if (rom.readInt32() == 0x832AEF00) {
@@ -212,9 +213,9 @@ public class BN6RandomizerContext extends RandomizerContext {
         }
         rom.setRealPosition(0x75F150);
         if (rom.readInt32() == 0xAA011800) {
-            rom.advance(-4);
-            rom.writeUInt8((short)(chipIndex >> 8));
+            rom.advance(-3);
             rom.writeUInt8((short)(chipIndex & 0xFF));
+            rom.writeUInt8((short)((chipIndex >> 8) + 1));
         }
         
         // Fix tutorial folders.
