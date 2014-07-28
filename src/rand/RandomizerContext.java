@@ -6,10 +6,12 @@ import java.util.Random;
 public abstract class RandomizerContext extends Observable {
     private final Random rng;
     private int progress;
+    private String lastMsg;
     
     public RandomizerContext() {
         this.rng = new Random();
         this.progress = 0;
+        this.lastMsg = "";
     }
     
     public void setSeed(int seed) {
@@ -30,13 +32,17 @@ public abstract class RandomizerContext extends Observable {
     }
     
     protected void setProgress(int progress) {
-        this.progress = progress;
-        setChanged();
+        if (this.progress != progress) {
+            this.progress = progress;
+            setChanged();
+        }
     }
     
     protected void status(String message) {
-        setChanged();
-        notifyObservers(message);
+        if (this.lastMsg != message) {
+            setChanged();
+            notifyObservers(message);
+        }
     }
     
     public void randomize(ByteStream rom) {
