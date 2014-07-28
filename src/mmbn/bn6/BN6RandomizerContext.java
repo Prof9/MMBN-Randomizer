@@ -17,13 +17,34 @@ public class BN6RandomizerContext extends RandomizerContext {
         new int[] { 0x048474, 0x0484A4, 0x047448, 0x047478 },
         new int[] { 0x049F90, 0x049FC0, 0x048F64, 0x048F94 },
         new int[] { 0x04E84C, 0x04DA88, 0x04CDDC, 0x04C018 },
+        // Undernet3 gate (100S)
+        new int[] { 0x080622, 0x07F56A,       -1,       -1 },
         new int[] { 0x0A38A8, 0x0A23D0, 0x0A1370, 0x09FE90 },
         new int[] { 0x0AE424, 0x0ACBC4, 0x0ABF04, 0x0AA694 },
         new int[] { 0x0AEC34, 0x0AD3D4, 0x0AC714, 0x0AAEA4 },
         new int[] { 0x0DFAF4, 0x0DE294, 0x0DC284, 0x0DAA14 },
         new int[] { 0x141FF8, 0x140230, 0x139644, 0x137868 },
         new int[] { 0x14A12C, 0x148360, 0x13F260, 0x13D480 },
+        // CentralArea1 gate (Reflectr)
+        new int[] { 0x779479, 0x77B545, 0x75C5F5, 0x75E6B9 },
+        new int[] { 0x77948D, 0x77B559,       -1,       -1 },
+        new int[] {       -1,       -1, 0x75C61E, 0x75E6E2 },
+        // SeasideArea1 gate (TrnArrw1)
+        new int[] { 0x779C58, 0x77BD24,       -1,       -1 },
+        new int[] {       -1,       -1, 0x75CFF9, 0x75F0BD },
+        new int[] { 0x779CB2, 0x77BD7E, 0x75D08B, 0x75F14F },
+        // Undernet2 gate (MchnSwrd)
+        new int[] { 0x77C310, 0x77E3DC,       -1,       -1 },
+        new int[] { 0x77C31C, 0x77E3E8,       -1,       -1 },
+        // Undernet2 gate (100S)
+        new int[] {       -1,       -1, 0x7600C9, 0x76218D },
+        // Graveyard1 gate (45M)
+        new int[] { 0x77CD30, 0x77EDFC,       -1,       -1 },
+        // Graveyard2 gate (200S)
+        new int[] { 0x77D643, 0x77F70F,       -1,       -1 },
+        new int[] {       -1,       -1, 0x760D68, 0x762E2C },
     };
+    private static final int[] shopCount = new int[] { 18, 18, 19, 19 };
     
     @Override
     public void randomize(String romId, ByteStream rom) {
@@ -58,33 +79,35 @@ public class BN6RandomizerContext extends RandomizerContext {
         setProgress(100);
     }
     
-    protected int getVersionAddress(int gregarJpAddr, String romId) {
-        int index;
+    protected int getVersionIndex(String romId) {
         switch (romId) {
             case "BR5J":
-                index = 0;
-                break;
+                return 0;
             case "BR6J":
-                index = 1;
-                break;
+                return 1;
             case "BR5E":
             case "BR5P":
-                index = 2;
-                break;
+                return 2;
             case "BR6E":
             case "BR6P":
-                index = 3;
-                break;
+                return 3;
             default:
                 throw new IllegalArgumentException("Unknown ROM ID \"" + romId
                         + "\".");
         }
+    }
+    protected int getVersionAddress(int firstAddr, String romId) {
+        int index = getVersionIndex(romId);
         for (int[] offsetSet : offsets) {
-            if (offsetSet[0] == gregarJpAddr) {
+            int i = 0;
+            while (offsetSet[i] == -1) {
+                i++;
+            }
+            if (offsetSet[i] == firstAddr) {
                 return offsetSet[index];
             }
         }
-        throw new IllegalArgumentException("Unknown address " + gregarJpAddr
+        throw new IllegalArgumentException("Unknown address " + firstAddr
                 + ".");
     }
     
@@ -150,15 +173,61 @@ public class BN6RandomizerContext extends RandomizerContext {
         linkNaviChipProvider.produce(rom);
         
         // Remove Library restriction gates.
-        rom.setRealPosition(0x76218C);
-        if (rom.readInt32() == 0x6434EF00) {
-            rom.advance(-1);
-            rom.writeUInt8((short)0);
+        int ptr;
+        // Japanese 100S
+        ptr = getVersionAddress(0x080622, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0xDB072864) {
+                rom.advance(-4);
+                rom.writeUInt8((short)0x00);
+            } else {
+                status("WARNING: Could not remove 100S gate.");
+            }
         }
-        rom.setRealPosition(0x762E2C);
-        if (rom.readInt32() == 0xC8C80034) {
-            rom.advance(-2);
-            rom.writeUInt8((short)0);
+        // English 100S
+        ptr = getVersionAddress(0x7600C9, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x006434EF) {
+                rom.advance(-2);
+                rom.writeUInt8((short)0x00);
+            } else {
+                status("WARNING: Could not remove 100S gate.");
+            }
+        }
+        // Japanese 45M
+        ptr = getVersionAddress(0x77CD30, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x2D2D35EF) {
+                rom.advance(-2);
+                rom.writeUInt8((short)0x00);
+            } else {
+                status("WARNING: Could not remove 45M gate.");
+            }
+        }
+        // Japanese 200S
+        ptr = getVersionAddress(0x77D643, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0xC820C834) {
+                rom.advance(-3);
+                rom.writeUInt8((short)0x00);
+            } else {
+                status("WARNING: Could not remove 200S gate.");
+            }
+        }
+        // English 200S
+        ptr = getVersionAddress(0x760D68, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0xC8C80034) {
+                rom.advance(-2);
+                rom.writeUInt8((short)0x00);
+            } else {
+                status("WARNING: Could not remove 200S gate.");
+            }
         }
         
         return chipLibrary;
@@ -185,37 +254,101 @@ public class BN6RandomizerContext extends RandomizerContext {
         Folder startFolder = provider.allData().get(0);
         List<Item> chips = startFolder.getChips();
         
+        // Remove chip check gates.
+        int ptr;
+        Item chipEntry;
+        int chipIndex;
         // Set a random chip to the CentralArea1 gate
-        Item chipEntry = chips.remove(next(chips.size()));
-        int chipIndex = chipEntry.getChip().index();
-        rom.setRealPosition(0x75E6E4);
-        if (rom.readInt32() == 0xAA010083) {
-            rom.advance(-4);
-            rom.writeUInt8((short)(chipIndex & 0xFF));
-            rom.advance(1);
-            rom.writeUInt8((short)((chipIndex >> 8) + 1));
+        chipEntry = chips.remove(next(chips.size()));
+        chipIndex = chipEntry.getChip().index();
+        ptr = getVersionAddress(0x779479, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x00832AEF) {
+                rom.advance(-2);
+                rom.writeUInt16(chipIndex);
+            } else {
+                status("WARNING: Could not remove Rflectr1 gate.");
+            }
         }
-        rom.setRealPosition(0x75E6B8);
-        if (rom.readInt32() == 0x832AEF00) {
-            rom.advance(-1);
-            rom.writeUInt8((short)(chipIndex & 0xFF));
-            rom.writeUInt8((short)(chipIndex >> 8));
+        ptr = getVersionAddress(0x77948D, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x018300FA) {
+                rom.advance(-2);
+                rom.writeUInt16(chipIndex + 0x100);
+            } else {
+                status("WARNING: Could not replace Rflectr1 gate message.");
+            }
+        }
+        ptr = getVersionAddress(0x75C61E, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x008300FA) {
+                rom.advance(-2);
+                rom.writeUInt8((short)(chipIndex & 0xFF));
+                rom.advance(1);
+                rom.writeUInt8((short)((chipIndex >> 8) + 1));
+            } else {
+                status("WARNING: Could not replace Rflectr1 gate message.");
+            }
         }
         
         // Set another random chip to the SeasideArea1 gate
         chipEntry = chips.remove(next(chips.size()));
         chipIndex = chipEntry.getChip().index();
-        rom.setRealPosition(0x75F0C0);
-        if (rom.readInt32() == 0x03010018) {
-            rom.advance(-4);
-            rom.writeUInt8((short)(chipIndex & 0xFF));
-            rom.writeUInt8((short)(chipIndex >> 8));
+        ptr = getVersionAddress(0x779C58, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x00182AEF) {
+                rom.advance(-2);
+                rom.writeUInt16(chipIndex);
+            } else {
+                status("WARNING: Could not remove TrnArrw1 gate.");
+            }
         }
-        rom.setRealPosition(0x75F150);
-        if (rom.readInt32() == 0xAA011800) {
-            rom.advance(-3);
-            rom.writeUInt8((short)(chipIndex & 0xFF));
-            rom.writeUInt8((short)((chipIndex >> 8) + 1));
+        ptr = getVersionAddress(0x75CFF9, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x18002AEF) {
+                rom.advance(-1);
+                rom.writeUInt16(chipIndex);
+            } else {
+                status("WARNING: Could not remove TrnArrw1 gate.");
+            }
+        }
+        ptr = getVersionAddress(0x779CB2, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x011800FA) {
+                rom.advance(-2);
+                rom.writeUInt16(chipIndex + 0x100);
+            } else {
+                status("WARNING: Could not replace TrnArrw1 gate message.");
+            }
+        }
+        // Set another random chip to the Undernet2 gate
+        chipEntry = chips.remove(next(chips.size()));
+        chipIndex = chipEntry.getChip().index();
+        ptr = getVersionAddress(0x77C310, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x562A00EF) {
+                rom.advance(-1);
+                rom.writeUInt16(chipIndex);
+            } else {
+                status("WARNING: Could not remove MchnSwrd gate.");
+            }
+        }
+        ptr = getVersionAddress(0x77C31C, romId);
+        if (ptr != -1) {
+            rom.setRealPosition(ptr);
+            if (rom.readInt32() == 0x015600FA) {
+                rom.advance(-2);
+                rom.writeUInt16(chipIndex + 0x100);
+            } else {
+                status("WARNING: Could not replace MchnSwrd gate message.");
+            }
         }
         
         // Fix tutorial folders.
@@ -424,7 +557,8 @@ public class BN6RandomizerContext extends RandomizerContext {
         OffsetStrategy shopEntryStrat
                 = new OffsetStrategy(itemArrayPtrStrat, 8, 4);
         RepeatStrategy shopEntryArrayStrat
-                = new RepeatStrategy(shopEntryStrat, 19);
+                = new RepeatStrategy(shopEntryStrat,
+                        shopCount[getVersionIndex(romId)]);
         
         rom.setRealPosition(getVersionAddress(0x047CEC, romId));
         rom.setPosition(rom.readInt32());

@@ -24,7 +24,7 @@ public class Main {
             // Debug parameters
             if (DEBUG && args.length == 0) {
                 args = new String[3];
-                args[0] = "roms\\Mega Man Battle Network 6 - Cybeast Falzar (U).gba";
+                args[0] = "roms\\Rockman EXE 6 - Cyber Beast Gregar (J).gba";
                 args[1] = "out.gba";
                 args[2] = "" + 0x12345678;
             }
