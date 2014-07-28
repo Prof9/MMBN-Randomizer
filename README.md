@@ -27,8 +27,10 @@ Notes
 Credits
 =======
 **MMBN Randomizer (c) 2014**
-
 * Prof. 9
+
+**Icon**
+* MidniteW
 
 Mega Man and Mega Man Battle Network are (c) Capcom 1987 - 2014
 
