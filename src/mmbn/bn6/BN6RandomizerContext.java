@@ -1,5 +1,7 @@
 package mmbn.bn6;
 
+import mmbn.BN456RewardProducer;
+import mmbn.BN56ProgramAdvanceProducer;
 import java.util.ArrayList;
 import java.util.List;
 import mmbn.*;
@@ -116,8 +118,8 @@ public class BN6RandomizerContext extends RandomizerContext {
         PALibrary paLibrary = new PALibrary();
         ChipProducer chipProducer
                 = new BN6ChipProducer(chipLibrary);
-        BN6ProgramAdvanceProducer paProducer
-                = new BN6ProgramAdvanceProducer(paLibrary, chipLibrary);
+        ProgramAdvanceProducer paProducer
+                = new BN56ProgramAdvanceProducer(paLibrary, chipLibrary);
         
         // Load all chips.
         ChipProvider chipProvider
@@ -154,7 +156,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         
         // Fix LinkNavi special chips.
         ItemProducer linkNaviChipProducer
-                = new BN6RewardProducer(chipLibrary);
+                = new BN456RewardProducer(chipLibrary);
         ItemProvider linkNaviChipProvider
                 = new ItemProvider(this, linkNaviChipProducer);
         RepeatStrategy linkNaviChipStrat
@@ -237,7 +239,7 @@ public class BN6RandomizerContext extends RandomizerContext {
             ChipLibrary library) {
         // Randomize Folder
         ItemProducer chipProducer
-                = new BN6RewardProducer(library);
+                = new BN456RewardProducer(library);
         FolderProducer producer
                 = new FolderProducer(chipProducer);
         FolderProvider provider
@@ -430,7 +432,7 @@ public class BN6RandomizerContext extends RandomizerContext {
             ChipLibrary library) {
         // Randomize enemy drops.
         ItemProducer producer
-                = new BN6RewardProducer(library);
+                = new BN456RewardProducer(library);
         ItemProvider provider
                 = new ItemProvider(this, producer);
         RepeatStrategy dropRepeatStrat

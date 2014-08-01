@@ -20,11 +20,11 @@ public class Main {
     private static final int RESULT_FATAL = 3;
     
     public static void main(String[] args) {
-        try {
+//        try {
             // Debug parameters
             if (DEBUG && args.length == 0) {
                 args = new String[3];
-                args[0] = "roms\\Rockman EXE 6 - Cyber Beast Gregar (J).gba";
+                args[0] = "roms\\Mega Man Battle Network 5 - Team Colonel (U).gba";
                 args[1] = "out.gba";
                 args[2] = "" + 0x12345678;
             }
@@ -34,11 +34,11 @@ public class Main {
             } else {
                 System.exit(runCMD(args));
             }
-        }
-        catch (Exception ex) {
-            System.err.println("FATAL ERROR: " + ex.getMessage());
-            System.exit(RESULT_FATAL);
-        }
+//        }
+//        catch (Exception ex) {
+//            System.err.println("FATAL ERROR: " + ex.getMessage());
+//            System.exit(RESULT_FATAL);
+//        }
     }
     
     private static void runGUI() {

@@ -1,4 +1,4 @@
-package mmbn.bn6;
+package mmbn.bn5;
 
 import rand.Bytes;
 import rand.ByteStream;
@@ -6,15 +6,17 @@ import mmbn.ChipLibrary;
 import mmbn.BattleChip;
 import mmbn.ChipProducer;
 
-public class BN6ChipProducer extends ChipProducer {    
-    public BN6ChipProducer(ChipLibrary library) {
+public class BN5ChipProducer extends ChipProducer {    
+    public BN5ChipProducer(ChipLibrary library) {
         super(library, new BattleChip.Element[] {
             BattleChip.Element.HEAT,
             BattleChip.Element.AQUA,
             BattleChip.Element.ELEC,
             BattleChip.Element.WOOD,
+            BattleChip.Element.RECOVERY,
             BattleChip.Element.BONUS,
             BattleChip.Element.SWORD,
+            BattleChip.Element.INVISIBLE,
             BattleChip.Element.CURSOR,
             BattleChip.Element.SUMMON,
             BattleChip.Element.WIND,

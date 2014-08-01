@@ -1,4 +1,4 @@
-package mmbn.bn6;
+package mmbn;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import mmbn.ProgramAdvanceProducer;
 import rand.ByteStream;
 import rand.Library;
 
-public class BN6ProgramAdvanceProducer extends ProgramAdvanceProducer {
+public class BN56ProgramAdvanceProducer extends ProgramAdvanceProducer {
     protected final Library<BattleChip> chipLibrary;
     
-    public BN6ProgramAdvanceProducer(final Library<ProgramAdvance> paLibrary,
+    public BN56ProgramAdvanceProducer(final Library<ProgramAdvance> paLibrary,
             final Library<BattleChip> chipLibrary) {
         super(paLibrary, new ProgramAdvance.Type[] {
             ProgramAdvance.Type.CONSECUTIVE,

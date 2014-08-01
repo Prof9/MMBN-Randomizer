@@ -1,9 +1,11 @@
 package rand;
 
+import mmbn.bn5.BN5RandomizerContext;
 import mmbn.bn6.BN6RandomizerContext;
 
 public class ContextSelector {
     private static final RandomizerContext[] contexts = new RandomizerContext[] {
+        new BN5RandomizerContext(),
         new BN6RandomizerContext()
     };
     

@@ -1,13 +1,10 @@
-package mmbn.bn6;
+package mmbn;
 
-import mmbn.ChipLibrary;
-import mmbn.Item;
-import mmbn.RewardProducer;
 import rand.ByteStream;
 import rand.Bytes;
 
-public class BN6RewardProducer extends RewardProducer {
-    public BN6RewardProducer(ChipLibrary library) {
+public class BN456RewardProducer extends RewardProducer {
+    public BN456RewardProducer(ChipLibrary library) {
         super(library, new Item.Type[] {
             Item.Type.BATTLECHIP,
             Item.Type.ZENNY,
