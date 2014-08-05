@@ -1,12 +1,12 @@
-package mmbn.bn6;
+package mmbn;
 
 import rand.Bytes;
 import rand.ByteStream;
 import mmbn.BattleObject;
 import mmbn.BattleObjectProducer;
 
-public class BN6BattleObjectProducer extends BattleObjectProducer {
-    public BN6BattleObjectProducer() {
+public class BN56BattleObjectProducer extends BattleObjectProducer {
+    public BN56BattleObjectProducer() {
         super(new BattleObject.Type[] {
             BattleObject.Type.PLAYER,
             BattleObject.Type.ENEMY,

@@ -1,4 +1,4 @@
-package mmbn.bn6;
+package mmbn.bn5;
 
 import mmbn.BN56BattleProducer;
 import java.util.Random;
@@ -7,8 +7,8 @@ import mmbn.BattleObject;
 import rand.DataProvider;
 import rand.RandomizerContext;
 
-public class BN6BattleProvider extends DataProvider<Battle> {
-    public BN6BattleProvider(RandomizerContext context, BN56BattleProducer producer) {
+public class BN5BattleProvider extends DataProvider<Battle> {
+    public BN5BattleProvider(RandomizerContext context, BN56BattleProducer producer) {
         super(context, producer);
     }
     
@@ -20,16 +20,13 @@ public class BN6BattleProvider extends DataProvider<Battle> {
             
             // If object is an enemy, randomize it.
             if (obj.getType() == BattleObject.Type.ENEMY && obj.getSide() == 1) {
-                // Only randomize regular viruses; not bosses.
-                if (objValue >= 1 && objValue <= 0xAE) {
+                // Only randomize regular viruses; not (mini-)bosses.
+                if (objValue >= 1 && objValue <= 0xA2) {
                     int enemyFamily = (objValue - 1) / 6;
                     int enemyRank = (objValue - 1) % 6;
 
-                    // Do not randomize Rare viruses.
-                    if (enemyRank <= 3) {
-                        // Choose a random family but keep the same rank.
-                        enemyFamily = rng.nextInt(29);
-                    }
+                    // Choose a random family but keep the same rank.
+                    enemyFamily = rng.nextInt(27);
 
                     objValue = enemyFamily * 6 + enemyRank + 1;
                 }

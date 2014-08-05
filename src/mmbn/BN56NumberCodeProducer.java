@@ -1,4 +1,4 @@
-package mmbn.bn6;
+package mmbn;
 
 import mmbn.ChipLibrary;
 import mmbn.Item;
@@ -7,8 +7,8 @@ import mmbn.NumberCodeProducer;
 import rand.Bytes;
 import rand.ByteStream;
 
-public class BN6NumberCodeProducer extends NumberCodeProducer {
-    public BN6NumberCodeProducer(final ChipLibrary chipLibrary,
+public class BN56NumberCodeProducer extends NumberCodeProducer {
+    public BN56NumberCodeProducer(final ChipLibrary chipLibrary,
             final byte[] cipher) {
         super(chipLibrary, new Item.Type[] {
             Item.Type.BATTLECHIP,
@@ -18,7 +18,7 @@ public class BN6NumberCodeProducer extends NumberCodeProducer {
         }, cipher);
     }
     
-    public BN6NumberCodeProducer(final ChipLibrary chipLibrary) {
+    public BN56NumberCodeProducer(final ChipLibrary chipLibrary) {
         this(chipLibrary, new byte[] {
             (byte)0x3E, (byte)0x45, (byte)0xCC, (byte)0x86, (byte)0x90,
             (byte)0x18, (byte)0x4F, (byte)0x09, (byte)0x61, (byte)0xE9

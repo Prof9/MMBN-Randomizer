@@ -1,5 +1,10 @@
 package mmbn.bn6;
 
+import mmbn.BN56NumberCodeProducer;
+import mmbn.BN56BattleProducer;
+import mmbn.BN56MysteryDataContentsProducer;
+import mmbn.BN56ChipTraderProducer;
+import mmbn.BN56ShopItemProducer;
 import mmbn.BN456RewardProducer;
 import mmbn.BN56ProgramAdvanceProducer;
 import java.util.ArrayList;
@@ -396,8 +401,8 @@ public class BN6RandomizerContext extends RandomizerContext {
     }
     
     protected void randomizeBattles(String romId, ByteStream rom) {
-        BN6BattleProducer producer
-                = new BN6BattleProducer();
+        BN56BattleProducer producer
+                = new BN56BattleProducer();
         BN6BattleProvider provider
                 = new BN6BattleProvider(this, producer);
         RepeatStrategy battleListStrat
@@ -436,7 +441,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         ItemProvider provider
                 = new ItemProvider(this, producer);
         RepeatStrategy dropRepeatStrat
-                = new RepeatStrategy(provider, 802 * 2 * 5);
+                = new RepeatStrategy(provider, 401 * 2 * 5 * 2);
         
         rom.setRealPosition(getVersionAddress(0x0AEC34, romId));
         rom.setPosition(rom.readInt32());
@@ -457,7 +462,7 @@ public class BN6RandomizerContext extends RandomizerContext {
             ChipLibrary library) {
         // Randomize Green, Blue and Purple Mystery Data
         ItemProducer producer
-                = new BN6MysteryDataContentsProducer(library);
+                = new BN56MysteryDataContentsProducer(library);
         ItemProvider provider
                 = new ItemProvider(this, producer);
         RepeatStrategy contentsArrayStrat
@@ -511,8 +516,8 @@ public class BN6RandomizerContext extends RandomizerContext {
     protected void randomizeTraders(String romId, ByteStream rom,
             ChipLibrary library) {
         // Randomize chip traders.
-        BN6ChipTraderProducer traderProducer
-                = new BN6ChipTraderProducer(library);
+        BN56ChipTraderProducer traderProducer
+                = new BN56ChipTraderProducer(library);
         TraderProvider traderProvider
                 = new TraderProvider(this, traderProducer, library);
         RepeatStrategy traderArrayStrat
@@ -529,7 +534,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         rom.advance(4);
         rom.setPosition(rom.readInt32());
         ItemProducer numberProducer
-                = new BN6NumberCodeProducer(library, rom.readBytes(10));
+                = new BN56NumberCodeProducer(library, rom.readBytes(10));
         ItemProvider numberProvider
                 = new ItemProvider(this, numberProducer);
         RepeatStrategy numberArrayStrat
@@ -545,7 +550,7 @@ public class BN6RandomizerContext extends RandomizerContext {
     protected void randomizeShops(String romId, ByteStream rom,
             ChipLibrary library) {
         ItemProducer producer
-                = new BN6ShopItemProducer(library);
+                = new BN56ShopItemProducer(library);
         ItemProvider provider
                 = new ItemProvider(this, producer);
         RepeatStrategy itemArrayStrat

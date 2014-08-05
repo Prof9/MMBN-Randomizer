@@ -26,6 +26,10 @@ public class ItemProvider extends DataProvider<Item> {
                     oldChip.getLibrary(),
                     0, 99
             );
+            if (possibleChips.size() <= 0) {
+                possibleChips.add(oldChip);
+            }
+            
             int r = rng.nextInt(possibleChips.size());
             BattleChip newChip = possibleChips.get(r);
             

@@ -1,4 +1,4 @@
-package mmbn.bn6;
+package mmbn;
 
 import mmbn.BattleChip;
 import mmbn.ChipTraderEntry;
@@ -6,10 +6,10 @@ import mmbn.ChipTraderEntryProducer;
 import rand.ByteStream;
 import rand.Library;
 
-public class BN6ChipTraderEntryProducer extends ChipTraderEntryProducer {
+public class BN56ChipTraderEntryProducer extends ChipTraderEntryProducer {
     protected final Library<BattleChip> chipLibrary;
     
-    public BN6ChipTraderEntryProducer(final Library<BattleChip> chipLibrary) {
+    public BN56ChipTraderEntryProducer(final Library<BattleChip> chipLibrary) {
         this.chipLibrary = chipLibrary;
     }
     

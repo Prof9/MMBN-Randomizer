@@ -4,6 +4,9 @@ import rand.Bytes;
 import rand.ByteStream;
 import mmbn.ChipLibrary;
 import mmbn.BattleChip;
+import mmbn.BattleChip;
+import mmbn.ChipLibrary;
+import mmbn.ChipProducer;
 import mmbn.ChipProducer;
 
 public class BN6ChipProducer extends ChipProducer {    

@@ -1,13 +1,10 @@
-package mmbn.bn6;
+package mmbn;
 
-import mmbn.Battle;
-import mmbn.BattleObject;
-import mmbn.BattleProducer;
 import rand.ByteStream;
 
-public class BN6BattleProducer extends BattleProducer {
-    public BN6BattleProducer() {
-        super(new BN6BattleObjectProducer());
+public class BN56BattleProducer extends BattleProducer {
+    public BN56BattleProducer() {
+        super(new BN56BattleObjectProducer());
     }
     
     @Override

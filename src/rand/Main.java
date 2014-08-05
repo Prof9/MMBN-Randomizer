@@ -12,7 +12,7 @@ import java.util.Random;
 import rand.gui.MainFrame;
 
 public class Main {
-    public static final String VERSION = "v0.4";
+    public static final String VERSION = "v0.5";
     private static final boolean DEBUG = false;
     private static final int RESULT_SUCCESS = 0;
     private static final int RESULT_WARNING = 1;
@@ -20,25 +20,33 @@ public class Main {
     private static final int RESULT_FATAL = 3;
     
     public static void main(String[] args) {
-//        try {
-            // Debug parameters
-            if (DEBUG && args.length == 0) {
-                args = new String[3];
-                args[0] = "roms\\Mega Man Battle Network 5 - Team Colonel (U).gba";
-                args[1] = "out.gba";
-                args[2] = "" + 0x12345678;
+        // Debug parameters
+        if (DEBUG && args.length == 0) {
+            args = new String[3];
+            args[0] = "roms\\Mega Man Battle Network 5 - Team Colonel (U).gba";
+            args[1] = "out.gba";
+            args[2] = "" + 0x12345678;
+        }
+        
+        if (!DEBUG) {
+            try {
+                run(args);
             }
-            
-            if (args.length == 0) {
-                runGUI();
-            } else {
-                System.exit(runCMD(args));
+            catch (Exception ex) {
+                System.err.println("FATAL ERROR: " + ex.getMessage());
+                System.exit(RESULT_FATAL);
             }
-//        }
-//        catch (Exception ex) {
-//            System.err.println("FATAL ERROR: " + ex.getMessage());
-//            System.exit(RESULT_FATAL);
-//        }
+        } else {
+            run(args);
+        }
+    }
+    
+    private static void run(String[] args) {
+        if (args.length == 0) {
+            runGUI();
+        } else {
+            System.exit(runCMD(args));
+        }
     }
     
     private static void runGUI() {
