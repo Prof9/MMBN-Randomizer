@@ -39,9 +39,9 @@ public class BattleObject {
         return this.side;
     }
     public void setSide(int side) {
-        if (side < 0 || side > 1) {
+        if (side < 0 || side > 3) {
             throw new IllegalArgumentException("side must be at least 0 and at "
-                    + "most 1.");
+                    + "most 3.");
         }
         this.side = (byte)side;
     }

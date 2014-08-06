@@ -87,6 +87,26 @@ public class BN5RandomizerContext extends RandomizerContext {
         // Randomize chips.
         runProvider(chipProvider, rom);
         
+        // Fix LinkNavi special chips.
+        ItemProducer naviChipProducer
+                = new BN456RewardProducer(chipLibrary);
+        ItemProvider naviChipProvider
+                = new ItemProvider(this, naviChipProducer);
+        RepeatStrategy naviChipStrat
+                = new RepeatStrategy(naviChipProvider, 12 * 2);
+        
+        rom.setRealPosition(0x023F4C);
+        rom.setPosition(rom.readInt32());
+        naviChipStrat.execute(rom);
+        
+        List<Item> linkNaviChips = naviChipProvider.allData();
+        for (Item linkNaviChip : linkNaviChips) {
+            BattleChip chip = linkNaviChip.getChip();
+            byte code = chip.getCodes()[0];
+            linkNaviChip.setChipCode(chip, code);
+        }
+        naviChipProvider.produce(rom);
+        
         return chipLibrary;
     }
     
@@ -220,6 +240,8 @@ public class BN5RandomizerContext extends RandomizerContext {
         
         rom.setRealPosition(0x0A7644);
         areasArrayStrat.execute(rom);
+        
+        runProvider(provider, rom);
     }
     
     protected void randomizeRewards(String romId, ByteStream rom,
@@ -309,6 +331,11 @@ public class BN5RandomizerContext extends RandomizerContext {
         megaAreaListStrat1.execute(rom);
         rom.advance(4);
         megaAreaListStrat2.execute(rom);
+        
+        // Randomize Liberation battles
+        rom.setRealPosition(0x009134);
+        rom.setPosition(rom.readInt32());
+        battleListStrat.execute(rom);
         
         runProvider(provider, rom);
     }
