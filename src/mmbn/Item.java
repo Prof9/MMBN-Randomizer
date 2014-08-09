@@ -33,6 +33,13 @@ public class Item {
         this.subValue = 0;
         this.chip = null;
     }
+    public Item(Item item) {
+        this.base = item.base.clone();
+        this.type = item.type;
+        this.value = item.value;
+        this.subValue = item.subValue;
+        this.chip = item.chip;
+    }
     
     public byte[] base() {
         return this.base.clone();
