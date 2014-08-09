@@ -52,6 +52,7 @@ public class BN6ChipProducer extends ChipProducer {
         chip.setElement(elementFromIndex(bytes[6]));
         chip.setLibrary(libraryFromIndex(bytes[7]));        
         chip.setMB(bytes[8]);
+        chip.setIDPosition(Bytes.readUInt16(bytes, 28));
         
         chip.setIsInLibrary(Bytes.readBits(bytes, 9, 6, 1) != 0);
         
@@ -68,6 +69,7 @@ public class BN6ChipProducer extends ChipProducer {
         bytes[6] = indexFromElement(chip.getElement());
         bytes[7] = indexFromLibrary(chip.getLibrary());
         bytes[8] = chip.getMB();
+        Bytes.writeUInt16(chip.getIDPosition(), bytes, 28);
         
         Bytes.writeBits(chip.getIsInLibrary() ? 1 : 0, bytes, 9, 6, 1);
         

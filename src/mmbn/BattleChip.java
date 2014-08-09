@@ -48,6 +48,7 @@ public class BattleChip {
     protected BattleChip.Library library;
     protected byte mb;
     protected boolean isInLibrary;
+    protected int idPosition;
     
     /**
      * Converts the given code to its string equivalent.
@@ -363,5 +364,20 @@ public class BattleChip {
      */
     public void setIsInLibrary(boolean isInLibrary) {
         this.isInLibrary = isInLibrary;
+    }
+    
+    /**
+     * Gets the ID sorting position of this chip.
+     * @return The ID sorting position.
+     */
+    public int getIDPosition() {
+        return this.idPosition;
+    }
+    /**
+     * Sets the ID sorting position of this chip.
+     * @param idPosition The new ID sorting position.
+     */
+    public void setIDPosition(int idPosition) {
+        this.idPosition = idPosition;
     }
 }
