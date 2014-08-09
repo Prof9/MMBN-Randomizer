@@ -100,6 +100,13 @@ public abstract class DataProvider<T> implements StreamStrategy {
     }
     
     /**
+     * Clears all registered data.
+     */
+    public void clear() {
+        this.pointerMap.clear();
+    }
+    
+    /**
      * Reads data from the given byte stream and registers it.
      * 
      * @param stream The ROM to read from.
