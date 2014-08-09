@@ -12,7 +12,16 @@ public class FilterStrategy implements StreamStrategy {
     private final StreamStrategy strategy;
     private final byte[] match;
     private final byte[] mask;
-    private final boolean skip;
+    private boolean skip;
+    
+    /**
+     * Set the behaviour of matched bytes.
+     * @param skip true if matching bytes should be skipped; false if only 
+     * matching bytes should be executed on.
+     */
+    public void setSkip(boolean skip) {
+        this.skip = skip;
+    }
     
     /**
      * Constructs a new FilterStrategy that filters bytes if they match the
