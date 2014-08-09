@@ -1,8 +1,12 @@
 package rand.gui;
 
 import java.awt.CardLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -52,9 +56,11 @@ public class MainFrame extends javax.swing.JFrame {
         this.isRunning = false;
         
         initLookAndFeel();
+        initIcon();
         initComponents();
         setRandomSeed();
         this.setTitle(this.getTitle() + Main.VERSION);
+        
         
         inFileChooser.setFileFilter(gbaFileFilter);
         outFileChooser.setFileFilter(gbaFileFilter);
@@ -73,6 +79,25 @@ public class MainFrame extends javax.swing.JFrame {
         catch (Exception ex) {
             // tough luck yo
         }
+    }
+    
+    private void initIcon() {
+        String[] fileNames = new String[] {
+            "icon-16x16.png",
+            "icon-24x24.png",
+            "icon-32x32.png",
+            "icon-48x48.png",
+            "icon-64x64.png",
+            "icon-80x80.png",
+            "icon-96x96.png",
+        };
+        List<Image> icons = new ArrayList<>(fileNames.length);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        for (String fileName : fileNames) {
+            icons.add(toolkit.getImage(this.getClass().getResource(fileName)));
+        }
+        this.setIconImages(icons);
+        this.setIconImage(icons.get(0));
     }
 
     /**

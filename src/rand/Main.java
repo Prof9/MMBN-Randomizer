@@ -19,7 +19,7 @@ public class Main {
     private static final int RESULT_ERROR = 2;
     private static final int RESULT_FATAL = 3;
     
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         // Debug parameters
         if (DEBUG && args.length == 0) {
             args = new String[3];
