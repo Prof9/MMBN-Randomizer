@@ -16,7 +16,12 @@ To use the MMBN Randomizer from the command line, pass it the file path of the i
 
 Compatibility
 -------------
-Currently MMBN Randomizer only works for Mega Man Battle Network 6: Cybeast Falzar (U), but support for other games and regions is planned.
+Currently MMBN Randomizer works for the following games:
+
+* Mega Man Battle Network 6: All versions.
+* Mega Man Battle Network 5: Team Colonel, North American version only.
+
+Support for other games and regions is planned.
 
 Since all chip codes are randomized, save files are locked to the seed that was used. If you use a save file from the clean ROM or a randomized ROM with a different seed, the game will softlock when you enter folder edit and you can't use any of your chips in battle.
 
