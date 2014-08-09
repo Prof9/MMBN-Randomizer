@@ -586,7 +586,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         chipOrderFilterStrat.setSkip(false);
         provider.setCodeOnly(true);
         provider.clear();
-        rom.setRealPosition(0x048A38);
+        rom.setRealPosition(getVersionAddress(0x047CEC, romId));
         rom.setPosition(rom.readInt32());
         shopEntryArrayStrat.execute(rom);
         
