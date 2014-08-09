@@ -186,20 +186,62 @@ public class BN5RandomizerContext extends RandomizerContext {
 
         OffsetStrategy shopEntryStrat
                 = new OffsetStrategy(itemArrayPtrStrat, 8, 4);
+        FilterStrategy chipOrderFilterStrat
+                = new FilterStrategy(shopEntryStrat, new byte[] {
+                    2, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0
+                }, new byte[] {
+                    -1, -1, -1, -1, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0
+                }, true);
         RepeatStrategy shopEntryArrayStrat
-                = new RepeatStrategy(shopEntryStrat, 12);
+                = new RepeatStrategy(chipOrderFilterStrat, 18);
         
         rom.setRealPosition(0x048A38);
         rom.setPosition(rom.readInt32());
         shopEntryArrayStrat.execute(rom);
         
-        PointerListStrategy shopAddonStrat
-                = new PointerListStrategy(itemArrayStrat, 2);
+        runProvider(provider, rom);
+        List<Item> shopItems = provider.allData();
         
-        rom.setRealPosition(0x048A30);
-        shopAddonStrat.execute(rom);
+        // Fix Chip Order.
+        chipOrderFilterStrat.setSkip(false);
+        provider.setCodeOnly(true);
+        provider.clear();
+        rom.setRealPosition(0x048A38);
+        rom.setPosition(rom.readInt32());
+        shopEntryArrayStrat.execute(rom);
         
         runProvider(provider, rom);
+        
+        // Fix shop extensions.
+        PointerListStrategy shopAddonStrat
+                = new PointerListStrategy(itemArrayStrat, 2);
+        rom.setRealPosition(0x048A30);
+        provider.clear();
+        shopAddonStrat.execute(rom);
+        List<Item> extItems = provider.allData();
+        
+        int itemIndex = 0;
+        for (int i = 0; i < extItems.size(); i++) {
+            // Find next item with amount = 0.
+            ShopItem placeholder = null;
+            while (itemIndex < shopItems.size()) {
+                ShopItem item = (ShopItem)shopItems.get(itemIndex++);
+                if (item.getStock() == 0) {
+                    placeholder = item;
+                    break;
+                }
+            }
+            if (placeholder == null) {
+                break;
+            }
+            
+            ShopItem replacement = (ShopItem)extItems.get(i);
+            replacement.setItem(placeholder);
+        }
+        
+        provider.produce(rom);
     }
     
     protected void randomizeMysteryData(String romId, ByteStream rom,

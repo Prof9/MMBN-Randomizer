@@ -563,19 +563,62 @@ public class BN6RandomizerContext extends RandomizerContext {
 
         OffsetStrategy shopEntryStrat
                 = new OffsetStrategy(itemArrayPtrStrat, 8, 4);
+        FilterStrategy chipOrderFilterStrat
+                = new FilterStrategy(shopEntryStrat, new byte[] {
+                    2, 0, 0, 0, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0
+                }, new byte[] {
+                    -1, -1, -1, -1, 0, 0, 0, 0,
+                    0, 0, 0, 0, 0, 0, 0, 0
+                }, true);
         RepeatStrategy shopEntryArrayStrat
-                = new RepeatStrategy(shopEntryStrat,
+                = new RepeatStrategy(chipOrderFilterStrat,
                         shopCount[getVersionIndex(romId)]);
         
         rom.setRealPosition(getVersionAddress(0x047CEC, romId));
         rom.setPosition(rom.readInt32());
         shopEntryArrayStrat.execute(rom);
         
-        rom.setRealPosition(getVersionAddress(0x049F90, romId));
+        runProvider(provider, rom);
+        List<Item> shopItems = provider.allData();
+        
+        // Fix Chip Order.
+        chipOrderFilterStrat.setSkip(false);
+        provider.setCodeOnly(true);
+        provider.clear();
+        rom.setRealPosition(0x048A38);
         rom.setPosition(rom.readInt32());
-        itemArrayStrat.execute(rom);
+        shopEntryArrayStrat.execute(rom);
         
         runProvider(provider, rom);
+        
+        // Fix shop extensions.
+        rom.setRealPosition(getVersionAddress(0x049F90, romId));
+        rom.setPosition(rom.readInt32());
+        provider.clear();
+        itemArrayStrat.execute(rom);
+        List<Item> extItems = provider.allData();
+        
+        int itemIndex = 0;
+        for (int i = 0; i < extItems.size(); i++) {
+            // Find next item with amount = 0.
+            ShopItem placeholder = null;
+            while (itemIndex < shopItems.size()) {
+                ShopItem item = (ShopItem)shopItems.get(itemIndex++);
+                if (item.getStock() == 0) {
+                    placeholder = item;
+                    break;
+                }
+            }
+            if (placeholder == null) {
+                break;
+            }
+            
+            ShopItem replacement = (ShopItem)extItems.get(i);
+            replacement.setItem(placeholder);
+        }
+        
+        provider.produce(rom);
     }
 
     @Override
