@@ -41,7 +41,12 @@ public class Folder {
         Collections.sort(this.chips, new Comparator<Item>() {
             @Override
             public int compare(Item a, Item b) {
-                return Integer.compare(a.getChip().index(), b.getChip().index());
+                int result = Integer.compare(a.getChip().getIDPosition(),
+                        b.getChip().getIDPosition());
+                if (result == 0) {
+                    result = Integer.compare(a.getCode(), b.getCode());
+                }
+                return result;
             }
         });
     }
