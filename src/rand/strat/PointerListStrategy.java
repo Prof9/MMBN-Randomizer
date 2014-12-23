@@ -104,7 +104,7 @@ public class PointerListStrategy implements StreamStrategy {
         int next;
         for (int i = 0; i < this.length; i++) {
             next = stream.readInt32();
-            if (!repeat || !processed.contains(next)) {
+            if (repeat || !processed.contains(next)) {
                 stream.push();
                 stream.setPosition(basePointer + next);
                 
