@@ -474,13 +474,9 @@ public class BN6RandomizerContext extends RandomizerContext {
         RepeatStrategy mysteryDataArrayStrat
                 = new RepeatStrategy(mysteryDataStrat, new byte[] { 0 });
         PointerListStrategy mysteryDataPtrStrat
-                = new PointerListStrategy(mysteryDataArrayStrat, 1);
-        RepeatStrategy subAreaArrayStrat
-                = new RepeatStrategy(mysteryDataPtrStrat, new byte[] {
-                    0, 0, 0, 0
-                });
+                = new PointerListStrategy(mysteryDataArrayStrat, 16);
         PointerListStrategy subAreaPtrStrat
-                = new PointerListStrategy(subAreaArrayStrat, 1);
+                = new PointerListStrategy(mysteryDataPtrStrat, 1);
         OffsetStrategy subAreaStrat
                 = new OffsetStrategy(subAreaPtrStrat, 4);
         FilterStrategy emptyAreaFilter
