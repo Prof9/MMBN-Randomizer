@@ -6,7 +6,8 @@ import java.util.ArrayList;
 
 /**
  * A strategy that processes a list of pointers of a predetermined length and
- * applies a delegate strategy to each of them.
+ * applies a delegate strategy to each of them. Any null pointers are skipped
+ * over.
  */
 public class PointerListStrategy implements StreamStrategy {
     private final StreamStrategy strategy;
@@ -104,7 +105,7 @@ public class PointerListStrategy implements StreamStrategy {
         int next;
         for (int i = 0; i < this.length; i++) {
             next = stream.readInt32();
-            if (repeat || !processed.contains(next)) {
+            if (next != 0 && (repeat || !processed.contains(next))) {
                 stream.push();
                 stream.setPosition(basePointer + next);
                 
