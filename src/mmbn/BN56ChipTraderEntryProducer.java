@@ -1,8 +1,5 @@
 package mmbn;
 
-import mmbn.BattleChip;
-import mmbn.ChipTraderEntry;
-import mmbn.ChipTraderEntryProducer;
 import rand.ByteStream;
 import rand.Library;
 

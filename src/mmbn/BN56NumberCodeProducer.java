@@ -1,9 +1,5 @@
 package mmbn;
 
-import mmbn.ChipLibrary;
-import mmbn.Item;
-import mmbn.NumberCode;
-import mmbn.NumberCodeProducer;
 import rand.Bytes;
 import rand.ByteStream;
 
