@@ -5,7 +5,12 @@ public class NumberCode extends Item {
 
     public NumberCode(byte[] base) {
         super(base);
+		this.code = 0;
     }
+	public NumberCode(Item item) {
+		super(item);
+		this.code = 0;
+	}
     
     public int getNumberCode() {
         return this.code;
