@@ -343,6 +343,22 @@ public class BN5RandomizerContext extends RandomizerContext {
         numberArrayStrat.execute(rom);
         
         runProvider(numberProvider, rom);
+		
+		// Randomize Boktai Trader.
+		BoktaiTraderEntryProducer boktaiTraderEntryProducer
+				= new BN56BoktaiTraderEntryProducer(library);
+		ItemProvider boktaiTraderEntryProvider
+				= new ItemProvider(this, boktaiTraderEntryProducer);
+		RepeatStrategy boktaiTraderStrat
+				= new RepeatStrategy(boktaiTraderEntryProvider,
+						new byte[] { -1 });
+		PointerListStrategy boktaiTraderArrayStrat
+				= new PointerListStrategy(boktaiTraderStrat, 4);
+        rom.setRealPosition(0x140B08);
+        rom.setPosition(rom.readInt32());
+		boktaiTraderArrayStrat.execute(rom);
+		
+		runProvider(boktaiTraderEntryProvider, rom);
     }
     
     protected void randomizeBattles(String romId, ByteStream rom) {
