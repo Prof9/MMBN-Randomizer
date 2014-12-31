@@ -16,6 +16,7 @@ import rand.strat.*;
 
 public class BN6RandomizerContext extends RandomizerContext {
     private static final int[][] offsets = new int[][] {
+        // Order: Gregar J, Falzar J, Gregar UE, Falzar UE
         new int[] { 0x00AAC0, 0x00AAC0, 0x00A4D8, 0x00A4D8 },
         new int[] { 0x021EC4, 0x021EC4, 0x021AB0, 0x021AB0 },
         new int[] { 0x0284F0, 0x0284F0, 0x0280DC, 0x0280DC },
@@ -32,6 +33,7 @@ public class BN6RandomizerContext extends RandomizerContext {
         new int[] { 0x0DFAF4, 0x0DE294, 0x0DC284, 0x0DAA14 },
         new int[] { 0x141FF8, 0x140230, 0x139644, 0x137868 },
         new int[] { 0x14A12C, 0x148360, 0x13F260, 0x13D480 },
+        new int[] { 0x14A18C, 0x1483C0, 0x13F2C0, 0x13D4E0 },
         // CentralArea1 gate (Reflectr)
         new int[] { 0x779479, 0x77B545, 0x75C5F5, 0x75E6B9 },
         new int[] { 0x77948D, 0x77B559,       -1,       -1 },
@@ -512,7 +514,7 @@ public class BN6RandomizerContext extends RandomizerContext {
     protected void randomizeTraders(String romId, ByteStream rom,
             ChipLibrary library) {
         // Randomize chip traders.
-        BN56ChipTraderProducer traderProducer
+        ChipTraderProducer traderProducer
                 = new BN56ChipTraderProducer(library);
         TraderProvider traderProvider
                 = new TraderProvider(this, traderProducer, library);
@@ -541,6 +543,22 @@ public class BN6RandomizerContext extends RandomizerContext {
         numberArrayStrat.execute(rom);
         
         runProvider(numberProvider, rom);
+        
+        // Randomize Boktai Trader.
+		BoktaiTraderEntryProducer boktaiTraderEntryProducer
+				= new BN56BoktaiTraderEntryProducer(library);
+		ItemProvider boktaiTraderEntryProvider
+				= new ItemProvider(this, boktaiTraderEntryProducer);
+		RepeatStrategy boktaiTraderStrat
+				= new RepeatStrategy(boktaiTraderEntryProvider,
+						new byte[] { -1 });
+		PointerListStrategy boktaiTraderArrayStrat
+				= new PointerListStrategy(boktaiTraderStrat, 4);
+        rom.setRealPosition(getVersionAddress(0x14A18C, romId));
+        rom.setPosition(rom.readInt32());
+		boktaiTraderArrayStrat.execute(rom);
+		
+		runProvider(boktaiTraderEntryProvider, rom);
     }
     
     protected void randomizeShops(String romId, ByteStream rom,
