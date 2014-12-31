@@ -34,6 +34,9 @@ public abstract class ItemProducer<T extends Item> implements DataProducer<T> {
 
 	protected void setItem(Item item, Item.Type type, int value, int subValue) {
 		switch (type) {
+			case BARRIERKEY:
+				item.setBarrierKey(value);
+				break;
 			case BATTLECHIP:
 				item.setChipCode(getChip(value), subValue);
 				break;
@@ -57,6 +60,9 @@ public abstract class ItemProducer<T extends Item> implements DataProducer<T> {
 				break;
 			case NAVICUST_PROGRAM:
 				item.setProgramColor(value, subValue);
+				break;
+			case ORDER_POINTS:
+				item.setOrderPoints(value);
 				break;
 			case REGUP:
 				item.setRegUP(value);

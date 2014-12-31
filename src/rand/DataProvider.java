@@ -40,7 +40,7 @@ public abstract class DataProvider<T> implements StreamStrategy {
 			stream.advance(this.producer.getDataSize());
 		} else {
 			T data = this.producer.readFromStream(stream);
-			this.context.status("Registered " + this.producer.getDataName() + " at "
+			this.context.status("Found " + this.producer.getDataName() + " at "
 					+ "0x" + String.format("%06X", pointer));
 			this.pointerMap.put(pointer, data);
 		}

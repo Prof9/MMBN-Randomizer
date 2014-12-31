@@ -13,37 +13,45 @@ import rand.strat.PointerListStrategy;
 import rand.strat.RepeatStrategy;
 
 public class BN5RandomizerContext extends RandomizerContext {
+	private static final int[][] offsets = new int[][]{
+		new int[] { 0x000000, 0x000000, 0x000000, 0x000000 },
+	};
+	
 	@Override
 	protected void randomize(String romId, ByteStream rom) {
-		setProgress((100 * 0) / 7);
+		setProgress((100 * 0) / 8);
 		status("Processing chips...");
 		ChipLibrary chipLibrary = randomizeChips(romId, rom);
 
-		setProgress((100 * 1) / 7);
+		setProgress((100 * 1) / 8);
 		status("Processing folders...");
 		randomizeFolders(romId, rom, chipLibrary);
 
-		setProgress((100 * 2) / 7);
+		setProgress((100 * 2) / 8);
 		status("Processing shops...");
 		randomizeShops(romId, rom, chipLibrary);
 
-		setProgress((100 * 3) / 7);
+		setProgress((100 * 3) / 8);
 		status("Processing Mystery Data...");
 		randomizeMysteryData(romId, rom, chipLibrary);
 
-		setProgress((100 * 4) / 7);
+		setProgress((100 * 4) / 8);
 		status("Processing rewards...");
 		randomizeRewards(romId, rom, chipLibrary);
 
-		setProgress((100 * 5) / 7);
+		setProgress((100 * 5) / 8);
 		status("Processing traders...");
 		randomizeTraders(romId, rom, chipLibrary);
+		
+		setProgress((100 * 6) / 8);
+		status("Processing item panels...");
+		randomizeItemPanels(romId, rom, chipLibrary);
 
-		setProgress((100 * 6) / 7);
+		setProgress((100 * 7) / 8);
 		status("Processing battles...");
 		randomizeBattles(romId, rom);
 
-		setProgress((100 * 7) / 7);
+		setProgress((100 * 7) / 8);
 	}
 
 	protected ChipLibrary randomizeChips(String romId, ByteStream rom) {
@@ -359,6 +367,57 @@ public class BN5RandomizerContext extends RandomizerContext {
 		boktaiTraderArrayStrat.execute(rom);
 
 		runProvider(boktaiTraderEntryProvider, rom);
+	}
+	
+	protected void randomizeItemPanels(String romId, ByteStream rom,
+			ChipLibrary library) {
+		// Randomize Item Panels
+		BN5ItemPanelContentsProducer itemPanelContentsProducer
+				= new BN5ItemPanelContentsProducer(library);
+		ItemProvider itemPanelContentsProvider
+				= new ItemProvider(this, itemPanelContentsProducer);
+		RepeatStrategy itemPanelArrayStrat
+				= new RepeatStrategy(itemPanelContentsProvider,
+						new byte[] { -1 });
+		PointerListStrategy itemPanelArrayPointerStrat
+				= new PointerListStrategy(itemPanelArrayStrat, 1);
+		OffsetStrategy liberationMissionStrat
+				= new OffsetStrategy(itemPanelArrayPointerStrat, 52, 36);
+		RepeatStrategy liberationMissionArrayStrat
+				= new RepeatStrategy(liberationMissionStrat, 9);
+		
+		rom.setRealPosition(0x04BEDC);
+		rom.setPosition(rom.readInt32());
+		liberationMissionArrayStrat.execute(rom);
+		runProvider(itemPanelContentsProvider, rom);
+		
+		// Randomize Bonus Panels
+		BN5BonusPanelContentsProducer bonusPanelContentsProducer
+				= new BN5BonusPanelContentsProducer(library);
+		ItemProvider bonusPanelContentsProvider
+				= new ItemProvider(this, bonusPanelContentsProducer);
+		RepeatStrategy bonusPanelContentsArrayStrat
+				= new RepeatStrategy(bonusPanelContentsProvider,
+						new byte[] { -1 });
+		PointerListStrategy bonusPanelContentsArrayPointerStrat
+				= new PointerListStrategy(bonusPanelContentsArrayStrat, 1);
+		OffsetStrategy bonusPanelStrat
+				= new OffsetStrategy(bonusPanelContentsArrayPointerStrat,
+						16, 4);
+		RepeatStrategy bonusPanelArrayStrat
+				= new RepeatStrategy(bonusPanelStrat, new byte[] { 0, 0 });
+		PointerListStrategy bonusPanelArrayPointerStrat
+				= new PointerListStrategy(bonusPanelArrayStrat, 1);
+		liberationMissionStrat
+				= new OffsetStrategy(bonusPanelArrayPointerStrat, 44, 44);
+		liberationMissionArrayStrat
+				= new RepeatStrategy(liberationMissionStrat, 9);
+		
+		rom.setRealPosition(0x04BEDC);
+		rom.setPosition(rom.readInt32());
+		liberationMissionArrayStrat.execute(rom);
+		
+		runProvider(bonusPanelContentsProvider, rom);
 	}
 
 	protected void randomizeBattles(String romId, ByteStream rom) {

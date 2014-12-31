@@ -2,6 +2,7 @@ package mmbn;
 
 public class Item {
 	public enum Type {
+		BARRIERKEY,
 		BATTLECHIP,
 		BATTLECHIP_TRAP,
 		BUGFRAG,
@@ -9,7 +10,10 @@ public class Item {
 		HP,
 		HP_MEMORY,
 		ITEM,
+		MAJOR_HIT,
 		NAVICUST_PROGRAM,
+		ONE_PHASE_INVINCIBILITY,
+		ORDER_POINTS,
 		REGUP,
 		SUBCHIP,
 		SUBMEMORY,
@@ -93,6 +97,10 @@ public class Item {
 	public boolean isHP() {
 		return this.type == Item.Type.HP;
 	}
+	
+	public boolean isOrderPoints() {
+		return this.type == Item.Type.ORDER_POINTS;
+	}
 
 	protected void checkChip() {
 		if (!isChip()) {
@@ -137,7 +145,7 @@ public class Item {
 	}
 
 	public int getAmount() {
-		if (isZenny() || isBugFrag()) {
+		if (isZenny() || isBugFrag() || isOrderPoints()) {
 			return this.value;
 		} else if (isEmpty()) {
 			return 0;
@@ -147,9 +155,9 @@ public class Item {
 	}
 
 	public void setAmount(int amount) {
-		if (!isZenny() && !isBugFrag()) {
+		if (!isZenny() && !isBugFrag() && !isOrderPoints()) {
 			throw new IllegalStateException("This container does not contain "
-					+ "Zenny or BugFrags.");
+					+ "Zenny, BugFrags or Order Points.");
 		}
 		this.value = amount;
 	}
@@ -225,6 +233,18 @@ public class Item {
 	public int getColor() {
 		checkProgram();
 		return this.subValue;
+	}
+	
+	public void setOrderPoints(int amount) {
+		this.type = Item.Type.ORDER_POINTS;
+		this.value = amount;
+		this.chip = null;
+	}
+	
+	public void setBarrierKey(int key) {
+		this.type = Item.Type.BARRIERKEY;
+		this.value = key;
+		this.chip = null;
 	}
 
 	public void setProgramColor(int program, int color) {
