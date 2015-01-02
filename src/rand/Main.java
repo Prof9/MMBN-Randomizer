@@ -146,6 +146,8 @@ public class Main {
 
 	public static String getRomId(ByteStream rom) {
 		rom.setRealPosition(0x0000AC);
-		return new String(rom.readBytes(4), StandardCharsets.US_ASCII);
+		String romId = new String(rom.readBytes(4), StandardCharsets.US_ASCII);
+		rom.setRealPosition(0x0000BC);
+		return romId + rom.readUInt8();
 	}
 }

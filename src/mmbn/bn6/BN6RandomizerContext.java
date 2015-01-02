@@ -88,15 +88,15 @@ public class BN6RandomizerContext extends RandomizerContext {
 
 	protected int getVersionIndex(String romId) {
 		switch (romId) {
-			case "BR5J":
+			case "BR5J0":
 				return 0;
-			case "BR6J":
+			case "BR6J0":
 				return 1;
-			case "BR5E":
-			case "BR5P":
+			case "BR5E0":
+			case "BR5P0":
 				return 2;
-			case "BR6E":
-			case "BR6P":
+			case "BR6E0":
+			case "BR6P0":
 				return 3;
 			default:
 				throw new IllegalArgumentException("Unknown ROM ID \"" + romId
@@ -638,17 +638,17 @@ public class BN6RandomizerContext extends RandomizerContext {
 	public String[] getSupportedRomIds() {
 		return new String[] {
 			// Rockman EXE 6: Cyber Beast Gregar (J)
-			"BR5J",
+			"BR5J0",
 			// Rockman EXE 6: Cyber Beast Falzar (J)
-			"BR6J",
+			"BR6J0",
 			// Mega Man Battle Network 6: Cybeast Gregar (U)
-			"BR5E",
+			"BR5E0",
 			// Mega Man Battle Network 6: Cybeast Gregar (E)
-			"BR5P",
+			"BR5P0",
 			// Mega Man Battle Network 6: Cybeast Falzar (U)
-			"BR6E",
+			"BR6E0",
 			// Mega Man Battle Network 6: Cybeast Falzar (E)
-			"BR6P"
+			"BR6P0"
 		};
 	}
 }

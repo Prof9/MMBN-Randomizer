@@ -72,15 +72,15 @@ public class BN5RandomizerContext extends RandomizerContext {
 	
 	protected int getVersionIndex(String romId) {
 		switch (romId) {
-			case "BRBJ":
+			case "BRBJ0":
 				return 0;
-			case "BRKJ":
+			case "BRKJ0":
 				return 1;
-			case "BRBE":
-			case "BRBP":
+			case "BRBE0":
+			case "BRBP0":
 				return 2;
-			case "BRKE":
-			case "BRKP":
+			case "BRKE0":
+			case "BRKP0":
 				return 3;
 			default:
 				throw new IllegalArgumentException("Unknown ROM ID \"" + romId
@@ -510,17 +510,17 @@ public class BN5RandomizerContext extends RandomizerContext {
 	public String[] getSupportedRomIds() {
 		return new String[] {
 			// Rockman EXE 5: Team of Blues (J)
-			"BRBJ",
+			"BRBJ0",
 			// Rockman EXE 5: Team of Colonel (J)
-			"BRKJ",
+			"BRKJ0",
 			// Mega Man Battle Network 5: Team ProtoMan (U)
-			"BRBE",
+			"BRBE0",
 			// Mega Man Battle Network 5: Team Colonel (U)
-			"BRKE",
+			"BRKE0",
 			// Mega Man Battle Network 5: Team ProtoMan (E)
-			"BRBP",
+			"BRBP0",
 			// Mega Man Battle Network 5: Team Colonel (E)
-			"BRKP"
+			"BRKP0"
 		};
 	}
 }
