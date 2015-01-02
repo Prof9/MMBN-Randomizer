@@ -638,7 +638,7 @@ public class BN6RandomizerContext extends RandomizerContext {
 
 	@Override
 	public String[] getSupportedRomIds() {
-		return new String[]{
+		return new String[] {
 			// Rockman EXE 6: Cyber Beast Gregar (J)
 			"BR5J",
 			// Rockman EXE 6: Cyber Beast Falzar (J)

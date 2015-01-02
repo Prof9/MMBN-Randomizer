@@ -12,8 +12,8 @@ import java.util.Random;
 import rand.gui.MainFrame;
 
 public class Main {
-	public static final String VERSION = "v1.0";
-	private static final boolean DEBUG = true;
+	public static final String VERSION = "v1.1 BETA";
+	private static final boolean DEBUG = false;
 	private static final int RESULT_SUCCESS = 0;
 	private static final int RESULT_WARNING = 1;
 	private static final int RESULT_ERROR = 2;
@@ -23,8 +23,8 @@ public class Main {
 		// Debug parameters
 		if (DEBUG && args.length == 0) {
 			args = new String[3];
-			args[0] = "roms\\Mega Man Battle Network 5 - Team Colonel (U).gba";
-			args[1] = "out5.gba";
+			args[0] = "roms\\Rockman EXE 5 - Team of Blues (J).gba";
+			args[1] = "out5pj.gba";
 			args[2] = "" + 0x12345678;
 		}
 
