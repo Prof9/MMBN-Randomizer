@@ -2,15 +2,15 @@ package mmbn.bn5;
 
 import java.util.ArrayList;
 import java.util.List;
-import mmbn.*;
-import mmbn.BN56NumberCodeProducer;
+import mmbn.ChipLibrary;
+import mmbn.PALibrary;
+import mmbn.multi.*;
+import mmbn.prod.*;
+import mmbn.prov.*;
+import mmbn.types.*;
 import rand.ByteStream;
 import rand.RandomizerContext;
-import rand.strat.FilterStrategy;
-import rand.strat.LoaderStrategy;
-import rand.strat.OffsetStrategy;
-import rand.strat.PointerListStrategy;
-import rand.strat.RepeatStrategy;
+import rand.strat.*;
 
 public class BN5RandomizerContext extends RandomizerContext {
 	private static final int[][] offsets = new int[][]{

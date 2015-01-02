@@ -13,7 +13,7 @@ import rand.gui.MainFrame;
 
 public class Main {
 	public static final String VERSION = "v1.1 BETA";
-	private static final boolean DEBUG = false;
+	private static final boolean DEBUG = true;
 	private static final int RESULT_SUCCESS = 0;
 	private static final int RESULT_WARNING = 1;
 	private static final int RESULT_ERROR = 2;

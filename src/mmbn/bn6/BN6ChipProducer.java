@@ -2,9 +2,9 @@ package mmbn.bn6;
 
 import rand.Bytes;
 import rand.ByteStream;
-import mmbn.BattleChip;
+import mmbn.types.BattleChip;
 import mmbn.ChipLibrary;
-import mmbn.ChipProducer;
+import mmbn.prod.ChipProducer;
 
 public class BN6ChipProducer extends ChipProducer {
 	public BN6ChipProducer(ChipLibrary library) {

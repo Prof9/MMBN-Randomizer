@@ -1,5 +1,6 @@
 package mmbn;
 
+import mmbn.types.BattleChip;
 import rand.Library;
 import java.util.ArrayList;
 import java.util.List;

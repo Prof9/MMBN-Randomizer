@@ -1,9 +1,9 @@
 package mmbn.bn5;
 
-import mmbn.BN56BattleProducer;
+import mmbn.multi.BN56BattleProducer;
 import java.util.Random;
-import mmbn.Battle;
-import mmbn.BattleObject;
+import mmbn.types.Battle;
+import mmbn.types.BattleObject;
 import rand.DataProvider;
 import rand.RandomizerContext;
 

@@ -1,15 +1,13 @@
 package mmbn.bn6;
 
-import mmbn.BN56NumberCodeProducer;
-import mmbn.BN56BattleProducer;
-import mmbn.BN56MysteryDataContentsProducer;
-import mmbn.BN56ChipTraderProducer;
-import mmbn.BN56ShopItemProducer;
-import mmbn.BN456RewardProducer;
-import mmbn.BN56ProgramAdvanceProducer;
 import java.util.ArrayList;
 import java.util.List;
-import mmbn.*;
+import mmbn.ChipLibrary;
+import mmbn.PALibrary;
+import mmbn.multi.*;
+import mmbn.prod.*;
+import mmbn.prov.*;
+import mmbn.types.*;
 import rand.ByteStream;
 import rand.RandomizerContext;
 import rand.strat.*;

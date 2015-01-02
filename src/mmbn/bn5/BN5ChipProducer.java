@@ -3,8 +3,8 @@ package mmbn.bn5;
 import rand.Bytes;
 import rand.ByteStream;
 import mmbn.ChipLibrary;
-import mmbn.BattleChip;
-import mmbn.ChipProducer;
+import mmbn.types.BattleChip;
+import mmbn.prod.ChipProducer;
 
 public class BN5ChipProducer extends ChipProducer {
 	public BN5ChipProducer(ChipLibrary library) {
