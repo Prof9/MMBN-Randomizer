@@ -7,8 +7,8 @@ import mmbn.types.ShopItem;
 import rand.ByteStream;
 import rand.Bytes;
 
-public class BN56ShopItemProducer extends ShopItemProducer {
-	public BN56ShopItemProducer(final ChipLibrary chipLibrary) {
+public class BN456ShopItemProducer extends ShopItemProducer {
+	public BN456ShopItemProducer(final ChipLibrary chipLibrary) {
 		super(chipLibrary, new Item.Type[]{
 			Item.Type.ITEM,
 			Item.Type.BATTLECHIP,

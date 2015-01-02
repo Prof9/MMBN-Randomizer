@@ -67,7 +67,7 @@ public class BN5RandomizerContext extends RandomizerContext {
 		status("Processing battles...");
 		randomizeBattles(romId, rom);
 
-		setProgress((100 * 8) / 8);
+		setProgress(100);
 	}
 	
 	protected int getVersionIndex(String romId) {
@@ -230,7 +230,7 @@ public class BN5RandomizerContext extends RandomizerContext {
 	protected void randomizeShops(String romId, ByteStream rom,
 			ChipLibrary library) {
 		ItemProducer producer
-				= new BN56ShopItemProducer(library);
+				= new BN456ShopItemProducer(library);
 		ItemProvider provider
 				= new ItemProvider(this, producer);
 		RepeatStrategy itemArrayStrat
@@ -317,13 +317,9 @@ public class BN5RandomizerContext extends RandomizerContext {
 		RepeatStrategy mysteryDataArrayStrat
 				= new RepeatStrategy(mysteryDataStrat, new byte[]{0});
 		PointerListStrategy mysteryDataPtrStrat
-				= new PointerListStrategy(mysteryDataArrayStrat, 1);
-		RepeatStrategy subAreaArrayStrat
-				= new RepeatStrategy(mysteryDataPtrStrat, new byte[]{
-					0, 0, 0, 0
-				});
+				= new PointerListStrategy(mysteryDataArrayStrat, 16);
 		PointerListStrategy subAreaPtrStrat
-				= new PointerListStrategy(subAreaArrayStrat, 1);
+				= new PointerListStrategy(mysteryDataPtrStrat, 1);
 		FilterStrategy emptyAreaFilter
 				= new FilterStrategy(subAreaPtrStrat, new byte[]{
 					0, 0, 0, 0
