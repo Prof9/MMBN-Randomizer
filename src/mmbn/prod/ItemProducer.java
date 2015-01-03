@@ -81,6 +81,7 @@ public abstract class ItemProducer<T extends Item> implements DataProducer<T> {
 				break;
 			case ZENNY_TRAP:
 				item.setZennyTrap(value);
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown item type " + type);
 		}
