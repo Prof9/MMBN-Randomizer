@@ -1,4 +1,4 @@
-package mmbn.bn5;
+package mmbn.bn4;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,58 +12,53 @@ import rand.ByteStream;
 import rand.RandomizerContext;
 import rand.strat.*;
 
-public class BN5RandomizerContext extends RandomizerContext {
-	private static final int[][] offsets = new int[][]{
-		new int[] { 0x008D44, 0x008D44, 0x008D44, 0x008D44 },
-		new int[] { 0x009134, 0x009134, 0x009134, 0x009134 },
-		new int[] { 0x01DED8, 0x01DED4, 0x01DF1C, 0x01DF18 },
-		new int[] { 0x023F0C, 0x023F08, 0x023F50, 0x023F4C },
-		new int[] { 0x025218, 0x02521C, 0x02525C, 0x025260 },
-		new int[] { 0x047F00, 0x047F08, 0x0486C4, 0x0486CC },
-		new int[] { 0x048264, 0x04826C, 0x048A28, 0x048A30 },
-		new int[] { 0x04826C, 0x048274, 0x048A30, 0x048A38 },
-		new int[] { 0x04B0B8, 0x04B0C0, 0x04B87C, 0x04B884 },
-		new int[] { 0x04B70C, 0x04B714, 0x04BED4, 0x04BEDC },
-		new int[] { 0x0A6EC4, 0x0A6FA8, 0x0A7560, 0x0A7644 },
-		new int[] { 0x0DB2EC, 0x0DB3D4, 0x0DB5C0, 0x0DB6A8 },
-		new int[] { 0x10F348, 0x10F430, 0x10F72C, 0x10F814 },
-		new int[] { 0x10FC04, 0x10FCEC, 0x10FFE8, 0x1100D0 },
-		new int[] { 0x1344EC, 0x1345D4, 0x134934, 0x134A1C },
-		new int[] { 0x140544, 0x14062C, 0x1409C0, 0x140AA8 },
-		new int[] { 0x1405A4, 0x14068C, 0x140A20, 0x140B08 },
+public class BN4RandomizerContext extends RandomizerContext {
+		private static final int[][] offsets = new int[][]{
+		// Order: Red Sun J, Blue Moon J, Red Sun U, Red Sun E, Blue Moon U,
+		//        Blue Moon E, Red Sun J Rev1, Blue Moon J Rev1
+		new int[] { 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000, 0x000000 },
+		new int[] { 0x007B34, 0x007B34, 0x007B68, 0x007B60, 0x007B68, 0x007B60, 0x007B38, 0x000000 },
+		new int[] { 0x018FE8, 0x018FE8, 0x0190DC, 0x0190D4, 0x0190DC, 0x0190D4, 0x01901C, 0x000000 },	
+		new int[] { 0x01F3E4, 0x01F3E4, 0x01F4E0, 0x01F4D8, 0x01F4E0, 0x01F4D8, 0x01F420, 0x000000 },
+		new int[] { 0x043058, 0x043060, 0x04318C, 0x043194, 0x043194, 0x04319C, 0x043094, 0x000000 },
+		new int[] { 0x049CA0, 0x049CA8, 0x049DE0, 0x049DE8, 0x049DE8, 0x049DF0, 0x049DCD, 0x000000 },
+		new int[] { 0x04BA30, 0x04BA38, 0x04BB70, 0x04BB78, 0x04BB78, 0x04BB80, 0x04BA6C, 0x000000 },
+		new int[] { 0x04DCC8, 0x04DCD0, 0x04DE08, 0x04DE10, 0x04DE10, 0x04DE18, 0x04DD04, 0x000000 },
+		new int[] { 0x04DEF8, 0x04DF00, 0x04E038, 0x04E040, 0x0CFA78, 0x0CFA5C, 0x0CF95C, 0x000000 },
+		new int[] { 0x0AE00C, 0x0AE018, 0x0AE048, 0x0AE050, 0x0AE054, 0x0AE05C, 0x0AE084, 0x000000 },
+		new int[] { 0x0CF8E0, 0x0CF8EC, 0x0CFA6C, 0x0CFA50, 0x0CFA78, 0x0CFA5C, 0x0CF95C, 0x000000 },
+		new int[] { 0x0F52F4, 0x0F5300, 0x0F54B4, 0x0F5494, 0x0F54C0, 0x0F54A0, 0x0F5370, 0x000000 },
+		new int[] { 0x0F5DA4, 0x0F5DB0, 0x0F5F4C, 0x0F5F2C, 0x0F5F58, 0x0F5F38, 0x0F5E20, 0x000000 },
+		new int[] { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x000000 },
 	};
 	
 	@Override
 	protected void randomize(String romId, ByteStream rom) {
-		setProgress((100 * 0) / 8);
+		setProgress((100 * 0) / 7);
 		status("Processing chips...");
 		ChipLibrary chipLibrary = randomizeChips(romId, rom);
 
-		setProgress((100 * 1) / 8);
+		setProgress((100 * 1) / 7);
 		status("Processing folders...");
 		randomizeFolders(romId, rom, chipLibrary);
 
-		setProgress((100 * 2) / 8);
+		setProgress((100 * 2) / 7);
 		status("Processing shops...");
 		randomizeShops(romId, rom, chipLibrary);
 
-		setProgress((100 * 3) / 8);
+		setProgress((100 * 3) / 7);
 		status("Processing Mystery Data...");
 		randomizeMysteryData(romId, rom, chipLibrary);
-		
-		setProgress((100 * 4) / 8);
-		status("Processing item panels...");
-		randomizeItemPanels(romId, rom, chipLibrary);
 
-		setProgress((100 * 5) / 8);
+		setProgress((100 * 4) / 7);
 		status("Processing rewards...");
 		randomizeRewards(romId, rom, chipLibrary);
 
-		setProgress((100 * 6) / 8);
+		setProgress((100 * 5) / 7);
 		status("Processing traders...");
 		randomizeTraders(romId, rom, chipLibrary);
 
-		setProgress((100 * 7) / 8);
+		setProgress((100 * 6) / 7);
 		status("Processing battles...");
 		randomizeBattles(romId, rom);
 
@@ -72,16 +67,22 @@ public class BN5RandomizerContext extends RandomizerContext {
 	
 	protected int getVersionIndex(String romId) {
 		switch (romId) {
-			case "BRBJ0":
+			case "B4WJ0":
 				return 0;
-			case "BRKJ0":
+			case "B4BJ0":
 				return 1;
-			case "BRBE0":
-			case "BRBP0":
+			case "B4WE0":
 				return 2;
-			case "BRKE0":
-			case "BRKP0":
+			case "B4WP0":
 				return 3;
+			case "B4BE0":
+				return 4;
+			case "B4BP0":
+				return 5;
+			case "B4WJ1":
+				return 6;
+			//case "B4BJ1":
+			//	return 7;
 			default:
 				throw new IllegalArgumentException("Unknown ROM ID \"" + romId
 						+ "\".");
@@ -102,22 +103,22 @@ public class BN5RandomizerContext extends RandomizerContext {
 		throw new IllegalArgumentException("Unknown address " + firstAddr
 				+ ".");
 	}
-
+	
 	protected ChipLibrary randomizeChips(String romId, ByteStream rom) {
 		ChipLibrary chipLibrary = new ChipLibrary();
 		PALibrary paLibrary = new PALibrary();
 		ChipProducer chipProducer
-				= new BN5ChipProducer(chipLibrary);
+				= new BN4ChipProducer(chipLibrary);
 		ProgramAdvanceProducer paProducer
-				= new BN56ProgramAdvanceProducer(paLibrary, chipLibrary);
+				= new BN4ProgramAdvanceProducer(paLibrary, chipLibrary);
 
 		// Load all chips.
 		ChipProvider chipProvider
 				= new ChipProvider(this, chipProducer, paLibrary);
 		RepeatStrategy chipRepeatStrat
-				= new RepeatStrategy(chipProvider, 424);
+				= new RepeatStrategy(chipProvider, 389);
 
-		rom.setRealPosition(getVersionAddress(0x01DED8, romId));
+		rom.setRealPosition(getVersionAddress(0x018FE8, romId));
 		rom.setPosition(rom.readInt32());
 		chipRepeatStrat.execute(rom);
 
@@ -127,12 +128,11 @@ public class BN5RandomizerContext extends RandomizerContext {
 		PointerListStrategy paPtrStrat
 				= new PointerListStrategy(paStrat, 1, false);
 		RepeatStrategy paPtrListStrat
-				= new RepeatStrategy(paPtrStrat, new byte[]{0, 0, 0, 0});
-		PointerListStrategy paPtrListListStrat
-				= new PointerListStrategy(paPtrListStrat, 2);
-
-		rom.setRealPosition(getVersionAddress(0x025218, romId));
-		paPtrListListStrat.execute(rom);
+				= new RepeatStrategy(paPtrStrat, new byte[] {0, 0, 0, 0});
+		
+		rom.setRealPosition(getVersionAddress(0x01F3E4, romId));
+		rom.setPosition(rom.readInt32());
+		paPtrListStrat.execute(rom);
 
 		// Make sure the combo from the tutorial works.
 		List<BattleChip> comboChips = new ArrayList<>(2);
@@ -144,29 +144,9 @@ public class BN5RandomizerContext extends RandomizerContext {
 		// Randomize chips.
 		runProvider(chipProvider, rom);
 
-		// Fix LinkNavi special chips.
-		ItemProducer naviChipProducer
-				= new BN456RewardProducer(chipLibrary);
-		ItemProvider naviChipProvider
-				= new ItemProvider(this, naviChipProducer);
-		RepeatStrategy naviChipStrat
-				= new RepeatStrategy(naviChipProvider, 12 * 2);
-
-		rom.setRealPosition(getVersionAddress(0x023F0C, romId));
-		rom.setPosition(rom.readInt32());
-		naviChipStrat.execute(rom);
-
-		List<Item> linkNaviChips = naviChipProvider.allData();
-		for (Item linkNaviChip : linkNaviChips) {
-			BattleChip chip = linkNaviChip.getChip();
-			byte code = chip.getCodes()[0];
-			linkNaviChip.setChipCode(chip, code);
-		}
-		naviChipProvider.produce(rom);
-
 		return chipLibrary;
 	}
-
+	
 	protected void randomizeFolders(String romId, ByteStream rom,
 			ChipLibrary library) {
 		// Randomize Folder
@@ -176,12 +156,12 @@ public class BN5RandomizerContext extends RandomizerContext {
 				= new FolderProducer(chipProducer);
 		FolderProvider provider
 				= new FolderProvider(this, producer);
-		PointerListStrategy processListStrat
-				= new PointerListStrategy(provider, 6);
+		RepeatStrategy folderListStrat
+				= new RepeatStrategy(provider, 7);
 
-		rom.setRealPosition(getVersionAddress(0x1344EC, romId));
+		rom.setRealPosition(getVersionAddress(0x043058, romId));
 		rom.setPosition(rom.readInt32());
-		processListStrat.execute(rom);
+		folderListStrat.execute(rom);
 
 		runProvider(provider, rom);
 
@@ -197,8 +177,8 @@ public class BN5RandomizerContext extends RandomizerContext {
 					-1, -1, -1, -1
 				}, true);
 		RepeatStrategy tutorialPtrArrayStrat
-				= new RepeatStrategy(filterEmptyStrat, 8);
-		rom.setRealPosition(getVersionAddress(0x008D44, romId));
+				= new RepeatStrategy(filterEmptyStrat, 68);
+		rom.setRealPosition(getVersionAddress(0x007B34, romId));
 		rom.setPosition(rom.readInt32());
 		tutorialPtrArrayStrat.execute(rom);
 		byte[] codesWideSwrd = library.getElement(49).getCodes();
@@ -226,7 +206,7 @@ public class BN5RandomizerContext extends RandomizerContext {
 			tutorialProvider.produce(rom);
 		}
 	}
-
+	
 	protected void randomizeShops(String romId, ByteStream rom,
 			ChipLibrary library) {
 		ItemProducer producer
@@ -236,7 +216,7 @@ public class BN5RandomizerContext extends RandomizerContext {
 		RepeatStrategy itemArrayStrat
 				= new RepeatStrategy(provider, new byte[]{0});
 
-		rom.setRealPosition(getVersionAddress(0x047F00, romId));
+		rom.setRealPosition(getVersionAddress(0x04BA30, romId));
 		int itemPoolPtr = rom.readInt32();
 		PointerListStrategy itemArrayPtrStrat
 				= new PointerListStrategy(itemArrayStrat, 1, itemPoolPtr);
@@ -252,55 +232,25 @@ public class BN5RandomizerContext extends RandomizerContext {
 					0, 0, 0, 0, 0, 0, 0, 0
 				}, true);
 		RepeatStrategy shopEntryArrayStrat
-				= new RepeatStrategy(chipOrderFilterStrat, 18);
+				= new RepeatStrategy(chipOrderFilterStrat, 17);
 
-		rom.setRealPosition(getVersionAddress(0x04826C, romId));
+		rom.setRealPosition(getVersionAddress(0x049CA0, romId));
 		rom.setPosition(rom.readInt32());
 		shopEntryArrayStrat.execute(rom);
 
 		runProvider(provider, rom);
-		List<Item> shopItems = provider.allData();
 
 		// Fix Chip Order.
 		chipOrderFilterStrat.setSkip(false);
 		provider.setCodeOnly(true);
 		provider.clear();
-		rom.setRealPosition(getVersionAddress(0x04826C, romId));
+		rom.setRealPosition(getVersionAddress(0x049CA0, romId));
 		rom.setPosition(rom.readInt32());
 		shopEntryArrayStrat.execute(rom);
 
 		runProvider(provider, rom);
-
-		// Fix shop extensions.
-		PointerListStrategy shopAddonStrat
-				= new PointerListStrategy(itemArrayStrat, 2);
-		rom.setRealPosition(getVersionAddress(0x048264, romId));
-		provider.clear();
-		shopAddonStrat.execute(rom);
-		List<Item> extItems = provider.allData();
-
-		int itemIndex = 0;
-		for (int i = 0; i < extItems.size(); i++) {
-			// Find next item with amount = 0.
-			ShopItem placeholder = null;
-			while (itemIndex < shopItems.size()) {
-				ShopItem item = (ShopItem) shopItems.get(itemIndex++);
-				if (item.getStock() == 0) {
-					placeholder = item;
-					break;
-				}
-			}
-			if (placeholder == null) {
-				break;
-			}
-
-			ShopItem replacement = (ShopItem) extItems.get(i);
-			replacement.setItem(placeholder);
-		}
-
-		provider.produce(rom);
 	}
-
+	
 	protected void randomizeMysteryData(String romId, ByteStream rom,
 			ChipLibrary library) {
 		// Randomize Green, Blue and Purple Mystery Data
@@ -317,9 +267,13 @@ public class BN5RandomizerContext extends RandomizerContext {
 		RepeatStrategy mysteryDataArrayStrat
 				= new RepeatStrategy(mysteryDataStrat, new byte[]{0});
 		PointerListStrategy mysteryDataPtrStrat
-				= new PointerListStrategy(mysteryDataArrayStrat, 16);
+				= new PointerListStrategy(mysteryDataArrayStrat, 1);
+		RepeatStrategy subAreaArrayStrat
+				= new RepeatStrategy(mysteryDataPtrStrat, new byte[]{
+					0, 0, 0, 0
+				});
 		PointerListStrategy subAreaPtrStrat
-				= new PointerListStrategy(mysteryDataPtrStrat, 1);
+				= new PointerListStrategy(subAreaArrayStrat, 1);
 		FilterStrategy emptyAreaFilter
 				= new FilterStrategy(subAreaPtrStrat, new byte[]{
 					0, 0, 0, 0
@@ -333,12 +287,12 @@ public class BN5RandomizerContext extends RandomizerContext {
 		PointerListStrategy areasArrayStrat
 				= new PointerListStrategy(areaArrayStrat, 2);
 
-		rom.setRealPosition(getVersionAddress(0x0A6EC4, romId));
+		rom.setRealPosition(getVersionAddress(0x0AE00C, romId));
 		areasArrayStrat.execute(rom);
 
 		runProvider(provider, rom);
 	}
-
+	
 	protected void randomizeRewards(String romId, ByteStream rom,
 			ChipLibrary library) {
 		// Randomize enemy drops.
@@ -347,9 +301,9 @@ public class BN5RandomizerContext extends RandomizerContext {
 		ItemProvider provider
 				= new ItemProvider(this, producer);
 		RepeatStrategy dropRepeatStrat
-				= new RepeatStrategy(provider, 377 * 2 * 5 * 2);
+				= new RepeatStrategy(provider, 276 * 2 * 5 * 2);
 
-		rom.setRealPosition(getVersionAddress(0x10FC04, romId));
+		rom.setRealPosition(getVersionAddress(0x0F5DA4, romId));
 		rom.setPosition(rom.readInt32());
 		dropRepeatStrat.execute(rom);
 
@@ -357,13 +311,13 @@ public class BN5RandomizerContext extends RandomizerContext {
 		RepeatStrategy mdRepeatStrat
 				= new RepeatStrategy(provider, 8 * 8);
 
-		rom.setRealPosition(getVersionAddress(0x0DB2EC, romId));
+		rom.setRealPosition(getVersionAddress(0x0CF8E0, romId));
 		rom.setPosition(rom.readInt32());
 		mdRepeatStrat.execute(rom);
 
 		runProvider(provider, rom);
 	}
-
+	
 	protected void randomizeTraders(String romId, ByteStream rom,
 			ChipLibrary library) {
 		// Randomize chip traders.
@@ -374,14 +328,14 @@ public class BN5RandomizerContext extends RandomizerContext {
 		RepeatStrategy traderArrayStrat
 				= new RepeatStrategy(traderProvider, 4);
 
-		rom.setRealPosition(getVersionAddress(0x04B0B8, romId));
+		rom.setRealPosition(getVersionAddress(0x04DCC8, romId));
 		rom.setPosition(rom.readInt32());
 		traderArrayStrat.execute(rom);
 
 		runProvider(traderProvider, rom);
 
 		// Randomize Number Trader.
-		rom.setRealPosition(getVersionAddress(0x140544, romId));
+		rom.setRealPosition(getVersionAddress(0x04DEF8, romId));
 		rom.advance(4);
 		rom.setPosition(rom.readInt32());
 		ItemProducer numberProducer
@@ -391,113 +345,91 @@ public class BN5RandomizerContext extends RandomizerContext {
 		RepeatStrategy numberArrayStrat
 				= new RepeatStrategy(numberProvider, new byte[]{-1});
 
-		rom.setRealPosition(getVersionAddress(0x140544, romId));
+		rom.setRealPosition(getVersionAddress(0x04DEF8, romId));
 		rom.setPosition(rom.readInt32());
 		numberArrayStrat.execute(rom);
 
 		runProvider(numberProvider, rom);
-
-		// Randomize Boktai Trader.
-		BoktaiTraderEntryProducer boktaiTraderEntryProducer
-				= new BN56BoktaiTraderEntryProducer(library);
-		ItemProvider boktaiTraderEntryProvider
-				= new ItemProvider(this, boktaiTraderEntryProducer);
-		RepeatStrategy boktaiTraderStrat
-				= new RepeatStrategy(boktaiTraderEntryProvider,
-						new byte[]{-1});
-		PointerListStrategy boktaiTraderArrayStrat
-				= new PointerListStrategy(boktaiTraderStrat, 4);
-		rom.setRealPosition(getVersionAddress(0x1405A4, romId));
-		rom.setPosition(rom.readInt32());
-		boktaiTraderArrayStrat.execute(rom);
-
-		runProvider(boktaiTraderEntryProvider, rom);
 	}
 	
-	protected void randomizeItemPanels(String romId, ByteStream rom,
-			ChipLibrary library) {
-		// Randomize Item Panels
-		BN5ItemPanelContentsProducer itemPanelContentsProducer
-				= new BN5ItemPanelContentsProducer(library);
-		ItemProvider itemPanelContentsProvider
-				= new ItemProvider(this, itemPanelContentsProducer);
-		RepeatStrategy itemPanelArrayStrat
-				= new RepeatStrategy(itemPanelContentsProvider,
-						new byte[] { -1 });
-		PointerListStrategy itemPanelArrayPointerStrat
-				= new PointerListStrategy(itemPanelArrayStrat, 1);
-		OffsetStrategy liberationMissionStrat
-				= new OffsetStrategy(itemPanelArrayPointerStrat, 52, 36);
-		RepeatStrategy liberationMissionArrayStrat
-				= new RepeatStrategy(liberationMissionStrat, 9);
-		
-		rom.setRealPosition(getVersionAddress(0x04B70C, romId));
-		rom.setPosition(rom.readInt32());
-		liberationMissionArrayStrat.execute(rom);
-		runProvider(itemPanelContentsProvider, rom);
-		
-		// Randomize Bonus Panels
-		BN5BonusPanelContentsProducer bonusPanelContentsProducer
-				= new BN5BonusPanelContentsProducer(library);
-		ItemProvider bonusPanelContentsProvider
-				= new ItemProvider(this, bonusPanelContentsProducer);
-		RepeatStrategy bonusPanelContentsArrayStrat
-				= new RepeatStrategy(bonusPanelContentsProvider,
-						new byte[] { -1 });
-		PointerListStrategy bonusPanelContentsArrayPointerStrat
-				= new PointerListStrategy(bonusPanelContentsArrayStrat, 1);
-		OffsetStrategy bonusPanelStrat
-				= new OffsetStrategy(bonusPanelContentsArrayPointerStrat,
-						16, 4);
-		RepeatStrategy bonusPanelArrayStrat
-				= new RepeatStrategy(bonusPanelStrat, new byte[] { 0, 0 });
-		PointerListStrategy bonusPanelArrayPointerStrat
-				= new PointerListStrategy(bonusPanelArrayStrat, 1);
-		liberationMissionStrat
-				= new OffsetStrategy(bonusPanelArrayPointerStrat, 44, 44);
-		liberationMissionArrayStrat
-				= new RepeatStrategy(liberationMissionStrat, 9);
-		
-		rom.setRealPosition(getVersionAddress(0x04B70C, romId));
-		rom.setPosition(rom.readInt32());
-		liberationMissionArrayStrat.execute(rom);
-		
-		runProvider(bonusPanelContentsProvider, rom);
-	}
-
 	protected void randomizeBattles(String romId, ByteStream rom) {
-		BN56BattleProducer producer
-				= new BN56BattleProducer();
-		BN5BattleProvider provider
-				= new BN5BattleProvider(this, producer);
+		BN4BattleProducer producer
+				= new BN4BattleProducer();
+		BN4BattleProvider provider
+				= new BN4BattleProvider(this, producer);
 		RepeatStrategy battleListStrat
-				= new RepeatStrategy(provider, new byte[]{-1});
+				= new RepeatStrategy(provider, new byte[] { -1 });
 		PointerListStrategy subAreaListStrat
 				= new PointerListStrategy(battleListStrat, 16);
+		PointerListStrategy subAreaListStrat2
+				= new PointerListStrategy(battleListStrat, 64);
+		PointerListStrategy subAreaListStrat3
+				= new PointerListStrategy(battleListStrat, 48);
+		PointerListStrategy subAreaListStrat4
+				= new PointerListStrategy(battleListStrat, 32);
 
 		PointerListStrategy lanAreaListStrat
 				= new PointerListStrategy(subAreaListStrat, 21);
-		PointerListStrategy lanStrat
-				= new PointerListStrategy(lanAreaListStrat, 1);
+		PointerListStrategy compAreaListStrat
+				= new PointerListStrategy(subAreaListStrat, 16);
 
-		PointerListStrategy megaAreaListStrat1
-				= new PointerListStrategy(subAreaListStrat, 11);
-		PointerListStrategy megaAreaListStrat2
-				= new PointerListStrategy(subAreaListStrat, 9);
-
-		rom.setRealPosition(getVersionAddress(0x10F348, romId));
+		// Lan areas
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
 		rom.setPosition(rom.readInt32());
-		lanStrat.execute(rom);
-
 		rom.setPosition(rom.readInt32());
-		megaAreaListStrat1.execute(rom);
-		rom.advance(4);
-		megaAreaListStrat2.execute(rom);
-
-		// Randomize Liberation Mission battles
-		rom.setRealPosition(getVersionAddress(0x009134, romId));
+		lanAreaListStrat.execute(rom);
+		
+		// Comps
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
 		rom.setPosition(rom.readInt32());
-		battleListStrat.execute(rom);
+		rom.advance(4);		
+		rom.setPosition(rom.readInt32());
+		compAreaListStrat.execute(rom);
+		
+		// ACDC Area
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
+		rom.setPosition(rom.readInt32());
+		rom.advance(4);		
+		rom.setPosition(rom.readInt32());
+		rom.advance(64);
+		rom.setPosition(rom.readInt32());
+		subAreaListStrat2.execute(rom);
+		
+		// Town Area
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
+		rom.setPosition(rom.readInt32());
+		rom.advance(4);		
+		rom.setPosition(rom.readInt32());
+		rom.advance(68);
+		rom.setPosition(rom.readInt32());
+		subAreaListStrat3.execute(rom);
+		
+		// Park Area
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
+		rom.setPosition(rom.readInt32());
+		rom.advance(4);		
+		rom.setPosition(rom.readInt32());
+		rom.advance(72);
+		rom.setPosition(rom.readInt32());
+		subAreaListStrat2.execute(rom);
+		
+		// Foreign Areas
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
+		rom.setPosition(rom.readInt32());
+		rom.advance(4);		
+		rom.setPosition(rom.readInt32());
+		rom.advance(76);
+		rom.setPosition(rom.readInt32());
+		subAreaListStrat4.execute(rom);
+		
+		// Undernet/Black Earth
+		rom.setRealPosition(getVersionAddress(0x0F52F4, romId));
+		rom.setPosition(rom.readInt32());
+		rom.advance(4);		
+		rom.setPosition(rom.readInt32());
+		rom.advance(80);
+		rom.setPosition(rom.readInt32());
+		subAreaListStrat3.execute(rom);
 
 		runProvider(provider, rom);
 	}
@@ -505,18 +437,23 @@ public class BN5RandomizerContext extends RandomizerContext {
 	@Override
 	public String[] getSupportedRomIds() {
 		return new String[] {
-			// Rockman EXE 5: Team of Blues (J)
-			"BRBJ0",
-			// Rockman EXE 5: Team of Colonel (J)
-			"BRKJ0",
-			// Mega Man Battle Network 5: Team ProtoMan (U)
-			"BRBE0",
-			// Mega Man Battle Network 5: Team Colonel (U)
-			"BRKE0",
-			// Mega Man Battle Network 5: Team ProtoMan (E)
-			"BRBP0",
-			// Mega Man Battle Network 5: Team Colonel (E)
-			"BRKP0"
+			// Rockman EXE 4: Tournament Red Sun (J)
+			"B4WJ0",
+			// Rockman EXE 4: Tournament Blue Moon (J)
+			"B4BJ0",
+			// Mega Man Battle Network 4: Red Sun (U)
+			"B4WE0",
+			// Mega Man Battle Network 4: Red Sun (E)
+			"B4WP0",
+			// Mega Man Battle Network 4: Blue Moon (U)
+			"B4BE0",
+			// Mega Man Battle Network 4: Blue Moon (E)
+			"B4BP0",
+			// Rockman EXE 4: Tournament Red Sun (J) (Rev 1)
+			"B4WJ1",
+			// Rockman EXE 4: Tournament Blue Moon (J) (Rev 1)
+			//"B4BJ1"
 		};
 	}
+    
 }

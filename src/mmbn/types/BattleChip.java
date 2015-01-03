@@ -17,6 +17,7 @@ public class BattleChip {
 		BONUS,
 		SWORD,
 		INVISIBLE,
+		GROUND,
 		CURSOR,
 		SUMMON,
 		WIND,
@@ -24,6 +25,7 @@ public class BattleChip {
 		NULL,
 		PA,
 		UNUSED,
+		UNUSED2,
 	}
 
 	public enum Library {

@@ -7,8 +7,8 @@ import mmbn.types.MysteryDataContents;
 import rand.ByteStream;
 import rand.Bytes;
 
-public class BN56MysteryDataContentsProducer extends MysteryDataContentsProducer {
-	public BN56MysteryDataContentsProducer(ChipLibrary library) {
+public class BN456MysteryDataContentsProducer extends MysteryDataContentsProducer {
+	public BN456MysteryDataContentsProducer(ChipLibrary library) {
 		super(library, new Item.Type[]{
 			Item.Type.BATTLECHIP,
 			Item.Type.SUBCHIP,

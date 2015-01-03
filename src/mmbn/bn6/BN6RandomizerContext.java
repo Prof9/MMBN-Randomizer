@@ -463,7 +463,7 @@ public class BN6RandomizerContext extends RandomizerContext {
 			ChipLibrary library) {
 		// Randomize Green, Blue and Purple Mystery Data
 		ItemProducer producer
-				= new BN56MysteryDataContentsProducer(library);
+				= new BN456MysteryDataContentsProducer(library);
 		ItemProvider provider
 				= new ItemProvider(this, producer);
 		RepeatStrategy contentsArrayStrat
@@ -563,7 +563,7 @@ public class BN6RandomizerContext extends RandomizerContext {
 	protected void randomizeShops(String romId, ByteStream rom,
 			ChipLibrary library) {
 		ItemProducer producer
-				= new BN56ShopItemProducer(library);
+				= new BN456ShopItemProducer(library);
 		ItemProvider provider
 				= new ItemProvider(this, producer);
 		RepeatStrategy itemArrayStrat

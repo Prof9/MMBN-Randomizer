@@ -1,30 +1,30 @@
-package mmbn.multi;
+package mmbn.bn4;
 
 import mmbn.prod.BattleProducer;
-import mmbn.types.BattleObject;
 import mmbn.types.Battle;
+import mmbn.types.BattleObject;
 import rand.ByteStream;
 
-public class BN56BattleProducer extends BattleProducer {
-	public BN56BattleProducer() {
-		super(new BN56BattleObjectProducer());
+public class BN4BattleProducer extends BattleProducer {
+	public BN4BattleProducer() {
+		super(new BN4BattleObjectProducer());
 	}
 
 	@Override
 	public int getDataSize() {
-		return 16;
+		return 12;
 	}
 
 	@Override
 	public Battle readFromStream(ByteStream stream) {
-		byte[] base = stream.readBytes(12);
+		byte[] base = stream.readBytes(8);
 		Battle battle = new Battle(base);
 
 		int ptr = stream.readInt32();
 		stream.push();
 		stream.setPosition(ptr);
 
-		while ((stream.readUInt8() & 0xF0) != 0xF0) {
+		while (stream.readUInt8() != 0xFF) {
 			stream.advance(-1);
 			battle.addObject(this.objectProducer.readFromStream(stream));
 		}
@@ -48,4 +48,5 @@ public class BN56BattleProducer extends BattleProducer {
 		
 		stream.pop();
 	}
+    
 }

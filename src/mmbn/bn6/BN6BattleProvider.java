@@ -1,14 +1,14 @@
 package mmbn.bn6;
 
-import mmbn.multi.BN56BattleProducer;
 import java.util.Random;
+import mmbn.prod.BattleProducer;
 import mmbn.types.Battle;
 import mmbn.types.BattleObject;
 import rand.DataProvider;
 import rand.RandomizerContext;
 
 public class BN6BattleProvider extends DataProvider<Battle> {
-	public BN6BattleProvider(RandomizerContext context, BN56BattleProducer producer) {
+	public BN6BattleProvider(RandomizerContext context, BattleProducer producer) {
 		super(context, producer);
 	}
 

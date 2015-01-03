@@ -1,12 +1,12 @@
 package mmbn.bn5;
 
 import mmbn.ChipLibrary;
-import mmbn.bn6.AbstractBN456ChipProducer;
+import mmbn.bn6.AbstractBN56ChipProducer;
 import mmbn.types.BattleChip;
 
-public class BN5ChipProducer extends AbstractBN456ChipProducer {
+public class BN5ChipProducer extends AbstractBN56ChipProducer {
 	public BN5ChipProducer(ChipLibrary library) {
-		super(library, new BattleChip.Element[]{
+		super(library, new BattleChip.Element[] {
 			BattleChip.Element.HEAT,
 			BattleChip.Element.AQUA,
 			BattleChip.Element.ELEC,
@@ -22,7 +22,7 @@ public class BN5ChipProducer extends AbstractBN456ChipProducer {
 			BattleChip.Element.NULL,
 			BattleChip.Element.PA,
 			BattleChip.Element.UNUSED
-		}, new BattleChip.Library[]{
+		}, new BattleChip.Library[] {
 			BattleChip.Library.STANDARD,
 			BattleChip.Library.MEGA,
 			BattleChip.Library.GIGA,

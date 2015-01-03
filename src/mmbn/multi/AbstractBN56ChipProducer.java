@@ -6,8 +6,8 @@ import mmbn.types.BattleChip;
 import mmbn.ChipLibrary;
 import mmbn.prod.ChipProducer;
 
-public class AbstractBN456ChipProducer extends ChipProducer {
-	public AbstractBN456ChipProducer(ChipLibrary library,
+public class AbstractBN56ChipProducer extends ChipProducer {
+	public AbstractBN56ChipProducer(ChipLibrary library,
 			BattleChip.Element[] elements, BattleChip.Library[] libraries) {
 		super(library, elements, libraries);
 	}
