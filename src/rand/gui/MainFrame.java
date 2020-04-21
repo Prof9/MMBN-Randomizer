@@ -3,12 +3,12 @@ package rand.gui;
 import java.awt.CardLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 import javax.swing.JFileChooser;
 import javax.swing.JScrollBar;
@@ -395,13 +395,19 @@ public class MainFrame extends javax.swing.JFrame {
         // Run randomizer.
         appendStatus("Starting randomizer with seed " + seed + "...");
         context.setSeed(seed);
-        context.addObserver(new Observer() {
-            @Override
-            public void update(Observable o, Object arg) {
-                appendStatus((String)arg);
-                statusProgressBar.setValue(((RandomizerContext)o).getProgress());
-            }
-        });
+		context.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (RandomizerContext.STATUS_PROPERTY_NAME
+						.equals(evt.getPropertyName())) {
+					appendStatus((String)evt.getNewValue());
+				}
+				if (RandomizerContext.PROGRESS_PROPERTY_NAME
+						.equals(evt.getPropertyName())) {
+					statusProgressBar.setValue((int)evt.getNewValue());
+				}
+			}
+		});
         
         final RandomizerWorker worker = new RandomizerWorker(context, rom);
         worker.setDone(new Runnable() {

@@ -1,13 +1,13 @@
 package rand;
 
 import java.awt.EventQueue;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
 import rand.gui.MainFrame;
 
@@ -20,23 +20,11 @@ public class Main {
 	private static final int RESULT_FATAL = 3;
 
 	public static void main(String[] args) {
-		// Debug parameters
-		if (DEBUG && args.length == 0) {
-			args = new String[3];
-			args[0] = "roms\\Mega Man Battle Network 4 - Red Sun (U).gba";
-			args[1] = "out4re.gba";
-			args[2] = "" + 0x12345678;
-		}
-
-		if (!DEBUG) {
-			try {
-				run(args);
-			} catch (Exception ex) {
-				System.err.println("FATAL ERROR: " + ex.getMessage());
-				System.exit(RESULT_FATAL);
-			}
-		} else {
+		try {
 			run(args);
+		} catch (Exception ex) {
+			System.err.println("FATAL ERROR: " + ex.getMessage());
+			System.exit(RESULT_FATAL);
 		}
 	}
 
@@ -106,10 +94,13 @@ public class Main {
 		// Run randomizer.
 		System.out.println("Starting...");
 		context.setSeed(seed);
-		context.addObserver(new Observer() {
+		context.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void update(Observable o, Object arg) {
-				System.out.println((String) arg);
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (RandomizerContext.STATUS_PROPERTY_NAME
+						.equals(evt.getPropertyName())) {
+					System.out.println((String)evt.getNewValue());
+				}
 			}
 		});
 		context.randomize(rom);

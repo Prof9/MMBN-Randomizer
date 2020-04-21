@@ -1,17 +1,31 @@
 package rand;
 
-import java.util.Observable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Random;
 
-public abstract class RandomizerContext extends Observable {
+public abstract class RandomizerContext {
+	public static final String PROGRESS_PROPERTY_NAME = "progress";
+	public static final String STATUS_PROPERTY_NAME = "status";
+	
 	private final Random rng;
 	private int progress;
-	private final String lastMsg;
+	private String lastMsg;
+	
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
 	public RandomizerContext() {
 		this.rng = new Random();
 		this.progress = 0;
 		this.lastMsg = "";
+	}
+	
+	public void addPropertyChangeListener(PropertyChangeListener listener) {
+		this.pcs.addPropertyChangeListener(listener);
+	}
+	
+	public void removePropertyChangeListener(PropertyChangeListener listener) {
+		this.pcs.removePropertyChangeListener(listener);
 	}
 
 	public void setSeed(int seed) {
@@ -33,16 +47,20 @@ public abstract class RandomizerContext extends Observable {
 
 	protected void setProgress(int progress) {
 		if (this.progress != progress) {
+			int prevProgress = this.progress;
 			this.progress = progress;
-			setChanged();
+			
+			this.pcs.firePropertyChange(PROGRESS_PROPERTY_NAME,
+					prevProgress, progress);
 		}
 	}
 
 	protected void status(String message) {
-		if (this.lastMsg != message) {
-			setChanged();
-			notifyObservers(message);
-		}
+		String prevMessage = this.lastMsg;
+		this.lastMsg = message;
+		
+		this.pcs.firePropertyChange(STATUS_PROPERTY_NAME,
+				prevMessage, message);
 	}
 
 	public void randomize(ByteStream rom) {
