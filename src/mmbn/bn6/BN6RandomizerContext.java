@@ -145,7 +145,7 @@ public class BN6RandomizerContext extends RandomizerContext {
 		RepeatStrategy paPtrListStrat
 				= new RepeatStrategy(paPtrStrat, new byte[]{0, 0, 0, 0});
 		PointerListStrategy paPtrListListStrat
-				= new PointerListStrategy(paPtrListStrat, 2);
+				= new PointerListStrategy(paPtrListStrat, 1);
 
 		rom.setRealPosition(getVersionAddress(0x0299C8, romId));
 		paPtrListListStrat.execute(rom);
