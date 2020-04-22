@@ -159,6 +159,14 @@ public class ChipProvider extends DataProvider<BattleChip> {
 			codes.add((byte) (startingCode + i));
 		}
 
+		int r = rng.nextInt(27 * 2);
+		if (r == 0) {
+			codes.set(0, (byte)26);
+		}
+		if (r == 1) {
+			codes.set(codes.size() - 1, (byte)26);
+		}
+
 		presetCodes(chip.index(), codes);
 	}
 
