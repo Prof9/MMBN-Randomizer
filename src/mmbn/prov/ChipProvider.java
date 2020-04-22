@@ -99,6 +99,8 @@ public class ChipProvider extends DataProvider<BattleChip> {
 				codes.add(randomCodes[i]);
 			}
 		}
+		
+		Collections.shuffle(codes, rng);
 
 		// Do not add more codes than previously existed.
 		byte[] newCodes = new byte[oldCodes.length];
@@ -130,23 +132,8 @@ public class ChipProvider extends DataProvider<BattleChip> {
 			}
 		});
 
-		// Keep track of all processed chips.
-		List<BattleChip> processed = new ArrayList<>();
-
 		// Fix all consecutive PAs first.
 		for (ProgramAdvance pa : pas) {
-			// If any chips in the PA have already been processed, skip it.
-			boolean skip = false;
-			for (BattleChip chip : pa.chips()) {
-				if (processed.contains(chip)) {
-					skip = true;
-					break;
-				}
-			}
-			if (skip) {
-				continue;
-			}
-
 			// Fix the PA.
 			switch (pa.type()) {
 				case CONSECUTIVE:
@@ -156,19 +143,12 @@ public class ChipProvider extends DataProvider<BattleChip> {
 					fixMultiPA(pa, rng);
 					break;
 			}
-
-			// Mark all components as processed.
-			for (BattleChip chip : pa.chips()) {
-				if (!processed.contains(chip)) {
-					processed.add(chip);
-				}
-			}
 		}
 	}
 
 	protected void fixCodePA(ProgramAdvance pa, Random rng) {
 		BattleChip chip = pa.chips().get(0);
-		int chipCount = pa.chipCount();
+		int chipCount = chip.getCodes().length;
 
 		// Select a random starting code.
 		int startingCode = rng.nextInt(26 - chipCount);
@@ -183,22 +163,45 @@ public class ChipProvider extends DataProvider<BattleChip> {
 	}
 
 	protected void fixMultiPA(ProgramAdvance pa, Random rng) {
-		// Select a random PA code.
-		byte code = (byte) rng.nextInt(26);
-		List<Byte> codes = new ArrayList<>(1);
-		codes.add(code);
-
-		// Keep track of which components have been processed.
-		List<BattleChip> processed = new ArrayList<>(pa.chipCount());
+		// Find number of common codes
+		byte[] codeOccurrences = new byte[26];
+		for (BattleChip chip : pa.chips()) {
+			for (byte c : chip.getCodes()) {
+				if (c < 26) {
+					codeOccurrences[c]++;
+				}
+			}
+		}
+		for (int c = 0; c < 26; c++) {
+			for (BattleChip chip : pa.chips()) {
+				codeOccurrences[c] = (byte)Math.min(
+						codeOccurrences[c], chip.getCodes().length);
+			}
+		}
+		int maxOccurrence = 0;
+		for (byte count : codeOccurrences) {
+			maxOccurrence = Math.max(maxOccurrence, count);
+		}
+		int commonCodes = 0;
+		for (byte count : codeOccurrences) {
+			if (count >= maxOccurrence) {
+				commonCodes++;
+			}
+		}
+		
+		// This is a heuristic, probably won't always be perfect, but should be good enough...
+		int codeCount = Math.min(commonCodes, maxOccurrence);
+		
+		// Select random PA codes
+		List<Byte> codes = new ArrayList<>(26);
+		for (byte i = 0; i < 26; i++) {
+			codes.add(i);
+		}
+		Collections.shuffle(codes, rng);
 
 		// Preset the code for all PA components.
 		for (BattleChip chip : pa.chips()) {
-			presetCodes(chip.index(), codes);
-
-			// Mark the component as processed.
-			if (!processed.contains(chip)) {
-				processed.add(chip);
-			}
+			presetCodes(chip.index(), codes.subList(0, codeCount));
 		}
 	}
 }
