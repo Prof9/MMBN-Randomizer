@@ -15,6 +15,7 @@ import rand.strat.*;
 public class BN5RandomizerContext extends RandomizerContext {
 	private static final int[][] offsets = new int[][]{
 		new int[] { 0x008D44, 0x008D44, 0x008D44, 0x008D44 },
+		new int[] { 0x009130, 0x009130, 0x009130, 0x009130 },
 		new int[] { 0x009134, 0x009134, 0x009134, 0x009134 },
 		new int[] { 0x01DED8, 0x01DED4, 0x01DF1C, 0x01DF18 },
 		new int[] { 0x023F0C, 0x023F08, 0x023F50, 0x023F4C },
@@ -498,6 +499,20 @@ public class BN5RandomizerContext extends RandomizerContext {
 		rom.setRealPosition(getVersionAddress(0x009134, romId));
 		rom.setPosition(rom.readInt32());
 		battleListStrat.execute(rom);
+		
+		// Randomize fixed battles
+		FilterStrategy fixedBattleFilter
+				= new FilterStrategy(provider, new byte[]{
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+				}, new byte[]{
+					0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+				}, false);
+		RepeatStrategy fixedBattleListStrat
+				= new RepeatStrategy(fixedBattleFilter, new byte[]{-1});
+		
+		rom.setRealPosition(getVersionAddress(0x009130, romId));
+		rom.setPosition(rom.readInt32());
+		fixedBattleListStrat.execute(rom);
 
 		runProvider(provider, rom);
 	}

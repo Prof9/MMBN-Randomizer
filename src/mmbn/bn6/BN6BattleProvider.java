@@ -40,8 +40,19 @@ public class BN6BattleProvider extends DataProvider<Battle> {
 		{ 1, 2, 3, 4, 5, 6 }, // Nightmare
 	};
 	
+	private boolean allowNightmares;
+	
 	public BN6BattleProvider(RandomizerContext context, BattleProducer producer) {
 		super(context, producer);
+		this.allowNightmares = true;
+	}
+	
+	public boolean getAllowNightmares() {
+		return this.allowNightmares;
+	}
+	
+	public void setAllowNightmares(boolean allow) {
+		this.allowNightmares = allow;
 	}
 
 	@Override
@@ -59,7 +70,11 @@ public class BN6BattleProvider extends DataProvider<Battle> {
 					enemyRank = Math.abs(ENEMY_LEVELS[enemyFamily][enemyRank]);
 					
 					// Choose a random family.
-					enemyFamily = rng.nextInt(29);
+					if (this.allowNightmares) {
+						enemyFamily = rng.nextInt(29);
+					} else {
+						enemyFamily = rng.nextInt(28);
+					}
 					
 					// Choose a random rank of the same difficulty.
 					byte[] possibleRanks = new byte[6];

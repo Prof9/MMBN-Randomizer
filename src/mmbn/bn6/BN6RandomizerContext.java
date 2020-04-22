@@ -16,6 +16,7 @@ public class BN6RandomizerContext extends RandomizerContext {
 	private static final int[][] offsets = new int[][]{
 		// Order: Gregar J, Falzar J, Gregar UE, Falzar UE
 		new int[] { 0x00AAC0, 0x00AAC0, 0x00A4D8, 0x00A4D8 },
+		new int[] { 0x00AF28, 0x00AF28, 0x00A940, 0x00A940 },
 		new int[] { 0x021EC4, 0x021EC4, 0x021AB0, 0x021AB0 },
 		new int[] { 0x0284F0, 0x0284F0, 0x0280DC, 0x0280DC },
 		new int[] { 0x0299C8, 0x0299C8, 0x0295B4, 0x0295B4 },
@@ -432,6 +433,28 @@ public class BN6RandomizerContext extends RandomizerContext {
 		}
 
 		runProvider(provider, rom);
+		
+		// Randomize fixed battles
+		BN56BattleProducer fixedProducer
+				= new BN56BattleProducer();
+		BN6BattleProvider fixedProvider
+				= new BN6BattleProvider(this, fixedProducer);
+		fixedProvider.setAllowNightmares(false);
+		FilterStrategy fixedBattleFilter
+				= new FilterStrategy(fixedProvider, new byte[]{
+					0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+				}, new byte[]{
+					0, 0, 0,-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+				}, false);
+		RepeatStrategy fixedBattleListStrat
+				= new RepeatStrategy(fixedBattleFilter, new byte[]{-1});
+		PointerListStrategy fixedBattleStrat
+				= new PointerListStrategy(fixedBattleListStrat, 1);
+		
+		rom.setRealPosition(getVersionAddress(0x00AF28, romId));
+		fixedBattleStrat.execute(rom);
+		
+		runProvider(fixedProvider, rom);
 	}
 
 	protected void randomizeRewards(String romId, ByteStream rom,
