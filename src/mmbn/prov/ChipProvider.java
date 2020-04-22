@@ -101,6 +101,15 @@ public class ChipProvider extends DataProvider<BattleChip> {
 		}
 		
 		Collections.shuffle(codes, rng);
+		
+		// Force asterisk code if this is an add-on chip that had it before.
+		if (chip.getIsAddOnChip() && !codes.contains(26)) {
+			for (int i = 0; i < oldCodes.length; i++) {
+				if (oldCodes[i] == 26) {
+					codes.set(rng.nextInt(oldCodes.length), (byte)26);
+				}
+			}
+		}
 
 		// Do not add more codes than previously existed.
 		byte[] newCodes = new byte[oldCodes.length];

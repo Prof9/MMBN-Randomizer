@@ -52,6 +52,7 @@ public class BattleChip {
 	protected byte mb;
 	protected boolean isInLibrary;
 	protected int idPosition;
+	protected boolean isAddOnChip;
 
 	/**
 	 * Converts the given code to its string equivalent.
@@ -92,6 +93,7 @@ public class BattleChip {
 		this.library = BattleChip.Library.STANDARD;
 		this.mb = 0;
 		this.isInLibrary = true;
+		this.isAddOnChip = false;
 	}
 
 	/**
@@ -394,5 +396,23 @@ public class BattleChip {
 	 */
 	public void setIDPosition(int idPosition) {
 		this.idPosition = idPosition;
+	}
+	
+	/**
+	 * Gets a boolean that indicates whether this chip is an add-on chip.
+	 * 
+	 * @return true if this chip is an add-on chip; otherwise, false.
+	 */
+	public boolean getIsAddOnChip() {
+		return this.isAddOnChip;
+	}
+	
+	/**
+	 * Sets a boolean that indicates whether this chip is an add-on chip.
+	 * 
+	 * @param isAddOnChip Whether this chip is an add-on chip.
+	 */
+	public void setIsAddOnChip(boolean isAddOnChip) {
+		this.isAddOnChip = isAddOnChip;
 	}
 }

@@ -31,6 +31,7 @@ public class AbstractBN56ChipProducer extends ChipProducer {
 		chip.setLibrary(libraryFromIndex(bytes[7]));
 		chip.setMB(bytes[8]);
 		chip.setIDPosition(Bytes.readUInt16(bytes, 28));
+		chip.setIsAddOnChip((bytes[22] & 0x40) != 0);
 
 		chip.setIsInLibrary(Bytes.readBits(bytes, 9, 6, 1) != 0);
 
