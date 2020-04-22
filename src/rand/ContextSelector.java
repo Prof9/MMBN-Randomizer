@@ -6,9 +6,9 @@ import mmbn.bn6.BN6RandomizerContext;
 
 public class ContextSelector {
 	private static final RandomizerContext[] contexts = new RandomizerContext[]{
-		new BN4RandomizerContext(),
+		//new BN4RandomizerContext(),
 		new BN5RandomizerContext(),
-		new BN6RandomizerContext()
+		new BN6RandomizerContext(),
 	};
 
 	public static RandomizerContext getAppropriateContext(ByteStream rom) {
