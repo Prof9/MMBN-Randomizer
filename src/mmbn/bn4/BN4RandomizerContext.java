@@ -219,7 +219,7 @@ public class BN4RandomizerContext extends RandomizerContext {
 		rom.setRealPosition(getVersionAddress(0x04BA30, romId));
 		int itemPoolPtr = rom.readInt32();
 		PointerListStrategy itemArrayPtrStrat
-				= new PointerListStrategy(itemArrayStrat, 1, itemPoolPtr);
+				= new PointerListStrategy(itemArrayStrat, 1, itemPoolPtr, false);
 
 		OffsetStrategy shopEntryStrat
 				= new OffsetStrategy(itemArrayPtrStrat, 8, 4);

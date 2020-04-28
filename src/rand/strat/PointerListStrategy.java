@@ -14,6 +14,7 @@ public class PointerListStrategy implements StreamStrategy {
 	private final int basePointer;
 	private final int length;
 	private final boolean repeat;
+	private final boolean ignoreNull;
 
 	/**
 	 * Constructs a new ProcessPointerListStrategy with the given delegate
@@ -38,7 +39,7 @@ public class PointerListStrategy implements StreamStrategy {
 	 */
 	public PointerListStrategy(final StreamStrategy strategy, int length,
 			boolean repeat) {
-		this(strategy, length, 0, repeat);
+		this(strategy, length, 0, repeat, true);
 	}
 
 	/**
@@ -49,10 +50,11 @@ public class PointerListStrategy implements StreamStrategy {
 	 * @param strategy The delegate strategy to use.
 	 * @param length The length of the pointer list.
 	 * @param basePtr The base pointer to use.
+	 * @param ignoreNull Whether null pointers should be skipped.
 	 */
 	public PointerListStrategy(final StreamStrategy strategy, int length,
-			int basePtr) {
-		this(strategy, length, basePtr, false);
+			int basePtr, boolean ignoreNull) {
+		this(strategy, length, basePtr, false, ignoreNull);
 	}
 
 	/**
@@ -64,13 +66,15 @@ public class PointerListStrategy implements StreamStrategy {
 	 * @param length The length of the pointer list.
 	 * @param basePointer The base pointer to use.
 	 * @param repeat Whether repeated pointers should be processed again.
+	 * @param ignoreNull Whether null pointers should be skipped.
 	 */
 	public PointerListStrategy(final StreamStrategy strategy, int length,
-			int basePointer, boolean repeat) {
+			int basePointer, boolean repeat, boolean ignoreNull) {
 		this.repeat = repeat;
 		this.length = length;
 		this.strategy = strategy;
 		this.basePointer = basePointer;
+		this.ignoreNull = ignoreNull;
 	}
 
 	/**
@@ -105,15 +109,17 @@ public class PointerListStrategy implements StreamStrategy {
 		int next;
 		for (int i = 0; i < this.length; i++) {
 			next = stream.readInt32();
-			if (next != 0 && (repeat || !processed.contains(next))) {
-				stream.push();
-				stream.setPosition(basePointer + next);
-
-				this.strategy.execute(stream);
-
-				stream.pop();
-				processed.add(next);
+			if ((next == 0 && ignoreNull) || (processed.contains(next) && !repeat)) {
+				continue;
 			}
+			
+			stream.push();
+			stream.setPosition(basePointer + next);
+
+			this.strategy.execute(stream);
+
+			stream.pop();
+			processed.add(next);
 		}
 	}
 }
