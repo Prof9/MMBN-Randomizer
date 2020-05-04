@@ -2,7 +2,7 @@ MMBN Randomizer
 ===============
 MMBN Randomizer is a Java utility that "randomizes" a Mega Man Battle Network ROM. Things being randomized include chip codes, chip drops and enemies in random encounters.
 
-To run this program, Java 7 must be installed on your computer.
+To run this program, Java 8 must be installed on your computer.
 
 Usage
 -----
@@ -19,9 +19,7 @@ Compatibility
 Currently MMBN Randomizer works for the following games:
 
 * Mega Man Battle Network 6: All versions.
-* Mega Man Battle Network 5: Team Colonel, North American version only.
-
-Support for other games and regions is planned.
+* Mega Man Battle Network 5: All versions.
 
 Since all chip codes are randomized, save files are locked to the seed that was used. If you use a save file from the clean ROM or a randomized ROM with a different seed, the game will softlock when you enter folder edit and you can't use any of your chips in battle.
 
@@ -31,7 +29,8 @@ Notes
 
 Credits
 =======
-**MMBN Randomizer (c) 2014**
+**MMBN Randomizer (c) 2014 - 2020**
+
 * Prof. 9
   * Planning
   * Programming
@@ -39,7 +38,7 @@ Credits
   * Icon
   * Beta testing
 
-Mega Man and Mega Man Battle Network are (c) Capcom 1987 - 2014
+Mega Man and Mega Man Battle Network are (c) Capcom 1987 - 2020
 
 License
 =======
