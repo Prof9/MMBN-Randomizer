@@ -29,7 +29,7 @@ Notes
 
 Credits
 =======
-**MMBN Randomizer (c) 2014 - 2020**
+**MMBN Randomizer (c) 2014 - 2021**
 
 * Prof. 9
   * Planning
@@ -38,7 +38,7 @@ Credits
   * Icon
   * Beta testing
 
-Mega Man and Mega Man Battle Network are (c) Capcom 1987 - 2020
+Mega Man and Mega Man Battle Network are (c) Capcom 1987 - 2021
 
 License
 =======
